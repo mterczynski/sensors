@@ -5,8 +5,5 @@ export class Player{
     }
     x: number
     y: number
-
-    draw(){
-
-    }
+    rotation = 0;
 }

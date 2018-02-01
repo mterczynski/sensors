@@ -1,0 +1,17 @@
+{
+  "name": "ai-geneticalgorithm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server"
+  },
+  "author": "https://github.com/mterczynski",
+  "dependencies": {
+    "ts-loader": "^3.4.0"
+  },
+  "devDependencies": {
+    "webpack": "^3.10.0",
+    "webpack-dev-server": "^2.11.1"
+  }
+}

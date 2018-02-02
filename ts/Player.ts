@@ -3,22 +3,30 @@ export class Player{
         this.x = posX;
         this.y = posY;
     }
-    x: number
-    y: number
+    readonly radius = 10;
+    x: number;
+    y: number;
     rotation = 0;
     velocity = 5;
-    isDead = false
+    isDead = false;
+
+    getSensorLines(){
+        return [];
+    }
 
     turnLeft(){
-        this.rotation -= 0.04
+        this.rotation -= 0.04;
     }
 
     turnRight(){
-        this.rotation += 0.04
+        this.rotation += 0.04;
     }
 
     update(){
-        this.x +=  this.velocity * Math.cos(this.rotation - Math.PI/2);
-        this.y +=  this.velocity * Math.sin(this.rotation - Math.PI/2)
+        if(this.isDead){
+            return;
+        }
+        this.x += this.velocity * Math.cos(this.rotation - Math.PI/2);
+        this.y += this.velocity * Math.sin(this.rotation - Math.PI/2);
     }
 }

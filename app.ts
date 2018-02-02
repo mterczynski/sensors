@@ -14,6 +14,20 @@ export class App{
     tileSize = 40;
     levelData = new Level().getData();
     player = new Player(this.tileSize*12.5, this.tileSize*8.5);
+    sensors = {
+        left: 0,
+        leftCenter: 0,
+        center: 0,
+        rightCenter: 0,
+        right: 0
+    }
+    sensorsDOM = {
+        left: document.getElementById('sensorsLeft'),
+        leftCenter: document.getElementById('sensorsLeftCenter'),
+        center: document.getElementById('sensorsCenter'),
+        rightCenter: document.getElementById('sensorsRightCenter'),
+        right: document.getElementById('sensorsRight')
+    }
 
     constructor(){
         requestAnimationFrame(()=>{this.draw()});
@@ -26,8 +40,8 @@ export class App{
         this.drawGrid();
         this.drawObstacles();
         this.drawPlayerSensors();
-        
         this.drawPlayer();
+        this.updateStats();
         if(this.keyHandler.pressedKeys.a){
             this.player.turnLeft();
         } 
@@ -74,9 +88,11 @@ export class App{
     drawPlayerSensors(){
         this.context.strokeStyle = 'rgb(200,0,0)';
 
+        let sensorValues: Array<number> = [];
+
         this.player.getSensorLines().forEach((line)=>{
             let closestIntersection = new Point(Infinity, Infinity);
-
+            let playerPos = new Point(this.player.x, this.player.y);
             this.levelData.forEach((tile)=>{
                 let collisionResult = this.collisionDetector.lineRect(line, {
                     height: this.tileSize,
@@ -87,7 +103,6 @@ export class App{
                 
                 if(collisionResult.isCollision){
                     let intersection = <Point>collisionResult.intersection;
-                    let playerPos = new Point(this.player.x, this.player.y);
                     if(intersection.distanceTo(playerPos) < closestIntersection.distanceTo(playerPos)){
                         closestIntersection = intersection
                     }
@@ -100,7 +115,7 @@ export class App{
                 this.context.lineTo(closestIntersection.x, closestIntersection.y);
                 this.context.stroke();
                 this.context.closePath();
-
+                sensorValues.push(closestIntersection.distanceTo(playerPos));
                 // draw arc where sensor detected wall:
                 this.context.fillStyle = '#ff0000';
 
@@ -118,6 +133,12 @@ export class App{
                 // this.context.closePath();
             }
         });
+
+        this.sensors.left = sensorValues[0];
+        this.sensors.leftCenter = sensorValues[1];
+        this.sensors.center = sensorValues[2];
+        this.sensors.rightCenter = sensorValues[3];
+        this.sensors.right = sensorValues[4];
     }
 
     drawObstacles(){
@@ -142,6 +163,14 @@ export class App{
             }
             return this.collisionDetector.rectCircle(squareRect, playerCircle).isCollision;
         });
+    }
+
+    updateStats(){
+        this.sensorsDOM.left!.innerHTML = this.sensors.left.toFixed(2) +'';
+        this.sensorsDOM.leftCenter!.innerHTML = this.sensors.leftCenter.toFixed(2) +'';
+        this.sensorsDOM.center!.innerHTML = this.sensors.center.toFixed(2) +'';
+        this.sensorsDOM.rightCenter!.innerHTML = this.sensors.rightCenter.toFixed(2) +'';
+        this.sensorsDOM.right!.innerHTML = this.sensors.right.toFixed(2) +'';
     }
 }
 

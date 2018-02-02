@@ -7,17 +7,62 @@
     <title>Ai - machine learning</title>
 
     <style>
-        #gameCanvas{
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        .gameCanvas{
             position: absolute;
             left:50%;
             top:50%;
             transform: translate(-50%, -50%);
             border: 1px solid black;
         }
+        .stats{
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: rgba(0,0,0, 0.5);
+            color: cyan;
+            padding: 10px;
+        }
+        .stats__row{
+            padding-top: 5px;
+            width: 150px;
+        }
+        .stats__row__label{
+            color: blue;
+        }
+        .stats__row__value{
+            position: absolute;
+            right: 10px;
+        }
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas" width="600" height="600"></canvas>
+    <canvas id="gameCanvas" class="gameCanvas" width="600" height="600"></canvas>
+    <div class="stats">
+        <div class="stats__row">
+            <span class="stats__row__label">Left:</span>
+            <span class="stats__row__value" id="sensorsLeft"> 33.32</span>
+        </div>
+        <div class="stats__row">
+            <span class="stats__row__label">Left-center:</span>
+            <span class="stats__row__value" id="sensorsLeftCenter"> 233.32</span>
+        </div>
+        <div class="stats__row">
+            <span class="stats__row__label">Center:</span>
+            <span class="stats__row__value" id="sensorsCenter"> 33.311322</span>
+        </div>
+        <div class="stats__row">
+            <span class="stats__row__label">Right-center:</span>
+            <span class="stats__row__value" id="sensorsRightCenter"> 33.32</span>
+        </div>
+        <div class="stats__row">
+            <span class="stats__row__label">Right:</span>
+            <span class="stats__row__value" id="sensorsRight"> 33.32</span>
+        </div>
+    </div>
     <script src="bundle.js"></script>  
 </body>
 </html>

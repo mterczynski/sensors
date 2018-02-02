@@ -1,26 +1,38 @@
+import { Line } from "./interfaces/geometries/Line";
+import { Rect } from "./interfaces/geometries/Rect";
+import { Circle } from "./interfaces/geometries/Circle";
+
 // based on http://www.jeffreythompson.org/collision-detection/line-rect.php
 
+interface Result{
+	isCollision: boolean
+	distance?: number
+}
+
 export class CollisionDetector{
-	lineRect(x1:number, y1:number, x2:number, y2:number, rx:number, ry:number, rw:number, rh:number): boolean {
+	lineRect(line: Line, rect:Rect): Result {
 
-    // check if the line has hit any of the rectangle's sides
-    // uses the Line/Line function below
-    let left =   this.lineLine(x1,y1,x2,y2, rx,ry,rx, ry+rh);
-    let right =  this.lineLine(x1,y1,x2,y2, rx+rw,ry, rx+rw,ry+rh);
-    let top =    this.lineLine(x1,y1,x2,y2, rx,ry, rx+rw,ry);
-    let bottom = this.lineLine(x1,y1,x2,y2, rx,ry+rh, rx+rw,ry+rh);
+		// check if the line has hit any of the rectangle's sides
+		// uses the Line/Line function below
+		let rx = rect.x;
+		let ry = rect.y;
+		let rh = rect.height;
+		let rw = rect.width;
 
-    // if ANY of the above are true, the line
-    // has hit the rectangle
-    if (left || right || top || bottom) {
-      	return true;
-    }
-    return false;
-  }
+		let left =   this.lineLine(line.a.x, line.a.y, line.b.x, line.b.y, rx, ry, rx, ry+rh);
+		let right =  this.lineLine(line.a.x, line.a.y, line.b.x, line.b.y, rx+rw, ry, rx+rw, ry+rh);
+		let top =    this.lineLine(line.a.x, line.a.y, line.b.x, line.b.y, rx, ry, rx+rw, ry);
+		let bottom = this.lineLine(line.a.x, line.a.y, line.b.x, line.b.y, rx, ry+rh, rx+rw, ry+rh);
 
+		// if ANY of the above are true, the line
+		// has hit the rectangle
+		if (left || right || top || bottom) {
+			return {isCollision: true};
+		}
+		return {isCollision: false};
+	}	  
 
-  // LINE/LINE
-	lineLine(x1:number, y1:number, x2:number, y2:number, x3:number, y3:number, x4:number, y4:number): boolean {
+	lineLine(x1:number, y1:number, x2:number, y2:number, x3:number, y3:number, x4:number, y4:number): Result {
 
 		// calculate the direction of the lines
 		let uA = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));
@@ -33,8 +45,14 @@ export class CollisionDetector{
 			let intersectionX = x1 + (uA * (x2-x1));
 			let intersectionY = y1 + (uA * (y2-y1));
 
-			return true;
+			return {isCollision: true};
 		}
-		return false;
-  	}
+		return {isCollision: false};
+	}
+	
+	rectCircle(rect: Rect, circle: Circle) : Result{
+		let deltaX = circle.x - Math.max(rect.x, Math.min(circle.x, rect.x + rect.width));
+		let deltaY = circle.y - Math.max(rect.y, Math.min(circle.y, rect.y + rect.height));
+		return {isCollision: (deltaX * deltaX + deltaY * deltaY) < (circle.radius * circle.radius)};
+	}	
 }

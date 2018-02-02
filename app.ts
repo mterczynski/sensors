@@ -16,8 +16,10 @@ export class App{
 
     constructor(){
         requestAnimationFrame(()=>{this.draw()});
-        this.context.beginPath();
-        this.drawObstacles();
+    }
+    
+    calcSensorDistances(){
+
     }
 
     draw(){
@@ -34,6 +36,10 @@ export class App{
         } 
         if(this.keyHandler.pressedKeys.d){
             this.player.turnRight();
+        }
+
+        if(this.playerWallCollisions()){
+            this.player.isDead = true;
         }
         
         requestAnimationFrame(()=>{this.draw()});
@@ -52,20 +58,19 @@ export class App{
         for(let i=this.tileSize; i<this.height; i+=this.tileSize){
             this.context.beginPath();
             this.context.moveTo(0 +.5, i +.5);
-            this.context.lineTo(this.width +.5, i + .5);
+            this.context.lineTo(this.width +.5, i +.5);
             this.context.stroke();
             this.context.closePath();
         } 
     }
 
     drawPlayer(){
-        let radius = 10;
         this.context.lineWidth = 1;
         this.context.fillStyle = 'rgb(100,100,255)';
         this.context.strokeStyle = '#003300';
         
         this.context.beginPath();
-        this.context.arc(this.player.x, this.player.y, radius, 0, 2 * Math.PI, false);
+        this.context.arc(this.player.x, this.player.y, this.player.radius, 0, 2 * Math.PI, false);
         this.context.fill();
     }
 
@@ -84,6 +89,27 @@ export class App{
         this.levelData.forEach((tile, rowIndex)=>{
             this.context.fillStyle = "rgb(0, 200, 0)";
             this.context.fillRect(tile.x*this.tileSize, tile.z*this.tileSize, this.tileSize, this.tileSize);                
+        });
+    }
+
+    playerWallCollisions(){
+        let playerCircle = {
+            x: this.player.x,
+            y: this.player.y,
+            radius: this.player.radius,
+        }
+        return this.levelData.some((tile)=>{
+            let squareRect = {
+                x: tile.x * this.tileSize,
+                y: tile.z * this.tileSize,
+                width: this.tileSize,
+                height: this.tileSize
+            }
+            if(this.collisionDetector.rectCircle(squareRect, playerCircle).isCollision){
+                console.log({x: squareRect.x, y: squareRect.y})
+            }
+            return this.collisionDetector.rectCircle(squareRect, playerCircle).isCollision;
+            
         });
     }
 }

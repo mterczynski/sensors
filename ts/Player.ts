@@ -1,3 +1,6 @@
+import { Line } from "./interfaces/geometries/Line";
+import { Point } from "./interfaces/geometries/Point";
+
 export class Player{
     constructor(posX: number, posY: number){
         this.x = posX;
@@ -11,7 +14,13 @@ export class Player{
     isDead = false;
 
     getSensorLines(){
-        return [];
+        let lines = [];
+        for(let i=0; i<5; i++){
+            let lineEndpoint = new Point(this.x + 1000 * Math.cos(i*Math.PI/4 + this.rotation + Math.PI), this.y + (1000 * Math.sin(i*Math.PI/4 + this.rotation + Math.PI)));
+            let line = new Line(new Point(this.x, this.y), lineEndpoint);
+            lines.push(line);
+        }
+        return lines;
     }
 
     turnLeft(){

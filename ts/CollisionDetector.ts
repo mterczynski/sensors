@@ -1,12 +1,14 @@
 import { Line } from "./interfaces/geometries/Line";
 import { Rect } from "./interfaces/geometries/Rect";
 import { Circle } from "./interfaces/geometries/Circle";
+import { Point } from "./interfaces/geometries/Point";
 
 // based on http://www.jeffreythompson.org/collision-detection/line-rect.php
 
 interface Result{
 	isCollision: boolean
-	distance?: number
+	distance?: number,
+	intersection?: Point
 }
 
 export class CollisionDetector{
@@ -24,10 +26,24 @@ export class CollisionDetector{
 		let top =    this.lineLine(line.a.x, line.a.y, line.b.x, line.b.y, rx, ry, rx+rw, ry);
 		let bottom = this.lineLine(line.a.x, line.a.y, line.b.x, line.b.y, rx, ry+rh, rx+rw, ry+rh);
 
+		let closestIntersection = new Point(Infinity,Infinity);
+
+		[left, right, top, bottom].forEach((dir)=>{
+			if(!dir.isCollision){
+				return;
+			}
+			if(!dir.intersection){
+				throw new Error('missing intersection point')
+			}
+			if(dir.intersection.distanceTo(line.a) < closestIntersection.distanceTo(line.a)){
+				closestIntersection = <Point>dir.intersection;
+			}
+		});
+
 		// if ANY of the above are true, the line
 		// has hit the rectangle
-		if (left || right || top || bottom) {
-			return {isCollision: true};
+		if (left.isCollision || right.isCollision || top.isCollision || bottom.isCollision) {
+			return {isCollision: true, intersection: closestIntersection};
 		}
 		return {isCollision: false};
 	}	  
@@ -45,7 +61,7 @@ export class CollisionDetector{
 			let intersectionX = x1 + (uA * (x2-x1));
 			let intersectionY = y1 + (uA * (y2-y1));
 
-			return {isCollision: true};
+			return {isCollision: true, intersection: new Point(intersectionX, intersectionY)};
 		}
 		return {isCollision: false};
 	}

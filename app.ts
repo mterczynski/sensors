@@ -1,11 +1,13 @@
 import { Level } from "./ts/Level";
 import { Player } from "./ts/Player";
 import { CollisionDetector } from "./ts/CollisionDetector";
+import { KeyHandler } from "./ts/KeyHandler";
 
 export class App{
     gameCanvas = <HTMLCanvasElement> document.getElementById("gameCanvas");
     context = <CanvasRenderingContext2D>this.gameCanvas.getContext("2d");
     collisionDetector = new CollisionDetector();
+    keyHandler = new KeyHandler();
     width = 600;
     height = 600;
     tileSize = 40;
@@ -19,15 +21,21 @@ export class App{
     }
 
     draw(){
+        this.player.update();
         this.context.fillStyle = "rgb(240,240,240)";
         this.context.fillRect(0, 0, this.width, this.height);
         this.drawGrid();
         this.drawObstacles();
         this.drawPlayerSensors();
+        
         this.drawPlayer();
-        this.player.rotation += Math.PI / 240;
-        console.log(this.player.rotation)
-
+        if(this.keyHandler.pressedKeys.a){
+            this.player.turnLeft();
+        } 
+        if(this.keyHandler.pressedKeys.d){
+            this.player.turnRight();
+        }
+        
         requestAnimationFrame(()=>{this.draw()});
     }
 
@@ -35,27 +43,30 @@ export class App{
         this.context.strokeStyle = "black";
         this.context.lineWidth = 1;
         for(let i=this.tileSize; i<this.width; i+=this.tileSize){
-            this.context.moveTo(i + 0.5, 0.5);
-            this.context.lineTo(i + 0.5, this.height + 0.5);
+            this.context.beginPath();
+            this.context.moveTo(i +.5, 0 +.5);
+            this.context.lineTo(i +.5, this.height +.5);
             this.context.stroke();
+            this.context.closePath();
         } 
         for(let i=this.tileSize; i<this.height; i+=this.tileSize){
-            this.context.moveTo(0.5, i + 0.5);
-            this.context.lineTo(this.width + 0.5, i + 0.5);
+            this.context.beginPath();
+            this.context.moveTo(0 +.5, i +.5);
+            this.context.lineTo(this.width +.5, i + .5);
             this.context.stroke();
+            this.context.closePath();
         } 
     }
 
     drawPlayer(){
-        var radius = 8;
-
+        let radius = 10;
+        this.context.lineWidth = 1;
+        this.context.fillStyle = 'rgb(100,100,255)';
+        this.context.strokeStyle = '#003300';
+        
         this.context.beginPath();
         this.context.arc(this.player.x, this.player.y, radius, 0, 2 * Math.PI, false);
-        this.context.fillStyle = 'rgb(100,100,255)';
         this.context.fill();
-        this.context.lineWidth = 2;
-        this.context.strokeStyle = '#003300';
-        this.context.stroke();
     }
 
     drawPlayerSensors(){
@@ -65,6 +76,7 @@ export class App{
             this.context.moveTo(this.player.x, this.player.y);
             this.context.lineTo(this.player.x + (200 * Math.cos(i + this.player.rotation)), this.player.y + (200 * Math.sin(i + this.player.rotation)));
             this.context.stroke();
+            this.context.closePath();
         }
     }
 

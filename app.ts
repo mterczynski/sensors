@@ -105,12 +105,9 @@ export class App{
                 width: this.tileSize,
                 height: this.tileSize
             }
-<<<<<<< HEAD
-=======
             if(this.collisionDetector.rectCircle(squareRect, playerCircle).isCollision){
                 console.log({x: squareRect.x, y: squareRect.y})
             }
->>>>>>> f132aa4a992788aeaa75ccadb60315158e28d616
             return this.collisionDetector.rectCircle(squareRect, playerCircle).isCollision;
             
         });

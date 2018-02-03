@@ -2,7 +2,7 @@ import { Level } from "./ts/Level";
 import { Player } from "./ts/Player";
 import { CollisionDetector } from "./ts/CollisionDetector";
 import { KeyHandler } from "./ts/KeyHandler";
-import { Point } from "./ts/interfaces/geometries/Point";
+import { Point } from "./ts/geometries/Point";
 
 export class App{
     gameCanvas = <HTMLCanvasElement> document.getElementById("gameCanvas");

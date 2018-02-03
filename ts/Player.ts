@@ -1,5 +1,5 @@
-import { Line } from "./interfaces/geometries/Line";
-import { Point } from "./interfaces/geometries/Point";
+import { Point } from "./geometries/Point";
+import { Line } from "./geometries/Line";
 
 export class Player{
     constructor(posX: number, posY: number){
@@ -10,7 +10,7 @@ export class Player{
     x: number;
     y: number;
     rotation = 0;
-    velocity = 5;
+    velocity = 7;
     isDead = false;
 
     getSensorLines(){

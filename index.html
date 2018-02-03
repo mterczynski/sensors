@@ -5,39 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ai - machine learning</title>
-
-    <style>
-        *{
-            padding: 0;
-            margin: 0;
-        }
-        .gameCanvas{
-            position: absolute;
-            left:50%;
-            top:50%;
-            transform: translate(-50%, -50%);
-            border: 1px solid black;
-        }
-        .stats{
-            position: absolute;
-            left: 0;
-            top: 0;
-            background: rgba(0,0,0, 0.5);
-            color: cyan;
-            padding: 10px;
-        }
-        .stats__row{
-            padding-top: 5px;
-            width: 180px;
-        }
-        .stats__row__label{
-            color: blue;
-        }
-        .stats__row__value{
-            position: absolute;
-            right: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="main.css">
 </head>
 <body>
     <canvas id="gameCanvas" class="gameCanvas" width="600" height="600"></canvas>
@@ -63,7 +31,8 @@
             <span class="stats__row__value" id="sensorsRight"> 33.32</span>
         </div>
 
-        <hr>
+        <canvas id="neuralNetCanvas" class="neuralNetCanvas" height='500' width='500'></canvas>   
+        <!-- <hr>
 
        <div class="stats__row">
            <span class="stats__row__label">Input to hidden layer weights:</span>
@@ -72,10 +41,10 @@
        <div class="stats__row">
            <span class="stats__row__label">Hidden layer to output weights:</span>
            <span class="">[1,2,3,4,5,6]</span>
-       </div>
-
-
+       </div> -->
     </div>
+
+
     <script src="bundle.js"></script>  
 </body>
 </html>

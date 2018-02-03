@@ -10,7 +10,7 @@ export class Player{
     x: number;
     y: number;
     rotation = 0;
-    velocity = 7;
+    velocity = 3;
     isDead = false;
 
     getSensorLines(){

@@ -3,10 +3,12 @@ import { Player } from "./ts/Player";
 import { CollisionDetector } from "./ts/CollisionDetector";
 import { KeyHandler } from "./ts/KeyHandler";
 import { Point } from "./ts/geometries/Point";
+import { NeuralNetworkVisualizer } from "./ts/NeuralNetworkVisualizer";
+import { NeuralNetwork } from "./ts/NeuralNetwork";
 
 export class App{
     gameCanvas = <HTMLCanvasElement> document.getElementById("gameCanvas");
-    context = <CanvasRenderingContext2D>this.gameCanvas.getContext("2d");
+    ctx = <CanvasRenderingContext2D>this.gameCanvas.getContext("2d");
     collisionDetector = new CollisionDetector();
     keyHandler = new KeyHandler();
     width = 600;
@@ -14,6 +16,7 @@ export class App{
     tileSize = 40;
     levelData = new Level().getData();
     player = new Player(this.tileSize*12.5, this.tileSize*8.5);
+    neuralNetVisualizer = new NeuralNetworkVisualizer(new NeuralNetwork());
     sensors = {
         left: 0,
         leftCenter: 0,
@@ -31,12 +34,13 @@ export class App{
 
     constructor(){
         requestAnimationFrame(()=>{this.draw()});
+        this.neuralNetVisualizer.visualize();
     }
     
     draw(){
         this.player.update();
-        this.context.fillStyle = "rgb(240,240,240)";
-        this.context.fillRect(0, 0, this.width, this.height);
+        this.ctx.fillStyle = "rgb(240,240,240)";
+        this.ctx.fillRect(0, 0, this.width, this.height);
         this.drawGrid();
         this.drawObstacles();
         this.drawPlayerSensors();
@@ -57,36 +61,36 @@ export class App{
     }
 
     drawGrid(){
-        this.context.strokeStyle = "black";
-        this.context.lineWidth = 1;
+        this.ctx.strokeStyle = "black";
+        this.ctx.lineWidth = 1;
         for(let i=this.tileSize; i<this.width; i+=this.tileSize){
-            this.context.beginPath();
-            this.context.moveTo(i +.5, 0 +.5);
-            this.context.lineTo(i +.5, this.height +.5);
-            this.context.stroke();
-            this.context.closePath();
+            this.ctx.beginPath();
+            this.ctx.moveTo(i +.5, 0 +.5);
+            this.ctx.lineTo(i +.5, this.height +.5);
+            this.ctx.stroke();
+            this.ctx.closePath();
         } 
         for(let i=this.tileSize; i<this.height; i+=this.tileSize){
-            this.context.beginPath();
-            this.context.moveTo(0 +.5, i +.5);
-            this.context.lineTo(this.width +.5, i +.5);
-            this.context.stroke();
-            this.context.closePath();
+            this.ctx.beginPath();
+            this.ctx.moveTo(0 +.5, i +.5);
+            this.ctx.lineTo(this.width +.5, i +.5);
+            this.ctx.stroke();
+            this.ctx.closePath();
         } 
     }
 
     drawPlayer(){
-        this.context.lineWidth = 1;
-        this.context.fillStyle = 'rgb(100,100,255)';
-        this.context.strokeStyle = '#003300';
+        this.ctx.lineWidth = 1;
+        this.ctx.fillStyle = 'rgb(100,100,255)';
+        this.ctx.strokeStyle = '#003300';
         
-        this.context.beginPath();
-        this.context.arc(this.player.x, this.player.y, this.player.radius, 0, 2 * Math.PI, false);
-        this.context.fill();
+        this.ctx.beginPath();
+        this.ctx.arc(this.player.x, this.player.y, this.player.radius, 0, 2 * Math.PI, false);
+        this.ctx.fill();
     }
 
     drawPlayerSensors(){
-        this.context.strokeStyle = 'rgb(200,0,0)';
+        this.ctx.strokeStyle = 'rgb(200,0,0)';
 
         let sensorValues: Array<number> = [];
 
@@ -110,27 +114,27 @@ export class App{
             });  
             
             if(isFinite(closestIntersection.x)){
-                this.context.beginPath();
-                this.context.moveTo(this.player.x, this.player.y);
-                this.context.lineTo(closestIntersection.x, closestIntersection.y);
-                this.context.stroke();
-                this.context.closePath();
+                this.ctx.beginPath();
+                this.ctx.moveTo(this.player.x, this.player.y);
+                this.ctx.lineTo(closestIntersection.x, closestIntersection.y);
+                this.ctx.stroke();
+                this.ctx.closePath();
                 sensorValues.push(closestIntersection.distanceTo(playerPos));
                 // draw arc where sensor detected wall:
-                this.context.fillStyle = '#ff0000';
+                this.ctx.fillStyle = '#ff0000';
 
-                this.context.beginPath();
-                this.context.arc(closestIntersection.x, closestIntersection.y, 5, 0, 2 * Math.PI, false);
-                this.context.fill();
+                this.ctx.beginPath();
+                this.ctx.arc(closestIntersection.x, closestIntersection.y, 5, 0, 2 * Math.PI, false);
+                this.ctx.fill();
             } else {
                 throw new Error('Sensor line is too short');
                 // if you want to work with limited-range sensors:
 
-                // this.context.beginPath();
-                // this.context.moveTo(this.player.x, this.player.y);
-                // this.context.lineTo(line.b.x, line.b.y);
-                // this.context.stroke();
-                // this.context.closePath();
+                // this.ctx.beginPath();
+                // this.ctx.moveTo(this.player.x, this.player.y);
+                // this.ctx.lineTo(line.b.x, line.b.y);
+                // this.ctx.stroke();
+                // this.ctx.closePath();
             }
         });
 
@@ -143,8 +147,8 @@ export class App{
 
     drawObstacles(){
         this.levelData.forEach((tile)=>{
-            this.context.fillStyle = "rgb(0, 200, 0)";
-            this.context.fillRect(tile.x*this.tileSize, tile.z*this.tileSize, this.tileSize, this.tileSize);                
+            this.ctx.fillStyle = "rgb(0, 200, 0)";
+            this.ctx.fillRect(tile.x*this.tileSize, tile.z*this.tileSize, this.tileSize, this.tileSize);                
         });
     }
 

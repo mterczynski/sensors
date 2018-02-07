@@ -3,20 +3,21 @@ import { Bot } from "./ts/Bot";
 import { CollisionDetector } from "./ts/CollisionDetector";
 import { KeyHandler } from "./ts/KeyHandler";
 import { Point } from "./ts/geometries/Point";
-import { NeuralNetworkVisualizer } from "./ts/NeuralNetworkVisualizer";
 import { NeuralNetwork } from "./ts/NeuralNetwork";
+import { Line } from "./ts/geometries/Line";
+
+declare var Stats: any;
 
 export class App{
+    readonly tileSize = 40;
     gameCanvas = <HTMLCanvasElement> document.getElementById("gameCanvas");
     ctx = <CanvasRenderingContext2D>this.gameCanvas.getContext("2d");
     collisionDetector = new CollisionDetector();
     keyHandler = new KeyHandler();
     width = 600;
     height = 600;
-    tileSize = 40;
     levelData = new Level().getData();
-    bot = new Bot(this.tileSize*12.5, this.tileSize*8.5);
-    neuralNetVisualizer = new NeuralNetworkVisualizer(new NeuralNetwork());
+    bot = new Bot(this.tileSize*12.5, this.tileSize*8.5, this.levelData);
     sensors = {
         left: 0,
         leftCenter: 0,
@@ -31,13 +32,15 @@ export class App{
         rightCenter: document.getElementById('sensorsRightCenter'),
         right: document.getElementById('sensorsRight')
     }
-
+    stats = new Stats();
     constructor(){
         requestAnimationFrame(()=>{this.draw()});
-        this.neuralNetVisualizer.visualize();
+        this.stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+        document.body.appendChild( this.stats.dom );
     }
     
     draw(){
+        this.stats.begin();
         this.bot.update();
         this.ctx.fillStyle = "rgb(240,240,240)";
         this.ctx.fillRect(0, 0, this.width, this.height);
@@ -57,6 +60,8 @@ export class App{
             this.bot.isDead = true;
         }
         
+        this.stats.end();
+
         requestAnimationFrame(()=>{this.draw()});
     }
 
@@ -94,7 +99,7 @@ export class App{
 
         let sensorValues: Array<number> = [];
 
-        this.bot.getSensorLines().forEach((line)=>{
+        this.bot.getSensorLines().forEach((line: Line)=>{
             let closestIntersection = new Point(Infinity, Infinity);
             let playerPos = new Point(this.bot.x, this.bot.y);
             this.levelData.forEach((tile)=>{
@@ -143,6 +148,8 @@ export class App{
         this.sensors.center = sensorValues[2];
         this.sensors.rightCenter = sensorValues[3];
         this.sensors.right = sensorValues[4];
+
+        return sensorValues;
     }
 
     drawObstacles(){

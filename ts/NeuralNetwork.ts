@@ -1,57 +1,19 @@
 export class NeuralNetwork{
-    constructor(){
-        this.evaluate([
-            200,
-            300,
-            100,
-            7,
-            15,
-        ]); // test
-    }
-
-    readonly inputSize = 5;
-    readonly hiddenLayerSize = 4;    
+    readonly inputSize = 5;  
     readonly outputSize = 1;
 
-    private inputToHiddenWeights = [
-        [Math.random(),Math.random(),Math.random(),Math.random()],
-        [Math.random(),Math.random(),Math.random(),Math.random()],
-        [Math.random(),Math.random(),Math.random(),Math.random()],
-        [Math.random(),Math.random(),Math.random(),Math.random()],
-        [Math.random(),Math.random(),Math.random(),Math.random()],
-    ]
-    private hiddenToOutputWeights = [
-        Math.random(), Math.random(), Math.random(), Math.random()
-    ]
+    private weights = new Array(5).fill(0).map((el)=>Math.random()*200-100);
 
-    evaluate(inputs: Array<number>){
+    evaluate(inputs: Array<number>): number{
         if(inputs.length != this.inputSize){
-            throw new Error(`Expected ${this.inputSize} inputs`);
+            throw new Error('Expected 5 numerical inputs');
         }
-
-        let hiddenLayerNeuronValues = [0,0,0,0];
-
-        inputs.forEach((input, inputIndex)=>{
-            this.inputToHiddenWeights[inputIndex].forEach((synapse, synapseIndex)=>{
-                hiddenLayerNeuronValues[synapseIndex] += synapse * input;
-            });
-        });
-        let maxVal = Math.max(...hiddenLayerNeuronValues);
-
-        hiddenLayerNeuronValues = hiddenLayerNeuronValues.map((val)=>{
-            return val/maxVal;
-        });
         
-        let output = 0;
-        hiddenLayerNeuronValues.forEach((val, valIndex)=>{
-            output += val * this.hiddenToOutputWeights[valIndex];
+        let sum = 0;
+        inputs.forEach((input, index)=>{
+            sum += input * this.weights[index];
         });
-        output /= this.hiddenLayerSize;
-        console.log('output', output);
-        return output; // output
-    }
 
-    sigmoid(x: number){
-        return 1/(1 + Math.pow(Math.E, -x));
+        return sum;
     }
 }

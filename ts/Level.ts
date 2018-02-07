@@ -1,5 +1,7 @@
+import { LevelData } from "./LevelData";
+
 export class Level{
-    getData(){
+    getData() {
         return {
             "size": "15",
             "level": [

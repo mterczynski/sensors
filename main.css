@@ -12,7 +12,8 @@
 .stats{
     position: absolute;
     left: 0;
-    top: 0;
+    top: 50%;
+    transform: translateY(-50%);
     background: rgba(0,0,0, 0.5);
     color: cyan;
     padding: 10px;

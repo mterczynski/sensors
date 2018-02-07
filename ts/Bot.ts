@@ -1,7 +1,7 @@
 import { Point } from "./geometries/Point";
 import { Line } from "./geometries/Line";
 
-export class Player{
+export class Bot{
     constructor(posX: number, posY: number){
         this.x = posX;
         this.y = posY;

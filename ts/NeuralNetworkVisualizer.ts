@@ -13,6 +13,7 @@ export class NeuralNetworkVisualizer{
         //     this.ctx.stroke();
         //     this.ctx.closePath();
         // }
+        // console.log(this.net)
     }
     
     private readonly width = 500;

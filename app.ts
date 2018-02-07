@@ -1,5 +1,5 @@
 import { Level } from "./ts/Level";
-import { Player } from "./ts/Player";
+import { Bot } from "./ts/Bot";
 import { CollisionDetector } from "./ts/CollisionDetector";
 import { KeyHandler } from "./ts/KeyHandler";
 import { Point } from "./ts/geometries/Point";
@@ -15,7 +15,7 @@ export class App{
     height = 600;
     tileSize = 40;
     levelData = new Level().getData();
-    player = new Player(this.tileSize*12.5, this.tileSize*8.5);
+    bot = new Bot(this.tileSize*12.5, this.tileSize*8.5);
     neuralNetVisualizer = new NeuralNetworkVisualizer(new NeuralNetwork());
     sensors = {
         left: 0,
@@ -38,23 +38,23 @@ export class App{
     }
     
     draw(){
-        this.player.update();
+        this.bot.update();
         this.ctx.fillStyle = "rgb(240,240,240)";
         this.ctx.fillRect(0, 0, this.width, this.height);
         this.drawGrid();
         this.drawObstacles();
-        this.drawPlayerSensors();
-        this.drawPlayer();
+        this.drawBotSensors();
+        this.drawBot();
         this.updateStats();
         if(this.keyHandler.pressedKeys.a){
-            this.player.turnLeft();
+            this.bot.turnLeft();
         } 
         if(this.keyHandler.pressedKeys.d){
-            this.player.turnRight();
+            this.bot.turnRight();
         }
 
         if(this.playerWallCollisions()){
-            this.player.isDead = true;
+            this.bot.isDead = true;
         }
         
         requestAnimationFrame(()=>{this.draw()});
@@ -79,24 +79,24 @@ export class App{
         } 
     }
 
-    drawPlayer(){
+    drawBot(){
         this.ctx.lineWidth = 1;
         this.ctx.fillStyle = 'rgb(100,100,255)';
         this.ctx.strokeStyle = '#003300';
         
         this.ctx.beginPath();
-        this.ctx.arc(this.player.x, this.player.y, this.player.radius, 0, 2 * Math.PI, false);
+        this.ctx.arc(this.bot.x, this.bot.y, this.bot.radius, 0, 2 * Math.PI, false);
         this.ctx.fill();
     }
 
-    drawPlayerSensors(){
+    drawBotSensors(){
         this.ctx.strokeStyle = 'rgb(200,0,0)';
 
         let sensorValues: Array<number> = [];
 
-        this.player.getSensorLines().forEach((line)=>{
+        this.bot.getSensorLines().forEach((line)=>{
             let closestIntersection = new Point(Infinity, Infinity);
-            let playerPos = new Point(this.player.x, this.player.y);
+            let playerPos = new Point(this.bot.x, this.bot.y);
             this.levelData.forEach((tile)=>{
                 let collisionResult = this.collisionDetector.lineRect(line, {
                     height: this.tileSize,
@@ -115,7 +115,7 @@ export class App{
             
             if(isFinite(closestIntersection.x)){
                 this.ctx.beginPath();
-                this.ctx.moveTo(this.player.x, this.player.y);
+                this.ctx.moveTo(this.bot.x, this.bot.y);
                 this.ctx.lineTo(closestIntersection.x, closestIntersection.y);
                 this.ctx.stroke();
                 this.ctx.closePath();
@@ -131,7 +131,7 @@ export class App{
                 // if you want to work with limited-range sensors:
 
                 // this.ctx.beginPath();
-                // this.ctx.moveTo(this.player.x, this.player.y);
+                // this.ctx.moveTo(this.bot.x, this.bot.y);
                 // this.ctx.lineTo(line.b.x, line.b.y);
                 // this.ctx.stroke();
                 // this.ctx.closePath();
@@ -154,9 +154,9 @@ export class App{
 
     playerWallCollisions(){
         let playerCircle = {
-            x: this.player.x,
-            y: this.player.y,
-            radius: this.player.radius,
+            x: this.bot.x,
+            y: this.bot.y,
+            radius: this.bot.radius,
         }
         return this.levelData.some((tile)=>{
             let squareRect = {

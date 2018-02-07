@@ -1,7 +1,7 @@
-import { Line } from "./interfaces/geometries/Line";
-import { Rect } from "./interfaces/geometries/Rect";
-import { Circle } from "./interfaces/geometries/Circle";
-import { Point } from "./interfaces/geometries/Point";
+import { Point } from "./geometries/Point";
+import { Line } from "./geometries/Line";
+import { Rect } from "./geometries/Rect";
+import { Circle } from "./geometries/Circle";
 
 // based on http://www.jeffreythompson.org/collision-detection/line-rect.php
 

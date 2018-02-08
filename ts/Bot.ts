@@ -69,17 +69,17 @@ export class Bot{
         return sensorValues;
     }
 
-    turnLeft(){
-        this.rotation -= 0.04;
-    }
+    // turnLeft(){
+    //     this.rotation -= 0.04;
+    // }
 
-    turnRight(){
-        this.rotation += 0.04;
-    }
+    // turnRight(){
+    //     this.rotation += 0.04;
+    // }
 
     update(){
         if(this.isDead){
-            location.reload();
+            // location.reload();
             return;
         }
 

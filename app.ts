@@ -9,6 +9,13 @@ import { Line } from "./ts/geometries/Line";
 declare var Stats: any;
 
 export class App{
+    constructor(){
+        requestAnimationFrame(()=>{this.draw()});
+        this.stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+        document.body.appendChild( this.stats.dom );
+        console.log(this.bots)
+    }
+
     readonly tileSize = 40;
     gameCanvas = <HTMLCanvasElement> document.getElementById("gameCanvas");
     ctx = <CanvasRenderingContext2D>this.gameCanvas.getContext("2d");
@@ -17,7 +24,10 @@ export class App{
     width = this.tileSize * 19;
     height = 19 * this.tileSize;
     levelData = new Level().getData();
-    bot = new Bot(this.tileSize*3, this.tileSize*8, this.levelData);
+    // bot = new Bot(this.tileSize*3, this.tileSize*8, this.levelData);
+    bots = new Array(5).fill(0).map((el)=>{
+        return new Bot(this.tileSize*3, this.tileSize*8, this.levelData);
+    });
     sensors = {
         left: 0,
         leftCenter: 0,
@@ -40,32 +50,24 @@ export class App{
         right: document.getElementById('neuronRight')
     }
     stats = new Stats();
-    constructor(){
-        requestAnimationFrame(()=>{this.draw()});
-        this.stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-        document.body.appendChild( this.stats.dom );
-    }
     
     draw(){
         this.stats.begin();
-        this.bot.update();
         this.ctx.fillStyle = "rgb(240,240,240)";
         this.ctx.fillRect(0, 0, this.width, this.height);
         this.drawGrid();
         this.drawObstacles();
-        this.drawBotSensors();
-        this.drawBot();
+        this.bots.forEach((bot)=>{
+            bot.update();
+            this.drawBotSensors(bot);
+            this.drawBot(bot);
+        }); 
         this.updateStats();
-        if(this.keyHandler.pressedKeys.a){
-            this.bot.turnLeft();
-        } 
-        if(this.keyHandler.pressedKeys.d){
-            this.bot.turnRight();
-        }
-
-        if(this.playerWallCollisions()){
-            this.bot.isDead = true;
-        }
+        this.bots.forEach((bot)=>{
+            if(this.botWallCollisions(bot)){
+                bot.isDead = true;
+            }
+        });
         
         this.stats.end();
 
@@ -91,24 +93,24 @@ export class App{
         } 
     }
 
-    drawBot(){
+    drawBot(bot:Bot){
         this.ctx.lineWidth = 1;
         this.ctx.fillStyle = 'rgb(100,100,255)';
         this.ctx.strokeStyle = '#003300';
         
         this.ctx.beginPath();
-        this.ctx.arc(this.bot.x, this.bot.y, this.bot.radius, 0, 2 * Math.PI, false);
+        this.ctx.arc(bot.x, bot.y, bot.radius, 0, 2 * Math.PI, false);
         this.ctx.fill();
     }
 
-    drawBotSensors(){
+    drawBotSensors(bot: Bot){
         this.ctx.strokeStyle = 'rgb(200,0,0)';
 
         let sensorValues: Array<number> = [];
 
-        this.bot.getSensorLines().forEach((line: Line)=>{
+        bot.getSensorLines().forEach((line: Line)=>{
             let closestIntersection = new Point(Infinity, Infinity);
-            let playerPos = new Point(this.bot.x, this.bot.y);
+            let playerPos = new Point(bot.x, bot.y);
             this.levelData.forEach((tile)=>{
                 let collisionResult = this.collisionDetector.lineRect(line, {
                     height: this.tileSize,
@@ -127,7 +129,7 @@ export class App{
             
             if(isFinite(closestIntersection.x)){
                 this.ctx.beginPath();
-                this.ctx.moveTo(this.bot.x, this.bot.y);
+                this.ctx.moveTo(bot.x, bot.y);
                 this.ctx.lineTo(closestIntersection.x, closestIntersection.y);
                 this.ctx.stroke();
                 this.ctx.closePath();
@@ -166,11 +168,11 @@ export class App{
         });
     }
 
-    playerWallCollisions(){
+    botWallCollisions(bot: Bot){
         let playerCircle = {
-            x: this.bot.x,
-            y: this.bot.y,
-            radius: this.bot.radius,
+            x: bot.x,
+            y: bot.y,
+            radius: bot.radius,
         }
         return this.levelData.some((tile)=>{
             let squareRect = {
@@ -191,11 +193,11 @@ export class App{
         this.sensorsDOM.rightCenter!.innerHTML = this.sensors.rightCenter.toFixed(2) +'';
         this.sensorsDOM.right!.innerHTML = this.sensors.right.toFixed(2) +'';
 
-        this.neuronWeightsDOM.left!.innerHTML = this.bot.neuralNet.getWeights()[0] + '';
-        this.neuronWeightsDOM.leftCenter!.innerHTML = this.bot.neuralNet.getWeights()[1] + '';
-        this.neuronWeightsDOM.center!.innerHTML = this.bot.neuralNet.getWeights()[2] + '';
-        this.neuronWeightsDOM.rightCenter!.innerHTML = this.bot.neuralNet.getWeights()[3] + '';
-        this.neuronWeightsDOM.right!.innerHTML = this.bot.neuralNet.getWeights()[4] + '';
+        // this.neuronWeightsDOM.left!.innerHTML = this.bot.neuralNet.getWeights()[0] + '';
+        // this.neuronWeightsDOM.leftCenter!.innerHTML = this.bot.neuralNet.getWeights()[1] + '';
+        // this.neuronWeightsDOM.center!.innerHTML = this.bot.neuralNet.getWeights()[2] + '';
+        // this.neuronWeightsDOM.rightCenter!.innerHTML = this.bot.neuralNet.getWeights()[3] + '';
+        // this.neuronWeightsDOM.right!.innerHTML = this.bot.neuralNet.getWeights()[4] + '';
     }
 }
 

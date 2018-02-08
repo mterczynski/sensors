@@ -23,7 +23,7 @@ export class Bot{
     private collisionDetector = new CollisionDetector();
     private levelData: LevelData;
     private startDate: Date = new Date();
-    private whenDied: Date;
+    private whenDied: Date | null = null;
     readonly radius = 10;
     readonly neuralNet = new NeuralNetwork();
     calculatedFitness?: number;

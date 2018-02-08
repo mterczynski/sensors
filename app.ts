@@ -14,10 +14,10 @@ export class App{
     ctx = <CanvasRenderingContext2D>this.gameCanvas.getContext("2d");
     collisionDetector = new CollisionDetector();
     keyHandler = new KeyHandler();
-    width = 600;
-    height = 600;
+    width = this.tileSize * 19;
+    height = 19 * this.tileSize;
     levelData = new Level().getData();
-    bot = new Bot(this.tileSize*12.5, this.tileSize*8.5, this.levelData);
+    bot = new Bot(this.tileSize*3, this.tileSize*8, this.levelData);
     sensors = {
         left: 0,
         leftCenter: 0,
@@ -31,6 +31,13 @@ export class App{
         center: document.getElementById('sensorsCenter'),
         rightCenter: document.getElementById('sensorsRightCenter'),
         right: document.getElementById('sensorsRight')
+    }
+    neuronWeightsDOM = {
+        left: document.getElementById('neuronLeft'),
+        leftCenter: document.getElementById('neuronLeftCenter'),
+        center: document.getElementById('neuronCenter'),
+        rightCenter: document.getElementById('neuronRightCenter'),
+        right: document.getElementById('neuronRight')
     }
     stats = new Stats();
     constructor(){
@@ -176,12 +183,19 @@ export class App{
         });
     }
 
+    // Own stats like sensor distances, neuron weights
     updateStats(){
         this.sensorsDOM.left!.innerHTML = this.sensors.left.toFixed(2) +'';
         this.sensorsDOM.leftCenter!.innerHTML = this.sensors.leftCenter.toFixed(2) +'';
         this.sensorsDOM.center!.innerHTML = this.sensors.center.toFixed(2) +'';
         this.sensorsDOM.rightCenter!.innerHTML = this.sensors.rightCenter.toFixed(2) +'';
         this.sensorsDOM.right!.innerHTML = this.sensors.right.toFixed(2) +'';
+
+        this.neuronWeightsDOM.left!.innerHTML = this.bot.neuralNet.getWeights()[0] + '';
+        this.neuronWeightsDOM.leftCenter!.innerHTML = this.bot.neuralNet.getWeights()[1] + '';
+        this.neuronWeightsDOM.center!.innerHTML = this.bot.neuralNet.getWeights()[2] + '';
+        this.neuronWeightsDOM.rightCenter!.innerHTML = this.bot.neuralNet.getWeights()[3] + '';
+        this.neuronWeightsDOM.right!.innerHTML = this.bot.neuralNet.getWeights()[4] + '';
     }
 }
 

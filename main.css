@@ -15,7 +15,6 @@
     top: 50%;
     transform: translateY(-50%);
     background: rgba(0,0,0, 0.5);
-    color: cyan;
     padding: 10px;
 }
 .stats__row{
@@ -26,9 +25,14 @@
     color: blue;
 }
 .stats__row__value{
-    position: absolute;
-    right: 10px;
+    color: cyan;    
+    /* position: absolute; */
+    /* right: 10px; */
 }
+.stats__row__weight{
+    color: green;
+}
+
 
 .neuralNetCanvas{
     position: absolute;

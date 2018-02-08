@@ -11,16 +11,22 @@ enum Direction{
 }
 
 export class Bot{
-    constructor(posX: number, posY: number, levelData: LevelData){
+    constructor(posX: number, posY: number, levelData: LevelData, neuralNet?: NeuralNetwork){
         this.x = posX;
         this.y = posY;
         this.levelData = levelData;
+        if(neuralNet){
+            this.neuralNet = neuralNet;
+        }
     }
     private direction: Direction = Direction.forward;
     private collisionDetector = new CollisionDetector();
     private levelData: LevelData;
+    private startDate: Date = new Date();
+    private whenDied: Date;
     readonly radius = 10;
     readonly neuralNet = new NeuralNetwork();
+    calculatedFitness?: number;
     x: number;
     y: number;
     rotation = 0;
@@ -35,6 +41,13 @@ export class Bot{
             lines.push(line);
         }
         return lines;
+    }
+
+    getFitness(){
+        if(this.whenDied == null){
+            this.whenDied = new Date(); 
+        }
+        return this.whenDied.getTime() - this.startDate.getTime();
     }
 
     getSensorLengths(){
@@ -69,17 +82,11 @@ export class Bot{
         return sensorValues;
     }
 
-    // turnLeft(){
-    //     this.rotation -= 0.04;
-    // }
-
-    // turnRight(){
-    //     this.rotation += 0.04;
-    // }
-
     update(){
         if(this.isDead){
-            // location.reload();
+            if(this.whenDied == null){
+                this.whenDied = new Date(); 
+            }  
             return;
         }
 

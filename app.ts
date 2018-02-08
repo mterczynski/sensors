@@ -5,6 +5,7 @@ import { KeyHandler } from "./ts/KeyHandler";
 import { Point } from "./ts/geometries/Point";
 import { NeuralNetwork } from "./ts/NeuralNetwork";
 import { Line } from "./ts/geometries/Line";
+import { PopulationHandler } from "./ts/PopulationHandler";
 
 declare var Stats: any;
 
@@ -15,7 +16,9 @@ export class App{
         document.body.appendChild( this.stats.dom );
         console.log(this.bots)
     }
-
+    levelData = new Level().getData();
+    private readonly populationHandler = new PopulationHandler(this.levelData);
+    private generationIndex = 1;
     readonly tileSize = 40;
     gameCanvas = <HTMLCanvasElement> document.getElementById("gameCanvas");
     ctx = <CanvasRenderingContext2D>this.gameCanvas.getContext("2d");
@@ -23,7 +26,6 @@ export class App{
     keyHandler = new KeyHandler();
     width = this.tileSize * 19;
     height = 19 * this.tileSize;
-    levelData = new Level().getData();
     // bot = new Bot(this.tileSize*3, this.tileSize*8, this.levelData);
     bots = new Array(5).fill(0).map((el)=>{
         return new Bot(this.tileSize*3, this.tileSize*8, this.levelData);
@@ -68,7 +70,13 @@ export class App{
                 bot.isDead = true;
             }
         });
-        
+        if(this.bots.every((bot)=>{
+            return bot.isDead;
+        })){
+            this.bots = this.populationHandler.getNewGeneration(this.bots);
+            this.updateGenerationIndex();
+        }
+
         this.stats.end();
 
         requestAnimationFrame(()=>{this.draw()});
@@ -183,6 +191,10 @@ export class App{
             }
             return this.collisionDetector.rectCircle(squareRect, playerCircle).isCollision;
         });
+    }
+
+    updateGenerationIndex(){
+        document.getElementById('generationIndex')!.innerHTML = 'Generation: ' + ++this.generationIndex;
     }
 
     // Own stats like sensor distances, neuron weights

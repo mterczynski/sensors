@@ -5,9 +5,9 @@ import { LevelData } from "./LevelData";
 import { CollisionDetector } from "./CollisionDetector";
 
 enum Direction{
-    left = -0.04,
+    left = -0.04 * 1.5,
     forward = 0,
-    right = 0.04
+    right = 0.04 * 1.5
 }
 
 export class Bot{
@@ -24,7 +24,7 @@ export class Bot{
     x: number;
     y: number;
     rotation = 0;
-    velocity = 3;
+    velocity = 3*1.2;
     isDead = false;
 
     getSensorLines(){
@@ -79,6 +79,7 @@ export class Bot{
 
     update(){
         if(this.isDead){
+            location.reload();
             return;
         }
 

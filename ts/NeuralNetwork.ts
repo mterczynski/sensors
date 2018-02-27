@@ -3,7 +3,7 @@ export class NeuralNetwork{
     readonly outputSize = 1;
 
     // private weights = new Array(5).fill(0).map((el)=>Math.random()*200-100);
-    private weights = [
+    public weights = [
         Math.random()*200-100,
         Math.random()*200-100,
         0,
@@ -12,7 +12,7 @@ export class NeuralNetwork{
     ]
     
     getWeights(){
-        return this.weights;
+        return this.weights.slice(0);
     }
     evaluate(inputs: Array<number>): number{
         if(inputs.length != this.inputSize){

@@ -26,17 +26,10 @@ export class App{
     keyHandler = new KeyHandler();
     width = this.tileSize * 19;
     height = 19 * this.tileSize;
-    // bot = new Bot(this.tileSize*3, this.tileSize*8, this.levelData);
-    bots = new Array(5).fill(0).map((el)=>{
-        return new Bot(this.tileSize*3, this.tileSize*8, this.levelData);
+    // bot = new Bot(this.tileSize*2, this.tileSize*8, this.levelData);
+    bots = new Array(25).fill(0).map((el)=>{
+        return new Bot(this.tileSize*2, this.tileSize*8, this.levelData);
     });
-    sensors = {
-        left: 0,
-        leftCenter: 0,
-        center: 0,
-        rightCenter: 0,
-        right: 0
-    }
     sensorsDOM = {
         left: document.getElementById('sensorsLeft'),
         leftCenter: document.getElementById('sensorsLeftCenter'),
@@ -112,67 +105,29 @@ export class App{
     }
 
     drawBotSensors(bot: Bot){
+        if(bot.isDead){
+            return;
+        }
         this.ctx.strokeStyle = 'rgb(200,0,0)';
-
-        let sensorValues: Array<number> = [];
-
-        bot.getSensorLines().forEach((line: Line)=>{
-            let closestIntersection = new Point(Infinity, Infinity);
-            let playerPos = new Point(bot.x, bot.y);
-            this.levelData.forEach((tile)=>{
-                let collisionResult = this.collisionDetector.lineRect(line, {
-                    height: this.tileSize,
-                    width: this.tileSize,
-                    x: tile.x * this.tileSize,
-                    y: tile.z * this.tileSize 
-                });
-                
-                if(collisionResult.isCollision){
-                    let intersection = <Point>collisionResult.intersection;
-                    if(intersection.distanceTo(playerPos) < closestIntersection.distanceTo(playerPos)){
-                        closestIntersection = intersection
-                    }
-                }
-            });  
-            
-            if(isFinite(closestIntersection.x)){
-                this.ctx.beginPath();
-                this.ctx.moveTo(bot.x, bot.y);
-                this.ctx.lineTo(closestIntersection.x, closestIntersection.y);
-                this.ctx.stroke();
-                this.ctx.closePath();
-                sensorValues.push(closestIntersection.distanceTo(playerPos));
-                // draw arc where sensor detected wall:
-                this.ctx.fillStyle = '#ff0000';
-
-                this.ctx.beginPath();
-                this.ctx.arc(closestIntersection.x, closestIntersection.y, 5, 0, 2 * Math.PI, false);
-                this.ctx.fill();
-            } else {
-                throw new Error('Sensor line is too short');
-                // if you want to work with limited-range sensors:
-
-                // this.ctx.beginPath();
-                // this.ctx.moveTo(this.bot.x, this.bot.y);
-                // this.ctx.lineTo(line.b.x, line.b.y);
-                // this.ctx.stroke();
-                // this.ctx.closePath();
-            }
+        let angle = Math.PI;
+        bot.getSensorLengths().forEach((lineLen)=>{          
+            this.ctx.beginPath();
+            this.ctx.moveTo(bot.x, bot.y);
+            this.ctx.lineTo(Math.cos(angle+bot.rotation)*lineLen + bot.x, Math.sin(angle+bot.rotation)*lineLen + bot.y);
+            this.ctx.stroke();
+            this.ctx.closePath();
+            this.ctx.fillStyle = '#ff0000';
+            this.ctx.beginPath();
+            this.ctx.arc(Math.cos(angle+bot.rotation)*lineLen+ bot.x, Math.sin(angle+bot.rotation)*lineLen+ bot.y, 5, 0, 2 * Math.PI, false);
+            this.ctx.fill();
+            angle += Math.PI/4;
         });
-
-        this.sensors.left = sensorValues[0];
-        this.sensors.leftCenter = sensorValues[1];
-        this.sensors.center = sensorValues[2];
-        this.sensors.rightCenter = sensorValues[3];
-        this.sensors.right = sensorValues[4];
-
-        return sensorValues;
     }
 
     drawObstacles(){
         this.levelData.forEach((tile)=>{
             this.ctx.fillStyle = "rgb(0, 200, 0)";
-            this.ctx.fillRect(tile.x*this.tileSize, tile.z*this.tileSize, this.tileSize, this.tileSize);                
+            this.ctx.fillRect(parseInt(tile.x)*this.tileSize, parseInt(tile.z)*this.tileSize, this.tileSize, this.tileSize);                
         });
     }
 
@@ -184,8 +139,8 @@ export class App{
         }
         return this.levelData.some((tile)=>{
             let squareRect = {
-                x: tile.x * this.tileSize,
-                y: tile.z * this.tileSize,
+                x: parseInt(tile.x) * this.tileSize,
+                y: parseInt(tile.z) * this.tileSize,
                 width: this.tileSize,
                 height: this.tileSize
             }
@@ -199,11 +154,11 @@ export class App{
 
     // Own stats like sensor distances, neuron weights
     updateStats(){
-        this.sensorsDOM.left!.innerHTML = this.sensors.left.toFixed(2) +'';
-        this.sensorsDOM.leftCenter!.innerHTML = this.sensors.leftCenter.toFixed(2) +'';
-        this.sensorsDOM.center!.innerHTML = this.sensors.center.toFixed(2) +'';
-        this.sensorsDOM.rightCenter!.innerHTML = this.sensors.rightCenter.toFixed(2) +'';
-        this.sensorsDOM.right!.innerHTML = this.sensors.right.toFixed(2) +'';
+        // this.sensorsDOM.left!.innerHTML = this.sensors.left.toFixed(2) +'';
+        // this.sensorsDOM.leftCenter!.innerHTML = this.sensors.leftCenter.toFixed(2) +'';
+        // this.sensorsDOM.center!.innerHTML = this.sensors.center.toFixed(2) +'';
+        // this.sensorsDOM.rightCenter!.innerHTML = this.sensors.rightCenter.toFixed(2) +'';
+        // this.sensorsDOM.right!.innerHTML = this.sensors.right.toFixed(2) +'';
 
         // this.neuronWeightsDOM.left!.innerHTML = this.bot.neuralNet.getWeights()[0] + '';
         // this.neuronWeightsDOM.leftCenter!.innerHTML = this.bot.neuralNet.getWeights()[1] + '';

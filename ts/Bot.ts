@@ -22,10 +22,10 @@ export class Bot{
     private direction: Direction = Direction.forward;
     private collisionDetector = new CollisionDetector();
     private levelData: LevelData;
-    private startDate: Date = new Date();
-    private whenDied: Date | null = null;
+    public startDate: Date = new Date();
+    public whenDied: Date | null = null;
     readonly radius = 10;
-    readonly neuralNet = new NeuralNetwork();
+    neuralNet = new NeuralNetwork();
     calculatedFitness?: number;
     x: number;
     y: number;
@@ -61,8 +61,8 @@ export class Bot{
                 let collisionResult = this.collisionDetector.lineRect(line, {
                     height: tileSize,
                     width: tileSize,
-                    x: tile.x * tileSize,
-                    y: tile.z * tileSize 
+                    x: parseInt(tile.x + '') * tileSize,
+                    y: parseInt(tile.z + '') * tileSize 
                 });
 
                 if(collisionResult.isCollision){

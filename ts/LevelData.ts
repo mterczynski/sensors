@@ -1,7 +1,7 @@
 interface Tile{
     id: number,
-    x: number,
-    z: number,
+    x: number | string,
+    z: number | string,
     type: string  
 }
 

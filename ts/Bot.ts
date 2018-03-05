@@ -10,7 +10,7 @@ export class Bot{
     x: number;
     y: number;
     rotation = 0;
-    velocity = 3;
+    velocity = 3*1.2;
     isDead = false;
 
     getSensorLines(){

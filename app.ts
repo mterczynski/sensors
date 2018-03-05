@@ -3,7 +3,6 @@ import { Bot } from "./ts/Bot";
 import { CollisionDetector } from "./ts/CollisionDetector";
 import { KeyHandler } from "./ts/KeyHandler";
 import { Point } from "./ts/geometries/Point";
-import { NeuralNetworkVisualizer } from "./ts/NeuralNetworkVisualizer";
 import { NeuralNetwork } from "./ts/NeuralNetwork";
 
 export class App{
@@ -16,7 +15,6 @@ export class App{
     tileSize = 40;
     levelData = new Level().getData();
     bot = new Bot(this.tileSize*12.5, this.tileSize*8.5);
-    neuralNetVisualizer = new NeuralNetworkVisualizer(new NeuralNetwork());
     sensors = {
         left: 0,
         leftCenter: 0,
@@ -34,7 +32,6 @@ export class App{
 
     constructor(){
         requestAnimationFrame(()=>{this.draw()});
-        this.neuralNetVisualizer.visualize();
     }
     
     draw(){

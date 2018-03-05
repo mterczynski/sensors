@@ -1,4 +1,4 @@
 # sensors
 Machine learning project
 
-![preview](assets/projectPreview.gif "Preview" =300x300)
+<img src="https://github.com/mterczynski/sensors/assets/projectPreview.gif" width="300" height="300">

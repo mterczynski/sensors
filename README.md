@@ -1,4 +1,4 @@
 # sensors
 Machine learning project
 
-![preview](assets/projectPreview.gif "Preview")
+![preview](assets/projectPreview.gif "Preview" =300x300)

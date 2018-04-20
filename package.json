@@ -8,7 +8,7 @@
   },
   "author": "https://github.com/mterczynski",
   "dependencies": {
-    "ts-loader": "^3.4.0"
+    "ts-loader": "^4.2.0"
   },
   "devDependencies": {
     "webpack": "^3.10.0",

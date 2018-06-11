@@ -1,5 +1,4 @@
 module.exports = {
-  devtool: 'inline-source-map',
   entry: './app.ts',
   output: {
     filename: 'bundle.js'

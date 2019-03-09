@@ -1,6 +1,5 @@
 export class NeuralNetwork {
   readonly inputSize = 5;
-  readonly outputSize = 1;
 
   private weights = [
     Math.random() * 200 - 100,
@@ -14,7 +13,7 @@ export class NeuralNetwork {
     return this.weights;
   }
 
-  evaluate(inputs: Array<number>): number {
+  evaluate(inputs: number[]): number {
     if (inputs.length != this.inputSize) {
       throw new Error(`Expected ${this.inputSize} numerical inputs`);
     }

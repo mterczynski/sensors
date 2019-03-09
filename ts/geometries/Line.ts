@@ -1,13 +1,12 @@
 import { Point } from "./Point";
 
 export class Line {
-  constructor(a: Point, b: Point) {
-    this.a = a;
-    this.b = b;
-  }
+  constructor(
+    public a: Point,
+    public b: Point,
+  ) { }
 
-  a: Point
-  b: Point
+
   getLength() {
     return this.a.distanceTo(this.b);
   }

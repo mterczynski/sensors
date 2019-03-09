@@ -19,6 +19,7 @@ export class Bot {
       this.neuralNet = neuralNet;
     }
   }
+
   private direction: Direction = Direction.forward;
   private collisionDetector = new CollisionDetector();
   private levelData: LevelData;

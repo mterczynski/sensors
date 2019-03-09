@@ -1,50 +1,56 @@
 *{
-    padding: 0;
-    margin: 0;
-    font-family: Calibri;
-}
-.gameCanvas{
-    position: absolute;
-    left:50%;
-    top:50%;
-    transform: translate(-50%, -50%);
-    border: 1px solid black;
-}
-.generationIndex{
-    position: absolute;
-    font-size: 32px;
-    bottom: 0;
-    left:0;
-    /* transform: translate(-50%, -50%); */
-}
-.stats{
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(0,0,0, 0.5);
-    padding: 10px;
-}
-.stats__row{
-    padding-top: 5px;
-    width: 180px;
-}
-.stats__row__label{
-    color: blue;
-}
-.stats__row__value{
-    color: cyan;    
-    /* position: absolute; */
-    /* right: 10px; */
-}
-.stats__row__weight{
-    color: green;
+  padding: 0;
+  margin: 0;
+  font-family: Calibri;
 }
 
+.gameCanvas{
+  position: absolute;
+  left:50%;
+  top:50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid black;
+}
+
+.generationIndex{
+  position: absolute;
+  font-size: 32px;
+  bottom: 0;
+  left:0;
+  /* transform: translate(-50%, -50%); */
+}
+
+.stats{
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0, 0.5);
+  padding: 10px;
+}
+
+.stats__row{
+  padding-top: 5px;
+  width: 180px;
+}
+
+.stats__row__label{
+  color: blue;
+}
+
+.stats__row__value{
+  color: cyan;
+  /* position: absolute; */
+  /* right: 10px; */
+}
+
+.stats__row__weight{
+  color: green;
+}
 
 .neuralNetCanvas{
-    position: absolute;
-    border: 1px solid black;
-    left: 0;
-    top: 200px;
+  position: absolute;
+  border: 1px solid black;
+  left: 0;
+  top: 200px;
 }

@@ -1,5 +1,6 @@
 export class KeyHandler {
   pressedKeys: any = {}
+
   constructor() {
     this.addKeyListeners();
   }

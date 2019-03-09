@@ -112,7 +112,7 @@ export class App {
   drawBotSensors(bot: Bot) {
     this.ctx.strokeStyle = 'rgb(200,0,0)';
 
-    let sensorValues: Array<number> = [];
+    let sensorValues: number[] = [];
 
     bot.getSensorLines().forEach((line: Line) => {
       let closestIntersection = new Point(Infinity, Infinity);

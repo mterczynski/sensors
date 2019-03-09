@@ -8,7 +8,7 @@ module.exports = {
     extensions: ['.ts', '.tsx', '.js'] // note if using webpack 1 you'd also need a '' in the array as well
   },
   module: {
-    rules:[
+    rules: [
       { test: /\.tsx?$/, loader: 'ts-loader' }
     ]
   }

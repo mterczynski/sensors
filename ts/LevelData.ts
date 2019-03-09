@@ -1,8 +1,8 @@
-interface Tile{
-    id: number,
-    x: number,
-    z: number,
-    type: string  
+interface Tile {
+  id: number,
+  x: number,
+  z: number,
+  type: string
 }
 
-export type LevelData = Array<Tile>
+export type LevelData = Tile[]

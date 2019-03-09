@@ -1,4 +1,15 @@
+interface NeuralNetworkOpts{
+    weights?: number[]
+}
+
 export class NeuralNetwork{
+
+    constructor(opts?: NeuralNetworkOpts){
+        if(opts && opts.weights){
+            this.weights = opts.weights;
+        }  
+    }
+
     readonly inputSize = 5;  
     readonly outputSize = 1;
 
@@ -10,7 +21,24 @@ export class NeuralNetwork{
         Math.random()*200-100,
         Math.random()*200-100
     ]
-    
+
+    getCrossover(neuralNet: NeuralNetwork){
+        let combinedWeights = this.weights;
+        for(let i=0; i<this.weights.length; i++){
+            if(Math.random() > 0.5){
+                combinedWeights[i] += neuralNet.weights[i];
+                combinedWeights[i] /= 2;
+            }
+
+            // mutate:
+            if(Math.random()  < 0.01){
+                combinedWeights[i] = Math.random()*200-100;
+            }
+        }
+
+        return new NeuralNetwork({weights: combinedWeights});
+    }
+
     getWeights(){
         return this.weights;
     }

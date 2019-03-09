@@ -19,6 +19,7 @@ export class App{
     levelData = new Level().getData();
     private readonly populationHandler = new PopulationHandler(this.levelData);
     private generationIndex = 1;
+    private threadTimeout = false;
     readonly tileSize = 40;
     gameCanvas = <HTMLCanvasElement> document.getElementById("gameCanvas");
     ctx = <CanvasRenderingContext2D>this.gameCanvas.getContext("2d");
@@ -26,7 +27,6 @@ export class App{
     keyHandler = new KeyHandler();
     width = this.tileSize * 19;
     height = 19 * this.tileSize;
-    // bot = new Bot(this.tileSize*3, this.tileSize*8, this.levelData);
     bots = new Array(5).fill(0).map((el)=>{
         return new Bot(this.tileSize*3, this.tileSize*8, this.levelData);
     });
@@ -54,11 +54,16 @@ export class App{
     stats = new Stats();
     
     draw(){
+        if(this.threadTimeout){
+            requestAnimationFrame(()=>{this.draw()});
+            return;
+        }
         this.stats.begin();
         this.ctx.fillStyle = "rgb(240,240,240)";
         this.ctx.fillRect(0, 0, this.width, this.height);
         this.drawGrid();
         this.drawObstacles();
+        
         this.bots.forEach((bot)=>{
             bot.update();
             this.drawBotSensors(bot);
@@ -70,11 +75,13 @@ export class App{
                 bot.isDead = true;
             }
         });
-        if(this.bots.every((bot)=>{
+
+        if(this.bots.every((bot)=>{    
             return bot.isDead;
         })){
+            console.log(this.bots)
             this.bots = this.populationHandler.getNewGeneration(this.bots);
-            this.updateGenerationIndex();
+            this.updateGenerationIndex(); 
         }
 
         this.stats.end();
@@ -194,7 +201,9 @@ export class App{
     }
 
     updateGenerationIndex(){
-        document.getElementById('generationIndex')!.innerHTML = 'Generation: ' + ++this.generationIndex;
+        console.log('updating generation index')
+        this.generationIndex++;
+        document.getElementById('generationIndex')!.innerHTML = 'Generation: ' + this.generationIndex;
     }
 
     // Own stats like sensor distances, neuron weights

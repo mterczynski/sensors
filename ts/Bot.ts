@@ -10,6 +10,9 @@ enum Direction{
     right = 0.04 * 1.5
 }
 
+// todo create single instance of tileSize
+const tileSize = 40;
+
 export class Bot{
     constructor(posX: number, posY: number, levelData: LevelData, neuralNet?: NeuralNetwork){
         this.x = posX;
@@ -19,13 +22,44 @@ export class Bot{
             this.neuralNet = neuralNet;
         }
     }
+
+    clone(neuralNet?: NeuralNetwork) : Bot{
+        // let copy = Object.assign({}, this);
+        let copy = Object.assign( Object.create( Object.getPrototypeOf(this)), this);
+
+        copy.whenDied = null;
+        copy.calculatedFitness = undefined;
+        copy.rotation = 0;
+        copy.isDead = false;
+        copy.x = tileSize * 3;
+        copy.y = tileSize * 8;
+        copy.startDate = new Date();
+        copy.direction = Direction.forward;
+        console.log('copy', JSON.parse(JSON.stringify(copy)));
+        if(neuralNet){
+            copy.neuralNet = neuralNet;
+        }
+
+        // copy.update = this.update.bind(copy);
+        // copy.getSensorLengths = this.getSensorLengths.bind(copy);
+        // copy.getSensorLines = this.getSensorLines.bind(copy);
+        // copy.getFitness = this.getFitness.bind(copy);
+        // copy.clone = this.clone.bind(copy);
+
+        // (<any>copy).__proto__ = (<any>this).__proto__;
+
+        // console.log(copy)
+
+        return copy;
+    }
+
     private direction: Direction = Direction.forward;
     private collisionDetector = new CollisionDetector();
     private levelData: LevelData;
     private startDate: Date = new Date();
     private whenDied: Date | null = null;
     readonly radius = 10;
-    readonly neuralNet = new NeuralNetwork();
+    neuralNet = new NeuralNetwork();
     calculatedFitness?: number;
     x: number;
     y: number;

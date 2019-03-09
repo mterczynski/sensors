@@ -16,7 +16,7 @@ export class NeuralNetwork {
 
   evaluate(inputs: Array<number>): number {
     if (inputs.length != this.inputSize) {
-      throw new Error('Expected 5 numerical inputs');
+      throw new Error(`Expected ${this.inputSize} numerical inputs`);
     }
 
     let sum = 0;

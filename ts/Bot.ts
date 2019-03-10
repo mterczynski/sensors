@@ -4,10 +4,12 @@ import { Point } from "./geometries/Point";
 import { LevelData } from "./LevelData";
 import { NeuralNetwork } from "./NeuralNetwork";
 
+const turningSpeed = 0.06;
+
 enum Direction {
-  left = -0.04 * 1.5,
+  left = -turningSpeed,
   forward = 0,
-  right = 0.04 * 1.5
+  right = turningSpeed,
 }
 
 export class Bot {

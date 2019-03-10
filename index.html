@@ -1,48 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Ai - machine learning</title>
-    <link rel="stylesheet" href="main.css">
-    <script src="js_modules/Stats.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Ai - machine learning</title>
+  <link rel="stylesheet" href="main.css">
+  <script src="js_modules/Stats.js"></script>
 </head>
+
 <body>
-    <canvas id="gameCanvas" class="gameCanvas" width="760" height="760"></canvas>
-    <div class="stats">
-        <div class="stats__row">
-            <span class="stats__row__label">Left:</span>
-            <span class="stats__row__value" id="sensorsLeft"></span>
-            <span class="stats__row__weight" id="neuronLeft"></span>
-        </div>
-        <div class="stats__row">
-            <span class="stats__row__label">Left-center:</span>
-            <span class="stats__row__value" id="sensorsLeftCenter"></span>
-            <span class="stats__row__weight" id="neuronLeftCenter"></span>
-        </div>
-        <div class="stats__row">
-            <span class="stats__row__label">Center:</span>
-            <span class="stats__row__value" id="sensorsCenter"></span>
-            <span class="stats__row__weight" id="neuronCenter"></span>
-        </div>
-        <div class="stats__row">
-            <span class="stats__row__label">Right-center:</span>
-            <span class="stats__row__value" id="sensorsRightCenter"></span>
-            <span class="stats__row__weight" id="neuronRightCenter"></span>
-        </div>
-        <div class="stats__row">
-            <span class="stats__row__label">Right:</span>
-            <span class="stats__row__value" id="sensorsRight"></span>
-            <span class="stats__row__weight" id="neuronRight"></span>
-        </div>
-        <!-- <canvas id="neuralNetCanvas" class="neuralNetCanvas" height='500' width='500'></canvas>    -->
+  <canvas id="gameCanvas" class="gameCanvas" width="760" height="760"></canvas>
+  <div class="stats">
+    <div class="stats__row">
+      <span class="stats__row__label">Left:</span>
+      <span class="stats__row__value" id="sensorsLeft"></span>
+      <span class="stats__row__weight" id="neuronLeft"></span>
     </div>
-
-    <div class="generationIndex" id="generationIndex">
-        Generation: 1
+    <div class="stats__row">
+      <span class="stats__row__label">Left-center:</span>
+      <span class="stats__row__value" id="sensorsLeftCenter"></span>
+      <span class="stats__row__weight" id="neuronLeftCenter"></span>
     </div>
+    <div class="stats__row">
+      <span class="stats__row__label">Center:</span>
+      <span class="stats__row__value" id="sensorsCenter"></span>
+      <span class="stats__row__weight" id="neuronCenter"></span>
+    </div>
+    <div class="stats__row">
+      <span class="stats__row__label">Right-center:</span>
+      <span class="stats__row__value" id="sensorsRightCenter"></span>
+      <span class="stats__row__weight" id="neuronRightCenter"></span>
+    </div>
+    <div class="stats__row">
+      <span class="stats__row__label">Right:</span>
+      <span class="stats__row__value" id="sensorsRight"></span>
+      <span class="stats__row__weight" id="neuronRight"></span>
+    </div>
+    <!-- <canvas id="neuralNetCanvas" class="neuralNetCanvas" height='500' width='500'></canvas>    -->
+  </div>
 
-    <script src="dist/bundle.js"></script>  
+  <div class="generationIndex" id="generationIndex">
+    Generation: 1
+  </div>
+
+  <script src="dist/bundle.js"></script>
 </body>
+
 </html>

@@ -8,7 +8,6 @@ const turningSpeed = 0.06;
 
 enum Direction {
   left = -turningSpeed,
-  forward = 0,
   right = turningSpeed,
 }
 
@@ -22,11 +21,11 @@ export class Bot {
     }
   }
 
-  private direction: Direction = Direction.forward;
+  private direction: Direction = Direction.left;
   private collisionDetector = new CollisionDetector();
   private levelData: LevelData;
   private startDate: Date = new Date();
-  private whenDied: Date | null = null;
+  private whenDied?: Date;
   readonly radius = 10;
   readonly neuralNet = new NeuralNetwork();
   calculatedFitness?: number;
@@ -47,14 +46,14 @@ export class Bot {
   }
 
   getFitness() {
-    if (this.whenDied == null) {
+    if (!this.whenDied) {
       this.whenDied = new Date();
     }
     return this.whenDied.getTime() - this.startDate.getTime();
   }
 
   getSensorLengths() {
-    let sensorValues: Array<number> = [];
+    let sensorValues: number[] = [];
 
     this.getSensorLines().forEach((line) => {
       let closestIntersection = new Point(Infinity, Infinity);
@@ -82,12 +81,13 @@ export class Bot {
         throw new Error('Sensor line is too short');
       }
     });
+
     return sensorValues;
   }
 
   update() {
     if (this.isDead) {
-      if (this.whenDied == null) {
+      if (!this.whenDied) {
         this.whenDied = new Date();
       }
       return;

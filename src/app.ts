@@ -3,7 +3,7 @@ import { CollisionDetector } from './CollisionDetector';
 import { tileSize } from './constants';
 import { Line } from './geometry-classes/Line';
 import { Point } from './geometry-classes/Point';
-import { KeyHandler } from './KeyHandler';
+import { keyHandler } from './KeyHandler';
 import { level01 } from './level-data';
 import { PopulationHandler } from './PopulationHandler';
 
@@ -12,12 +12,11 @@ declare var Stats: any;
 export class App {
   private readonly levelData = level01;
   private readonly populationHandler = new PopulationHandler(this.levelData);
-  private generationIndex = 1;
-
   private readonly gameCanvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
   private readonly ctx = this.gameCanvas.getContext('2d') as CanvasRenderingContext2D;
   private readonly collisionDetector = new CollisionDetector();
-  private readonly keyHandler = new KeyHandler();
+
+  private generationIndex = 1;
   private width = tileSize * 19;
   private height = 19 * tileSize;
   private bots = new Array(5).fill(0).map((el) => {
@@ -50,6 +49,7 @@ export class App {
     requestAnimationFrame(() => { this.draw(); });
     this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
     document.body.appendChild(this.stats.dom);
+    keyHandler.addKeyListeners();
   }
 
   draw() {

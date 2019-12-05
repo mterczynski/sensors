@@ -1,21 +1,25 @@
-export class KeyHandler {
-  private _pressedKeys: {[key: string]: boolean} = {};
+const pressedKeys: {[key: string]: boolean} = {};
 
-  constructor() {
-    this.addKeyListeners();
-  }
+let isListening = false;
 
-  get pressedKeys() {
-    return {...this._pressedKeys};
-  }
+export const keyHandler  = {
+  getPressedKeys() {
+    return {...pressedKeys};
+  },
 
   addKeyListeners() {
+    if (isListening) {
+      return;
+    }
+
     document.addEventListener('keydown', (e) => {
-      this.pressedKeys[e.key.toLowerCase()] = true;
+      pressedKeys[e.key.toLowerCase()] = true;
     });
 
     document.addEventListener('keyup', (e) => {
-      this.pressedKeys[e.key.toLowerCase()] = false;
+      pressedKeys[e.key.toLowerCase()] = false;
     });
-  }
-}
+
+    isListening = true;
+  },
+};

@@ -26,8 +26,10 @@ export class Bot {
   private levelData: LevelData;
   private startDate: Date = new Date();
   private whenDied?: Date;
+
   readonly radius = 10;
   readonly neuralNet = new NeuralNetwork();
+
   calculatedFitness?: number;
   x: number;
   y: number;

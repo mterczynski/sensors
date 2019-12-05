@@ -1,8 +1,12 @@
 export class KeyHandler {
-  pressedKeys: any = {}
+  private _pressedKeys: {[key: string]: boolean} = {}
 
   constructor() {
     this.addKeyListeners();
+  }
+
+  get pressedKeys() {
+    return {...this._pressedKeys};
   }
 
   addKeyListeners() {

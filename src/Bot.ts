@@ -1,9 +1,9 @@
 import { CollisionDetector } from './CollisionDetector';
 import { tileSize } from './constants';
-import { Line } from './geometries/Line';
-import { Point } from './geometries/Point';
-import { LevelData } from './LevelData';
+import { Line } from './geometry-classes/Line';
+import { Point } from './geometry-classes/Point';
 import { NeuralNetwork } from './NeuralNetwork';
+import { LevelData } from './types';
 
 const turningSpeed = 0.06;
 
@@ -77,7 +77,7 @@ export class Bot {
         });
 
         if (collisionResult.isCollision) {
-          const intersection = collisionResult.intersection as Point;
+          const intersection = collisionResult.intersectionPoint as Point;
           if (intersection.distanceTo(playerPos) < closestIntersection.distanceTo(playerPos)) {
             closestIntersection = intersection;
           }

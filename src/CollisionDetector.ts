@@ -1,18 +1,23 @@
-import { Circle } from './geometries/Circle';
-import { Line } from './geometries/Line';
-import { Point } from './geometries/Point';
-import { Rect } from './geometries/Rect';
+import { Circle } from './geometry-classes/Circle';
+import { Line } from './geometry-classes/Line';
+import { Point } from './geometry-classes/Point';
 
 // based on http://www.jeffreythompson.org/collision-detection/line-rect.php
 
-interface Result {
+interface Rect {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+interface CollisionCheckResult {
   isCollision: boolean;
-  distance?: number;
-  intersection?: Point;
+  intersectionPoint?: Point;
 }
 
 export class CollisionDetector {
-  lineRect(line: Line, rect: Rect): Result {
+  lineRect(line: Line, rect: Rect): CollisionCheckResult {
 
     // check if the line has hit any of the rectangle's sides
     // uses the Line/Line function below
@@ -32,24 +37,33 @@ export class CollisionDetector {
       if (!dir.isCollision) {
         return;
       }
-      if (!dir.intersection) {
+      if (!dir.intersectionPoint) {
         throw new Error('missing intersection point');
       }
-      if (dir.intersection.distanceTo(line.a) < closestIntersection.distanceTo(line.a)) {
-        closestIntersection = (dir.intersection as Point);
+      if (dir.intersectionPoint.distanceTo(line.a) < closestIntersection.distanceTo(line.a)) {
+        closestIntersection = (dir.intersectionPoint as Point);
       }
     });
 
     // if ANY of the above are true, the line
     // has hit the rectangle
     if (left.isCollision || right.isCollision || top.isCollision || bottom.isCollision) {
-      return { isCollision: true, intersection: closestIntersection };
+      return { isCollision: true, intersectionPoint: closestIntersection };
     }
 
     return { isCollision: false };
   }
 
-  lineLine(x1: number, y1: number, x2: number, y2: number, x3: number, y3: number, x4: number, y4: number): Result {
+  lineLine(
+    x1: number,
+    y1: number,
+    x2: number,
+    y2: number,
+    x3: number,
+    y3: number,
+    x4: number,
+    y4: number,
+  ): CollisionCheckResult {
 
     // calculate the direction of the lines
     const uA = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / ((y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1));
@@ -62,13 +76,13 @@ export class CollisionDetector {
       const intersectionX = x1 + (uA * (x2 - x1));
       const intersectionY = y1 + (uA * (y2 - y1));
 
-      return { isCollision: true, intersection: new Point(intersectionX, intersectionY) };
+      return { isCollision: true, intersectionPoint: new Point(intersectionX, intersectionY) };
     }
 
     return { isCollision: false };
   }
 
-  rectCircle(rect: Rect, circle: Circle): Result {
+  rectCircle(rect: Rect, circle: Circle): CollisionCheckResult {
     const deltaX = circle.x - Math.max(rect.x, Math.min(circle.x, rect.x + rect.width));
     const deltaY = circle.y - Math.max(rect.y, Math.min(circle.y, rect.y + rect.height));
 

@@ -1,6 +1,6 @@
 import { Bot } from './Bot';
 import { tileSize } from './constants';
-import { LevelData } from './LevelData';
+import { LevelData } from './types';
 
 const populationSize = 5;
 

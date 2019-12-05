@@ -1,16 +1,16 @@
 import { Bot } from './Bot';
 import { CollisionDetector } from './CollisionDetector';
 import { tileSize } from './constants';
-import { Line } from './geometries/Line';
-import { Point } from './geometries/Point';
+import { Line } from './geometry-classes/Line';
+import { Point } from './geometry-classes/Point';
 import { KeyHandler } from './KeyHandler';
-import { Level } from './Level';
+import { level01 } from './level-data';
 import { PopulationHandler } from './PopulationHandler';
 
 declare var Stats: any;
 
 export class App {
-  private readonly levelData = new Level().getData();
+  private readonly levelData = level01;
   private readonly populationHandler = new PopulationHandler(this.levelData);
   private generationIndex = 1;
 
@@ -128,7 +128,7 @@ export class App {
         });
 
         if (collisionResult.isCollision) {
-          const intersection = collisionResult.intersection as Point;
+          const intersection = collisionResult.intersectionPoint as Point;
           if (intersection.distanceTo(playerPos) < closestIntersection.distanceTo(playerPos)) {
             closestIntersection = intersection;
           }

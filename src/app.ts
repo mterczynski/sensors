@@ -1,10 +1,10 @@
-import { Bot } from "./ts/Bot";
-import { CollisionDetector } from "./ts/CollisionDetector";
-import { Line } from "./ts/geometries/Line";
-import { Point } from "./ts/geometries/Point";
-import { KeyHandler } from "./ts/KeyHandler";
-import { Level } from "./ts/Level";
-import { PopulationHandler } from "./ts/PopulationHandler";
+import { Bot } from "./Bot";
+import { CollisionDetector } from "./CollisionDetector";
+import { Line } from "./geometries/Line";
+import { Point } from "./geometries/Point";
+import { KeyHandler } from "./KeyHandler";
+import { Level } from "./Level";
+import { PopulationHandler } from "./PopulationHandler";
 
 declare var Stats: any;
 
@@ -211,4 +211,3 @@ export class App {
   }
 }
 
-new App();

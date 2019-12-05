@@ -10,7 +10,7 @@ export class NeuralNetwork {
   ]
 
   getWeights() {
-    return this.weights;
+    return [...this.weights];
   }
 
   evaluate(inputs: number[]): number {
@@ -18,10 +18,7 @@ export class NeuralNetwork {
       throw new Error(`Expected ${this.inputSize} numerical inputs`);
     }
 
-    let sum = 0;
-    inputs.forEach((input, index) => {
-      sum += input * this.weights[index];
-    });
+    let sum = inputs.reduce((total, nextInput, index) => total + nextInput * this.weights[index], 0);
 
     return sum;
   }

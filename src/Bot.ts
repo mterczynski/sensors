@@ -1,9 +1,9 @@
-import { CollisionDetector } from "./CollisionDetector";
-import { Line } from "./geometries/Line";
-import { Point } from "./geometries/Point";
-import { LevelData } from "./LevelData";
-import { NeuralNetwork } from "./NeuralNetwork";
-import { tileSize } from "./constants";
+import { CollisionDetector } from './CollisionDetector';
+import { tileSize } from './constants';
+import { Line } from './geometries/Line';
+import { Point } from './geometries/Point';
+import { LevelData } from './LevelData';
+import { NeuralNetwork } from './NeuralNetwork';
 
 const turningSpeed = 0.06;
 
@@ -13,14 +13,6 @@ enum Direction {
 }
 
 export class Bot {
-  constructor(posX: number, posY: number, levelData: LevelData, neuralNet?: NeuralNetwork) {
-    this.x = posX;
-    this.y = posY;
-    this.levelData = levelData;
-    if (neuralNet) {
-      this.neuralNet = neuralNet;
-    }
-  }
 
   private direction: Direction = Direction.left;
   private collisionDetector = new CollisionDetector();
@@ -38,13 +30,28 @@ export class Bot {
   velocity = 3 * 1.2;
   isDead = false;
 
+  constructor(posX: number, posY: number, levelData: LevelData, neuralNet?: NeuralNetwork) {
+    this.x = posX;
+    this.y = posY;
+    this.levelData = levelData;
+    if (neuralNet) {
+      this.neuralNet = neuralNet;
+    }
+  }
+
   getSensorLines() {
-    let lines = [];
+    const lines = [];
+
     for (let i = 0; i < 5; i++) {
-      let lineEndpoint = new Point(this.x + 1000 * Math.cos(i * Math.PI / 4 + this.rotation + Math.PI), this.y + (1000 * Math.sin(i * Math.PI / 4 + this.rotation + Math.PI)));
-      let line = new Line(new Point(this.x, this.y), lineEndpoint);
+      const lineEndpoint = new Point(
+        this.x + 1000 * Math.cos(i * Math.PI / 4 + this.rotation + Math.PI),
+        this.y + (1000 * Math.sin(i * Math.PI / 4 + this.rotation + Math.PI)),
+      );
+
+      const line = new Line(new Point(this.x, this.y), lineEndpoint);
       lines.push(line);
     }
+
     return lines;
   }
 
@@ -56,23 +63,23 @@ export class Bot {
   }
 
   getSensorLengths() {
-    let sensorValues: number[] = [];
+    const sensorValues: number[] = [];
 
     this.getSensorLines().forEach((line) => {
       let closestIntersection = new Point(Infinity, Infinity);
-      let playerPos = new Point(this.x, this.y);
+      const playerPos = new Point(this.x, this.y);
       this.levelData.forEach((tile) => {
-        let collisionResult = this.collisionDetector.lineRect(line, {
+        const collisionResult = this.collisionDetector.lineRect(line, {
           height: tileSize,
           width: tileSize,
           x: tile.x * tileSize,
-          y: tile.z * tileSize
+          y: tile.z * tileSize,
         });
 
         if (collisionResult.isCollision) {
-          let intersection = <Point>collisionResult.intersection;
+          const intersection = collisionResult.intersection as Point;
           if (intersection.distanceTo(playerPos) < closestIntersection.distanceTo(playerPos)) {
-            closestIntersection = intersection
+            closestIntersection = intersection;
           }
         }
       });

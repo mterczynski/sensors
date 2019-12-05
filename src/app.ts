@@ -1,59 +1,60 @@
-import { Bot } from "./Bot";
-import { CollisionDetector } from "./CollisionDetector";
-import { Line } from "./geometries/Line";
-import { Point } from "./geometries/Point";
-import { KeyHandler } from "./KeyHandler";
-import { Level } from "./Level";
-import { PopulationHandler } from "./PopulationHandler";
-import { tileSize } from "./constants";
+import { Bot } from './Bot';
+import { CollisionDetector } from './CollisionDetector';
+import { tileSize } from './constants';
+import { Line } from './geometries/Line';
+import { Point } from './geometries/Point';
+import { KeyHandler } from './KeyHandler';
+import { Level } from './Level';
+import { PopulationHandler } from './PopulationHandler';
 
 declare var Stats: any;
 
 export class App {
-  constructor() {
-    requestAnimationFrame(() => { this.draw() });
-    this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
-    document.body.appendChild(this.stats.dom);
-    console.log(this.bots)
-  }
-  levelData = new Level().getData();
+  private readonly levelData = new Level().getData();
   private readonly populationHandler = new PopulationHandler(this.levelData);
   private generationIndex = 1;
-  gameCanvas = <HTMLCanvasElement>document.getElementById("gameCanvas");
-  ctx = <CanvasRenderingContext2D>this.gameCanvas.getContext("2d");
-  collisionDetector = new CollisionDetector();
-  keyHandler = new KeyHandler();
-  width = tileSize * 19;
-  height = 19 * tileSize;
-  bots = new Array(5).fill(0).map((el) => {
+
+  private readonly gameCanvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
+  private readonly ctx = this.gameCanvas.getContext('2d') as CanvasRenderingContext2D;
+  private readonly collisionDetector = new CollisionDetector();
+  private readonly keyHandler = new KeyHandler();
+  private width = tileSize * 19;
+  private height = 19 * tileSize;
+  private bots = new Array(5).fill(0).map((el) => {
     return new Bot(tileSize * 3, tileSize * 8, this.levelData);
   });
-  sensors = {
+  private sensors = {
+    center: 0,
     left: 0,
     leftCenter: 0,
-    center: 0,
+    right: 0,
     rightCenter: 0,
-    right: 0
-  }
-  sensorsDOM = {
+  };
+  private sensorsDOM = {
+    center: document.getElementById('sensorsCenter'),
     left: document.getElementById('sensorsLeft'),
     leftCenter: document.getElementById('sensorsLeftCenter'),
-    center: document.getElementById('sensorsCenter'),
+    right: document.getElementById('sensorsRight'),
     rightCenter: document.getElementById('sensorsRightCenter'),
-    right: document.getElementById('sensorsRight')
-  }
-  neuronWeightsDOM = {
+  };
+  private neuronWeightsDOM = {
+    center: document.getElementById('neuronCenter'),
     left: document.getElementById('neuronLeft'),
     leftCenter: document.getElementById('neuronLeftCenter'),
-    center: document.getElementById('neuronCenter'),
+    right: document.getElementById('neuronRight'),
     rightCenter: document.getElementById('neuronRightCenter'),
-    right: document.getElementById('neuronRight')
+  };
+  private stats = new Stats();
+
+  constructor() {
+    requestAnimationFrame(() => { this.draw(); });
+    this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+    document.body.appendChild(this.stats.dom);
   }
-  stats = new Stats();
 
   draw() {
     this.stats.begin();
-    this.ctx.fillStyle = "rgb(240,240,240)";
+    this.ctx.fillStyle = 'rgb(240,240,240)';
     this.ctx.fillRect(0, 0, this.width, this.height);
     this.drawGrid();
     this.drawObstacles();
@@ -69,18 +70,18 @@ export class App {
       }
     });
 
-    if (this.bots.every(bot => bot.isDead)) {
+    if (this.bots.every((bot) => bot.isDead)) {
       this.bots = this.populationHandler.getNewGeneration(this.bots);
       this.updateGenerationIndex();
     }
 
     this.stats.end();
 
-    requestAnimationFrame(() => { this.draw() });
+    requestAnimationFrame(() => { this.draw(); });
   }
 
   drawGrid() {
-    this.ctx.strokeStyle = "black";
+    this.ctx.strokeStyle = 'black';
     this.ctx.lineWidth = 1;
 
     for (let i = tileSize; i < this.width; i += tileSize) {
@@ -113,23 +114,23 @@ export class App {
   drawBotSensors(bot: Bot) {
     this.ctx.strokeStyle = 'rgb(200,0,0)';
 
-    let sensorValues: number[] = [];
+    const sensorValues: number[] = [];
 
     bot.getSensorLines().forEach((line: Line) => {
       let closestIntersection = new Point(Infinity, Infinity);
-      let playerPos = new Point(bot.x, bot.y);
+      const playerPos = new Point(bot.x, bot.y);
       this.levelData.forEach((tile) => {
-        let collisionResult = this.collisionDetector.lineRect(line, {
+        const collisionResult = this.collisionDetector.lineRect(line, {
           height: tileSize,
           width: tileSize,
           x: tile.x * tileSize,
-          y: tile.z * tileSize
+          y: tile.z * tileSize,
         });
 
         if (collisionResult.isCollision) {
-          let intersection = <Point>collisionResult.intersection;
+          const intersection = collisionResult.intersection as Point;
           if (intersection.distanceTo(playerPos) < closestIntersection.distanceTo(playerPos)) {
-            closestIntersection = intersection
+            closestIntersection = intersection;
           }
         }
       });
@@ -170,31 +171,32 @@ export class App {
 
   drawObstacles() {
     this.levelData.forEach((tile) => {
-      this.ctx.fillStyle = "rgb(0, 200, 0)";
+      this.ctx.fillStyle = 'rgb(0, 200, 0)';
       this.ctx.fillRect(tile.x * tileSize, tile.z * tileSize, tileSize, tileSize);
     });
   }
 
   botWallCollisions(bot: Bot) {
-    let playerCircle = {
+    const playerCircle = {
+      radius: bot.radius,
       x: bot.x,
       y: bot.y,
-      radius: bot.radius,
-    }
+    };
+
     return this.levelData.some((tile) => {
-      let squareRect = {
+      const squareRect = {
+        height: tileSize,
+        width: tileSize,
         x: tile.x * tileSize,
         y: tile.z * tileSize,
-        width: tileSize,
-        height: tileSize
-      }
+      };
+
       return this.collisionDetector.rectCircle(squareRect, playerCircle).isCollision;
     });
   }
 
   updateGenerationIndex() {
-    console.log('up')
-    document.getElementById('generationIndex')!.innerHTML = 'Generation: ' + ++this.generationIndex;
+    document.getElementById('generationIndex')!.innerHTML = 'Generation: ' + (++this.generationIndex);
   }
 
   // Own stats like sensor distances, neuron weights
@@ -212,4 +214,3 @@ export class App {
     // this.neuronWeightsDOM.right!.innerHTML = this.bot.neuralNet.getWeights()[4] + '';
   }
 }
-

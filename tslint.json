@@ -1,0 +1,6 @@
+{
+  "extends": [
+    "mterczynski-tslint"
+  ],
+  "rules": {}
+}

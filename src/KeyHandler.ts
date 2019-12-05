@@ -1,5 +1,5 @@
 export class KeyHandler {
-  private _pressedKeys: {[key: string]: boolean} = {}
+  private _pressedKeys: {[key: string]: boolean} = {};
 
   constructor() {
     this.addKeyListeners();
@@ -11,11 +11,11 @@ export class KeyHandler {
 
   addKeyListeners() {
     document.addEventListener('keydown', (e) => {
-      this.pressedKeys[e.key.toLowerCase()] = true
+      this.pressedKeys[e.key.toLowerCase()] = true;
     });
 
     document.addEventListener('keyup', (e) => {
-      this.pressedKeys[e.key.toLowerCase()] = false
+      this.pressedKeys[e.key.toLowerCase()] = false;
     });
   }
 }

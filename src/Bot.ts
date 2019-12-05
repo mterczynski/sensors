@@ -3,6 +3,7 @@ import { Line } from "./geometries/Line";
 import { Point } from "./geometries/Point";
 import { LevelData } from "./LevelData";
 import { NeuralNetwork } from "./NeuralNetwork";
+import { tileSize } from "./constants";
 
 const turningSpeed = 0.06;
 
@@ -60,7 +61,6 @@ export class Bot {
     this.getSensorLines().forEach((line) => {
       let closestIntersection = new Point(Infinity, Infinity);
       let playerPos = new Point(this.x, this.y);
-      let tileSize = 40;
       this.levelData.forEach((tile) => {
         let collisionResult = this.collisionDetector.lineRect(line, {
           height: tileSize,

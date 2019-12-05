@@ -1,5 +1,6 @@
 import { Bot } from "./Bot";
 import { LevelData } from "./LevelData";
+import { tileSize } from "./constants";
 
 export class PopulationHandler {
   constructor(private levelData: LevelData) { }
@@ -11,7 +12,7 @@ export class PopulationHandler {
 
   public getNewGeneration(bots: Array<Bot>) {
     if (bots.length == 0) {
-      return [...Array(5)].map(() => new Bot(40 * 3, 40 * 8, this.levelData));
+      return [...Array(5)].map(() => new Bot(tileSize * 3, tileSize * 8, this.levelData));
     }
 
     bots.sort((prev, next) => prev.getFitness() - next.getFitness()).reverse();

@@ -5,6 +5,7 @@ import { Point } from "./geometries/Point";
 import { KeyHandler } from "./KeyHandler";
 import { Level } from "./Level";
 import { PopulationHandler } from "./PopulationHandler";
+import { tileSize } from "./constants";
 
 declare var Stats: any;
 
@@ -18,15 +19,14 @@ export class App {
   levelData = new Level().getData();
   private readonly populationHandler = new PopulationHandler(this.levelData);
   private generationIndex = 1;
-  readonly tileSize = 40;
   gameCanvas = <HTMLCanvasElement>document.getElementById("gameCanvas");
   ctx = <CanvasRenderingContext2D>this.gameCanvas.getContext("2d");
   collisionDetector = new CollisionDetector();
   keyHandler = new KeyHandler();
-  width = this.tileSize * 19;
-  height = 19 * this.tileSize;
+  width = tileSize * 19;
+  height = 19 * tileSize;
   bots = new Array(5).fill(0).map((el) => {
-    return new Bot(this.tileSize * 3, this.tileSize * 8, this.levelData);
+    return new Bot(tileSize * 3, tileSize * 8, this.levelData);
   });
   sensors = {
     left: 0,
@@ -83,14 +83,16 @@ export class App {
   drawGrid() {
     this.ctx.strokeStyle = "black";
     this.ctx.lineWidth = 1;
-    for (let i = this.tileSize; i < this.width; i += this.tileSize) {
+
+    for (let i = tileSize; i < this.width; i += tileSize) {
       this.ctx.beginPath();
       this.ctx.moveTo(i + .5, 0 + .5);
       this.ctx.lineTo(i + .5, this.height + .5);
       this.ctx.stroke();
       this.ctx.closePath();
     }
-    for (let i = this.tileSize; i < this.height; i += this.tileSize) {
+
+    for (let i = tileSize; i < this.height; i += tileSize) {
       this.ctx.beginPath();
       this.ctx.moveTo(0 + .5, i + .5);
       this.ctx.lineTo(this.width + .5, i + .5);
@@ -119,10 +121,10 @@ export class App {
       let playerPos = new Point(bot.x, bot.y);
       this.levelData.forEach((tile) => {
         let collisionResult = this.collisionDetector.lineRect(line, {
-          height: this.tileSize,
-          width: this.tileSize,
-          x: tile.x * this.tileSize,
-          y: tile.z * this.tileSize
+          height: tileSize,
+          width: tileSize,
+          x: tile.x * tileSize,
+          y: tile.z * tileSize
         });
 
         if (collisionResult.isCollision) {
@@ -170,7 +172,7 @@ export class App {
   drawObstacles() {
     this.levelData.forEach((tile) => {
       this.ctx.fillStyle = "rgb(0, 200, 0)";
-      this.ctx.fillRect(tile.x * this.tileSize, tile.z * this.tileSize, this.tileSize, this.tileSize);
+      this.ctx.fillRect(tile.x * tileSize, tile.z * tileSize, tileSize, tileSize);
     });
   }
 
@@ -182,10 +184,10 @@ export class App {
     }
     return this.levelData.some((tile) => {
       let squareRect = {
-        x: tile.x * this.tileSize,
-        y: tile.z * this.tileSize,
-        width: this.tileSize,
-        height: this.tileSize
+        x: tile.x * tileSize,
+        y: tile.z * tileSize,
+        width: tileSize,
+        height: tileSize
       }
       return this.collisionDetector.rectCircle(squareRect, playerCircle).isCollision;
     });

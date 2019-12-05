@@ -1,8 +1,8 @@
 {
-  "name": "ai-geneticalgorithm",
+  "name": "sensors",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
     "start": "webpack-dev-server",
     "build": "webpack"

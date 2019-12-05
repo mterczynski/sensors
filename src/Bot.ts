@@ -59,6 +59,7 @@ export class Bot {
     if (!this.whenDied) {
       this.whenDied = new Date();
     }
+
     return this.whenDied.getTime() - this.startDate.getTime();
   }
 
@@ -99,6 +100,7 @@ export class Bot {
       if (!this.whenDied) {
         this.whenDied = new Date();
       }
+
       return;
     }
 

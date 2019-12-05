@@ -7,11 +7,6 @@ const populationSize = 5;
 export class PopulationHandler {
   constructor(private levelData: LevelData) { }
 
-  crossover(botA: Bot, botB: Bot) {
-    botA.neuralNet.getWeights();
-    botB.neuralNet.getWeights();
-  }
-
   getNewGeneration(bots: Bot[]) {
     if (bots.length === 0) {
       return [...Array(populationSize)].map(() => new Bot(tileSize * 3, tileSize * 8, this.levelData));

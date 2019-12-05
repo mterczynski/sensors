@@ -5,4 +5,4 @@ interface Tile {
   type: string;
 }
 
-export type LevelData = Tile[]
+export type LevelData = Tile[];

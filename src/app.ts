@@ -36,13 +36,6 @@ export class App {
     right: document.getElementById('sensorsRight'),
     rightCenter: document.getElementById('sensorsRightCenter'),
   };
-  private neuronWeightsDOM = {
-    center: document.getElementById('neuronCenter'),
-    left: document.getElementById('neuronLeft'),
-    leftCenter: document.getElementById('neuronLeftCenter'),
-    right: document.getElementById('neuronRight'),
-    rightCenter: document.getElementById('neuronRightCenter'),
-  };
   private stats = new Stats();
 
   constructor() {
@@ -206,11 +199,5 @@ export class App {
     this.sensorsDOM.center!.innerHTML = this.sensors.center.toFixed(2) + '';
     this.sensorsDOM.rightCenter!.innerHTML = this.sensors.rightCenter.toFixed(2) + '';
     this.sensorsDOM.right!.innerHTML = this.sensors.right.toFixed(2) + '';
-
-    // this.neuronWeightsDOM.left!.innerHTML = this.bot.neuralNet.getWeights()[0] + '';
-    // this.neuronWeightsDOM.leftCenter!.innerHTML = this.bot.neuralNet.getWeights()[1] + '';
-    // this.neuronWeightsDOM.center!.innerHTML = this.bot.neuralNet.getWeights()[2] + '';
-    // this.neuronWeightsDOM.rightCenter!.innerHTML = this.bot.neuralNet.getWeights()[3] + '';
-    // this.neuronWeightsDOM.right!.innerHTML = this.bot.neuralNet.getWeights()[4] + '';
   }
 }

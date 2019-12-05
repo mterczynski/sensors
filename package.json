@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack"
+    "build": "webpack --mode=development"
   },
   "author": "https://github.com/mterczynski",
   "dependencies": {

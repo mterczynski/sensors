@@ -6,7 +6,6 @@ export class Line {
     public b: Point,
   ) { }
 
-
   getLength() {
     return this.a.distanceTo(this.b);
   }

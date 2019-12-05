@@ -68,9 +68,8 @@ export class App {
         bot.isDead = true;
       }
     });
-    if (this.bots.every((bot) => {
-      return bot.isDead;
-    })) {
+
+    if (this.bots.every(bot => bot.isDead)) {
       this.bots = this.populationHandler.getNewGeneration(this.bots);
       this.updateGenerationIndex();
     }
@@ -194,6 +193,7 @@ export class App {
   }
 
   updateGenerationIndex() {
+    console.log('up')
     document.getElementById('generationIndex')!.innerHTML = 'Generation: ' + ++this.generationIndex;
   }
 

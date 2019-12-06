@@ -12,29 +12,21 @@ pipeline {
       }
     }
 
-    stage('Build and Lint') {
-      parallel {
-        "Build": {
-        // stage('Build') {
-          // steps {
-            sh "yarn build"
-            archiveArtifacts artifacts: 'index.html'
-            archiveArtifacts artifacts: 'bundle.js'
-            archiveArtifacts artifacts: 'main.css'
-            archiveArtifacts artifacts: 'package.json'
-            archiveArtifacts artifacts: 'README.md'
-            archiveArtifacts artifacts: 'js_modules/*'
-        //   }
-        // }
-        }
+    stage('Build') {
+      steps {
+        sh "yarn build"
+        archiveArtifacts artifacts: 'index.html'
+        archiveArtifacts artifacts: 'bundle.js'
+        archiveArtifacts artifacts: 'main.css'
+        archiveArtifacts artifacts: 'package.json'
+        archiveArtifacts artifacts: 'README.md'
+        archiveArtifacts artifacts: 'js_modules/*'
+      }
+    }
 
-        "TSLint": {
-        // stage('TSLint') {
-          // steps {
-            sh "yarn lint:jenkins"
-          // }
-        // }
-        }
+    stage('TSLint') {
+      steps {
+        sh "yarn lint:jenkins"
       }
     }
 

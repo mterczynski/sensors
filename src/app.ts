@@ -79,48 +79,55 @@ export class App {
       ctx: this.ctx,
     });
     this.drawObstacles();
-    this.bots.forEach((bot) => {
+    this.bots.forEach(bot => {
       bot.update();
       this.drawBotSensors(bot);
       drawBot({bot, ctx: this.ctx});
     });
-    this.bots.forEach((bot) => {
+    this.bots.forEach(bot => {
       if (this.botWallCollisions(bot)) {
         bot.isDead = true;
       }
     });
 
-    if (this.bots.every((bot) => bot.isDead)) {
+    if (this.bots.every(bot => bot.isDead)) {
       this.bots = this.populationHandler.getNewGeneration(this.bots);
       this.updateGenerationIndex();
     }
 
     this.stats.end();
 
-    requestAnimationFrame(() => { this.draw(); });
+    requestAnimationFrame(() => this.draw());
+  }
+
+  getClosestIntersection({bot, line}: {bot: Bot, line: Line}) {
+    let closestIntersection: Point = new Point(Infinity, Infinity);
+
+    const playerPos = new Point(bot.x, bot.y);
+    this.levelData.forEach(tile => {
+      const collisionResult = this.collisionDetector.lineRect(line, {
+        height: tileSize,
+        width: tileSize,
+        x: tile.x * tileSize,
+        y: tile.z * tileSize,
+      });
+
+      if (collisionResult.isCollision) {
+        const intersection = collisionResult.intersectionPoint as Point;
+        if (intersection.distanceTo(playerPos) < closestIntersection.distanceTo(playerPos)) {
+          closestIntersection = intersection;
+        }
+      }
+    });
+
+    return closestIntersection;
   }
 
   drawBotSensors(bot: Bot) {
     this.ctx.strokeStyle = 'rgb(200,0,0)';
 
-    bot.getSensorLines().forEach((line: Line) => {
-      let closestIntersection = new Point(Infinity, Infinity);
-      const playerPos = new Point(bot.x, bot.y);
-      this.levelData.forEach((tile) => {
-        const collisionResult = this.collisionDetector.lineRect(line, {
-          height: tileSize,
-          width: tileSize,
-          x: tile.x * tileSize,
-          y: tile.z * tileSize,
-        });
-
-        if (collisionResult.isCollision) {
-          const intersection = collisionResult.intersectionPoint as Point;
-          if (intersection.distanceTo(playerPos) < closestIntersection.distanceTo(playerPos)) {
-            closestIntersection = intersection;
-          }
-        }
-      });
+    bot.getSensorLines().forEach(line => {
+      const closestIntersection: Point = this.getClosestIntersection({bot, line});
 
       if (isFinite(closestIntersection.x)) {
         this.ctx.beginPath();
@@ -148,7 +155,7 @@ export class App {
   }
 
   drawObstacles() {
-    this.levelData.forEach((tile) => {
+    this.levelData.forEach(tile => {
       this.ctx.fillStyle = 'rgb(0, 200, 0)';
       this.ctx.fillRect(tile.x * tileSize, tile.z * tileSize, tileSize, tileSize);
     });
@@ -161,7 +168,7 @@ export class App {
       y: bot.y,
     };
 
-    return this.levelData.some((tile) => {
+    return this.levelData.some(tile => {
       const squareRect = {
         height: tileSize,
         width: tileSize,

@@ -21,7 +21,7 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sh '''
+        bat '''
           ssh root@mteczynski.pl
         '''
       }

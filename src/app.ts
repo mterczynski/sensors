@@ -17,8 +17,8 @@ export class App {
   private readonly collisionDetector = new CollisionDetector();
 
   private generationIndex = 1;
-  private width = tileSize * 19;
-  private height = 19 * tileSize;
+  private boardWidth = tileSize * 19;
+  private boardHeight = 19 * tileSize;
   private bots = new Array(5).fill(0).map((el) => {
     return new Bot(tileSize * 3, tileSize * 8, this.levelData);
   });
@@ -48,7 +48,7 @@ export class App {
   draw() {
     this.stats.begin();
     this.ctx.fillStyle = 'rgb(240,240,240)';
-    this.ctx.fillRect(0, 0, this.width, this.height);
+    this.ctx.fillRect(0, 0, this.boardWidth, this.boardHeight);
     this.drawGrid();
     this.drawObstacles();
     this.bots.forEach((bot) => {
@@ -77,18 +77,18 @@ export class App {
     this.ctx.strokeStyle = 'black';
     this.ctx.lineWidth = 1;
 
-    for (let i = tileSize; i < this.width; i += tileSize) {
+    for (let i = tileSize; i < this.boardWidth; i += tileSize) {
       this.ctx.beginPath();
       this.ctx.moveTo(i + .5, 0 + .5);
-      this.ctx.lineTo(i + .5, this.height + .5);
+      this.ctx.lineTo(i + .5, this.boardHeight + .5);
       this.ctx.stroke();
       this.ctx.closePath();
     }
 
-    for (let i = tileSize; i < this.height; i += tileSize) {
+    for (let i = tileSize; i < this.boardHeight; i += tileSize) {
       this.ctx.beginPath();
       this.ctx.moveTo(0 + .5, i + .5);
-      this.ctx.lineTo(this.width + .5, i + .5);
+      this.ctx.lineTo(this.boardWidth + .5, i + .5);
       this.ctx.stroke();
       this.ctx.closePath();
     }

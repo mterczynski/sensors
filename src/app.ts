@@ -7,7 +7,12 @@ import { keyHandler } from './KeyHandler';
 import { level01 } from './level-data';
 import { PopulationHandler } from './PopulationHandler';
 
-declare var Stats: any;
+declare var Stats: new() => {
+  begin: () => void,
+  end: () => void,
+  dom: any,
+  showPanel: (panelIndex: number) => void,
+};
 
 function drawBot({bot, ctx}: {bot: Bot, ctx: CanvasRenderingContext2D}) {
   ctx.lineWidth = 1;
@@ -47,7 +52,7 @@ export class App {
   };
 
   constructor() {
-    requestAnimationFrame(() => { this.draw(); });
+    requestAnimationFrame(() => this.draw());
     this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
     document.body.appendChild(this.stats.dom);
     keyHandler.addKeyListeners();

@@ -3,6 +3,11 @@ import { Bot } from '../bot';
 export function drawBot({bot, ctx}: {bot: Bot, ctx: CanvasRenderingContext2D}) {
   ctx.lineWidth = 1;
   ctx.fillStyle = 'rgb(100,100,255)';
+
+  if (bot.isDead) {
+    ctx.fillStyle = 'rgb(100, 100, 100)';
+  }
+
   ctx.strokeStyle = '#003300';
 
   ctx.beginPath();

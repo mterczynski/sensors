@@ -13,7 +13,6 @@ enum Direction {
 }
 
 export class Bot {
-
   private direction: Direction = Direction.left;
   private collisionDetector = new CollisionDetector();
   private levelData: LevelData;

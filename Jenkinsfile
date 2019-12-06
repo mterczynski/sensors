@@ -12,6 +12,12 @@ pipeline {
       }
     }
 
+    stage('TSLint') {
+      steps {
+        sh "yarn lint:jenkins"
+      }
+    }
+
     stage('Build') {
       steps {
         sh "yarn build"
@@ -21,12 +27,6 @@ pipeline {
         archiveArtifacts artifacts: 'package.json'
         archiveArtifacts artifacts: 'README.md'
         archiveArtifacts artifacts: 'js_modules/*'
-      }
-    }
-
-    stage('TSLint') {
-      steps {
-        sh "yarn lint:jenkins"
       }
     }
 

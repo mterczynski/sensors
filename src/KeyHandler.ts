@@ -12,11 +12,11 @@ export const keyHandler  = {
       return;
     }
 
-    document.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', e => {
       pressedKeys[e.key.toLowerCase()] = true;
     });
 
-    document.addEventListener('keyup', (e) => {
+    document.addEventListener('keyup', e => {
       pressedKeys[e.key.toLowerCase()] = false;
     });
 

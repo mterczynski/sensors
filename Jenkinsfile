@@ -21,9 +21,11 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sh '''
-          ssh -tt root@mterczynski.pl
-        '''
+        sshagent(credentials: ['global-key']) {
+          sh '''
+            ssh -tt root@mterczynski.pl
+          '''
+        }
       }
     }
   }

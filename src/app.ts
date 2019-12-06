@@ -6,6 +6,7 @@ import { Point } from './geometry-classes/Point';
 import { keyHandler } from './KeyHandler';
 import { level01 } from './level-data';
 import { PopulationHandler } from './PopulationHandler';
+import { drawGrid } from './utils';
 
 declare var Stats: new() => {
   begin: () => void,
@@ -22,31 +23,6 @@ function drawBot({bot, ctx}: {bot: Bot, ctx: CanvasRenderingContext2D}) {
   ctx.beginPath();
   ctx.arc(bot.x, bot.y, bot.radius, 0, 2 * Math.PI, false);
   ctx.fill();
-}
-
-function drawGrid({ctx, boardWidth, boardHeight}: {
-  ctx: CanvasRenderingContext2D,
-  boardWidth: number,
-  boardHeight: number,
-}) {
-  ctx.strokeStyle = 'black';
-  ctx.lineWidth = 1;
-
-  for (let i = tileSize; i < boardWidth; i += tileSize) {
-    ctx.beginPath();
-    ctx.moveTo(i + .5, 0 + .5);
-    ctx.lineTo(i + .5, boardHeight + .5);
-    ctx.stroke();
-    ctx.closePath();
-  }
-
-  for (let i = tileSize; i < boardHeight; i += tileSize) {
-    ctx.beginPath();
-    ctx.moveTo(0 + .5, i + .5);
-    ctx.lineTo(boardWidth + .5, i + .5);
-    ctx.stroke();
-    ctx.closePath();
-  }
 }
 
 export class App {
@@ -77,6 +53,7 @@ export class App {
       boardHeight: this.boardHeight,
       boardWidth: this.boardWidth,
       ctx: this.ctx,
+      tileSize,
     });
     this.drawObstacles();
     this.bots.forEach(bot => {

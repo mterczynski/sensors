@@ -7,6 +7,7 @@ import { keyHandler } from './KeyHandler';
 import { level01 } from './level-data';
 import { PopulationHandler } from './PopulationHandler';
 import { drawGrid } from './utils';
+import { drawBot } from './utils/draw-bot';
 
 declare var Stats: new() => {
   begin: () => void,
@@ -14,16 +15,6 @@ declare var Stats: new() => {
   dom: any,
   showPanel: (panelIndex: number) => void,
 };
-
-function drawBot({bot, ctx}: {bot: Bot, ctx: CanvasRenderingContext2D}) {
-  ctx.lineWidth = 1;
-  ctx.fillStyle = 'rgb(100,100,255)';
-  ctx.strokeStyle = '#003300';
-
-  ctx.beginPath();
-  ctx.arc(bot.x, bot.y, bot.radius, 0, 2 * Math.PI, false);
-  ctx.fill();
-}
 
 export class App {
   private readonly levelData = level01;

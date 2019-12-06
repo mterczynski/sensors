@@ -1,1 +1,1 @@
-export * from './LevelData';
+export * from './level-data.type';

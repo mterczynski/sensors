@@ -1,4 +1,4 @@
-import { Bot } from '../Bot';
+import { Bot } from '../bot';
 
 export function drawBot({bot, ctx}: {bot: Bot, ctx: CanvasRenderingContext2D}) {
   ctx.lineWidth = 1;

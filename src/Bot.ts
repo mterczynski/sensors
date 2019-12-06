@@ -1,8 +1,8 @@
-import { CollisionDetector } from './CollisionDetector';
+import { CollisionDetector } from './collision-detector';
 import { tileSize } from './constants';
 import { Line } from './geometry-classes/Line';
 import { Point } from './geometry-classes/Point';
-import { NeuralNetwork } from './NeuralNetwork';
+import { NeuralNetwork } from './neural-network';
 import { LevelData } from './types';
 
 const turningSpeed = 0.06;

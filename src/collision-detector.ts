@@ -1,4 +1,4 @@
-import { Circle } from './geometry-classes/Circle';
+import { Circle } from './geometry-classes/circle';
 import { Line } from './geometry-classes/Line';
 import { Point } from './geometry-classes/Point';
 

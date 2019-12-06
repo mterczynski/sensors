@@ -1,4 +1,4 @@
-import { Bot } from './Bot';
+import { Bot } from './bot';
 import { tileSize } from './constants';
 import { LevelData } from './types';
 

@@ -1,11 +1,11 @@
-import { Bot } from './Bot';
-import { CollisionDetector } from './CollisionDetector';
+import { Bot } from './bot';
+import { CollisionDetector } from './collision-detector';
 import { tileSize } from './constants';
 import { Line } from './geometry-classes/Line';
 import { Point } from './geometry-classes/Point';
-import { keyHandler } from './KeyHandler';
+import { keyHandler } from './key-handler';
 import { level01 } from './level-data';
-import { PopulationHandler } from './PopulationHandler';
+import { PopulationHandler } from './population-handler';
 import { drawBot, drawGrid } from './utils';
 
 declare var Stats: new() => {

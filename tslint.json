@@ -2,5 +2,10 @@
   "extends": [
     "mterczynski-tslint"
   ],
-  "rules": {}
+  "rules": {},
+  "linterOptions": {
+    "exclude": [
+      "**/*.js"
+    ]
+  }
 }

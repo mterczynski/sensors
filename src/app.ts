@@ -6,8 +6,7 @@ import { Point } from './geometry-classes/Point';
 import { keyHandler } from './KeyHandler';
 import { level01 } from './level-data';
 import { PopulationHandler } from './PopulationHandler';
-import { drawGrid } from './utils';
-import { drawBot } from './utils/draw-bot';
+import { drawBot, drawGrid } from './utils';
 
 declare var Stats: new() => {
   begin: () => void,
@@ -15,6 +14,9 @@ declare var Stats: new() => {
   dom: any,
   showPanel: (panelIndex: number) => void,
 };
+
+const startingBotPosition = {x: tileSize * 3, y: tileSize * 8};
+const populationSize = 5;
 
 export class App {
   private readonly levelData = level01;
@@ -27,7 +29,9 @@ export class App {
   private readonly boardHeight = tileSize * 19;
 
   private generationIndex = 1;
-  private bots = new Array(5).fill(0).map(() => new Bot(tileSize * 3, tileSize * 8, this.levelData));
+  private bots = new Array(populationSize)
+    .fill(0)
+    .map(() => new Bot(startingBotPosition.x, startingBotPosition.y, this.levelData));
 
   constructor() {
     requestAnimationFrame(() => this.draw());

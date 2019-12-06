@@ -14,10 +14,6 @@ export class NeuralNetwork {
     getRandomWeight(),
   ];
 
-  getWeights() {
-    return [...this.weights];
-  }
-
   evaluate(inputs: number[]) {
     if (inputs.length !== inputSize) {
       throw new Error(`Expected ${inputSize} numerical inputs`);

@@ -11,6 +11,7 @@ pipeline {
     stage('Build') {
       steps {
         bat "yarn build"
+        archiveArtifacts artifacts: 'index.html', 'bundle.js', 'main.css', 'package.json', 'README.md'
       }
     }
   }

@@ -66,8 +66,9 @@ export class Bot {
     const sensorValues: number[] = [];
 
     this.getSensorLines().forEach(line => {
-      let closestIntersection = new Point(Infinity, Infinity);
       const playerPos = new Point(this.x, this.y);
+      let closestIntersection = new Point(Infinity, Infinity);
+
       this.levelData.forEach(tile => {
         const pointOfCollision = this.collisionDetector.lineRect(line, {
           height: tileSize,
@@ -93,7 +94,7 @@ export class Bot {
     return sensorValues;
   }
 
-  update() {
+  tick() {
     if (this.isDead) {
       if (!this.whenDied) {
         this.whenDied = new Date();

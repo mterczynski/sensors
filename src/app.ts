@@ -52,7 +52,7 @@ export class App {
     });
     this.drawObstacles();
     this.bots.forEach(bot => {
-      bot.update();
+      bot.tick();
       this.drawBotSensors(bot);
       drawBot({bot, ctx: this.ctx});
     });

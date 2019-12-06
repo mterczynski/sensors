@@ -14,8 +14,9 @@ pipeline {
 
     stage('Build and Lint') {
       parallel {
-        stage('Build') {
-          steps {
+        "Build": {
+        // stage('Build') {
+          // steps {
             sh "yarn build"
             archiveArtifacts artifacts: 'index.html'
             archiveArtifacts artifacts: 'bundle.js'
@@ -23,13 +24,16 @@ pipeline {
             archiveArtifacts artifacts: 'package.json'
             archiveArtifacts artifacts: 'README.md'
             archiveArtifacts artifacts: 'js_modules/*'
-          }
+        //   }
+        // }
         }
 
-        stage('TSLint') {
-          steps {
+        "TSLint": {
+        // stage('TSLint') {
+          // steps {
             sh "yarn lint:jenkins"
-          }
+          // }
+        // }
         }
       }
     }

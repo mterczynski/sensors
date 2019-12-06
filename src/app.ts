@@ -88,9 +88,9 @@ export class App {
     this.ctx.fillStyle = 'rgb(240,240,240)';
     this.ctx.fillRect(0, 0, this.boardWidth, this.boardHeight);
     drawGrid({
-      ctx: this.ctx,
       boardHeight: this.boardHeight,
       boardWidth: this.boardWidth,
+      ctx: this.ctx,
     });
     this.drawObstacles();
     this.bots.forEach((bot) => {

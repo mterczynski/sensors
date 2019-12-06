@@ -2433,10 +2433,10 @@ ms@^2.1.1:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
   integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
 
-mterczynski-tslint@~1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/mterczynski-tslint/-/mterczynski-tslint-1.5.0.tgz#e1e528dd56209c38657c908ec32ce6dd0b3e89d1"
-  integrity sha512-G2yuqfUCIbDdt2sgm/buBXS8pSYIsrd5XSyjTJRQpa1D0dESO1pBU8h7a1OFQ69VDLBkrKVgWSQ8GsU6MEMQQQ==
+mterczynski-tslint@~1.7.0:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/mterczynski-tslint/-/mterczynski-tslint-1.7.0.tgz#90e8033da063a966004b45b4d2ffa7806fe34a9d"
+  integrity sha512-ZLzWEskICCRSeOrSslQFXKaymlWKrzeTVAMrvWEEDAViqoD7r0pFRjqc6gP1e5aXyBQqFMhUMgaVoVR6h4OfWw==
 
 multicast-dns-service-types@^1.1.0:
   version "1.1.0"

@@ -23,6 +23,8 @@ pipeline {
       steps {
         sshagent(credentials: ['global-key']) {
           sh '''
+            cd ~
+            pwd
             ssh -tt root@mterczynski.pl
           '''
         }

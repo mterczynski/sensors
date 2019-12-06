@@ -24,6 +24,31 @@ function drawBot({bot, ctx}: {bot: Bot, ctx: CanvasRenderingContext2D}) {
   ctx.fill();
 }
 
+function drawGrid({ctx, boardWidth, boardHeight}: {
+  ctx: CanvasRenderingContext2D,
+  boardWidth: number,
+  boardHeight: number,
+}) {
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 1;
+
+  for (let i = tileSize; i < boardWidth; i += tileSize) {
+    ctx.beginPath();
+    ctx.moveTo(i + .5, 0 + .5);
+    ctx.lineTo(i + .5, boardHeight + .5);
+    ctx.stroke();
+    ctx.closePath();
+  }
+
+  for (let i = tileSize; i < boardHeight; i += tileSize) {
+    ctx.beginPath();
+    ctx.moveTo(0 + .5, i + .5);
+    ctx.lineTo(boardWidth + .5, i + .5);
+    ctx.stroke();
+    ctx.closePath();
+  }
+}
+
 export class App {
   private readonly levelData = level01;
   private readonly populationHandler = new PopulationHandler(this.levelData);
@@ -62,7 +87,11 @@ export class App {
     this.stats.begin();
     this.ctx.fillStyle = 'rgb(240,240,240)';
     this.ctx.fillRect(0, 0, this.boardWidth, this.boardHeight);
-    this.drawGrid();
+    drawGrid({
+      ctx: this.ctx,
+      boardHeight: this.boardHeight,
+      boardWidth: this.boardWidth,
+    });
     this.drawObstacles();
     this.bots.forEach((bot) => {
       bot.update();
@@ -84,27 +113,6 @@ export class App {
     this.stats.end();
 
     requestAnimationFrame(() => { this.draw(); });
-  }
-
-  drawGrid() {
-    this.ctx.strokeStyle = 'black';
-    this.ctx.lineWidth = 1;
-
-    for (let i = tileSize; i < this.boardWidth; i += tileSize) {
-      this.ctx.beginPath();
-      this.ctx.moveTo(i + .5, 0 + .5);
-      this.ctx.lineTo(i + .5, this.boardHeight + .5);
-      this.ctx.stroke();
-      this.ctx.closePath();
-    }
-
-    for (let i = tileSize; i < this.boardHeight; i += tileSize) {
-      this.ctx.beginPath();
-      this.ctx.moveTo(0 + .5, i + .5);
-      this.ctx.lineTo(this.boardWidth + .5, i + .5);
-      this.ctx.stroke();
-      this.ctx.closePath();
-    }
   }
 
   drawBotSensors(bot: Bot) {

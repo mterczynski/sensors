@@ -70,17 +70,16 @@ export class Bot {
       let closestIntersection = new Point(Infinity, Infinity);
       const playerPos = new Point(this.x, this.y);
       this.levelData.forEach(tile => {
-        const collisionResult = this.collisionDetector.lineRect(line, {
+        const pointOfCollision = this.collisionDetector.lineRect(line, {
           height: tileSize,
           width: tileSize,
           x: tile.x * tileSize,
           y: tile.z * tileSize,
         });
 
-        if (collisionResult.isCollision) {
-          const intersection = collisionResult.intersectionPoint as Point;
-          if (intersection.distanceTo(playerPos) < closestIntersection.distanceTo(playerPos)) {
-            closestIntersection = intersection;
+        if (pointOfCollision) {
+          if (pointOfCollision.distanceTo(playerPos) < closestIntersection.distanceTo(playerPos)) {
+            closestIntersection = pointOfCollision;
           }
         }
       });

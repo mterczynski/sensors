@@ -17,7 +17,7 @@ interface CollisionCheckResult {
 }
 
 export class CollisionDetector {
-  lineRect(line: Line, rect: Rect): CollisionCheckResult {
+  lineRect(line: Line, rect: Rect): Point | null {
 
     // check if the line has hit any of the rectangle's sides
     // uses the Line/Line function below
@@ -33,7 +33,7 @@ export class CollisionDetector {
 
     let closestIntersection = new Point(Infinity, Infinity);
 
-    [left, right, top, bottom].forEach((dir) => {
+    [left, right, top, bottom].forEach(dir => {
       if (!dir.isCollision) {
         return;
       }
@@ -48,10 +48,10 @@ export class CollisionDetector {
     // if ANY of the above are true, the line
     // has hit the rectangle
     if (left.isCollision || right.isCollision || top.isCollision || bottom.isCollision) {
-      return { isCollision: true, intersectionPoint: closestIntersection };
+      return closestIntersection;
     }
 
-    return { isCollision: false };
+    return null;
   }
 
   lineLine(

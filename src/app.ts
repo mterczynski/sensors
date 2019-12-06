@@ -105,18 +105,15 @@ export class App {
 
     const playerPos = new Point(bot.x, bot.y);
     this.levelData.forEach(tile => {
-      const collisionResult = this.collisionDetector.lineRect(line, {
+      const pointOfCollision = this.collisionDetector.lineRect(line, {
         height: tileSize,
         width: tileSize,
         x: tile.x * tileSize,
         y: tile.z * tileSize,
       });
 
-      if (collisionResult.isCollision) {
-        const intersection = collisionResult.intersectionPoint as Point;
-        if (intersection.distanceTo(playerPos) < closestIntersection.distanceTo(playerPos)) {
-          closestIntersection = intersection;
-        }
+      if (pointOfCollision && pointOfCollision.distanceTo(playerPos) < closestIntersection.distanceTo(playerPos)) {
+        closestIntersection = pointOfCollision;
       }
     });
 

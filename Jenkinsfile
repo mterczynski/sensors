@@ -28,7 +28,7 @@ pipeline {
 
         stage('TSLint') {
           steps {
-            sh "tslint --project . -c tslint.jenkins.json"
+            sh "yarn lint:jenkins"
           }
         }
       }

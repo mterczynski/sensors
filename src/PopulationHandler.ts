@@ -12,14 +12,14 @@ export class PopulationHandler {
       return [...Array(populationSize)].map(() => new Bot(tileSize * 3, tileSize * 8, this.levelData));
     }
 
-    bots.sort((prev, next) => prev.getFitness() - next.getFitness()).reverse();
+    // bots.sort((prev, next) => prev.getFitness() - next.getFitness()).reverse();
 
-    const maxFit = bots[0].getFitness();
+    // const maxFit = bots[0].getFitness();
 
-    bots.forEach((bot) => {
-      bot.calculatedFitness = Math.round(bot.getFitness() / maxFit * 100);
-    });
+    // bots.forEach((bot) => {
+    //   bot.calculatedFitness = Math.round(bot.getFitness() / maxFit * 100);
+    // });
 
-    return [];
+    return [...Array(populationSize)].map(() => new Bot(tileSize * 3, tileSize * 8, this.levelData));
   }
 }

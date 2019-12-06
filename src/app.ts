@@ -65,6 +65,7 @@ export class App {
 
     if (this.bots.every((bot) => bot.isDead)) {
       this.bots = this.populationHandler.getNewGeneration(this.bots);
+      console.log(this.bots);
       this.updateGenerationIndex();
     }
 

@@ -4,13 +4,13 @@ pipeline {
   stages {
     stage('Install') {
       steps {
-        bat "yarn"
+        sh "yarn"
       }
     }
 
     stage('Build') {
       steps {
-        bat "yarn build"
+        sh "yarn build"
         archiveArtifacts artifacts: 'index.html'
         archiveArtifacts artifacts: 'bundle.js'
         archiveArtifacts artifacts: 'main.css'
@@ -21,7 +21,7 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        bat '''
+        sh '''
           ssh root@mteczynski.pl
         '''
       }

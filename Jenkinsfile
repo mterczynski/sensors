@@ -1,6 +1,10 @@
 pipeline {
   agent any
 
+  environment {
+    DESTINATION = "root@mterczynski.pl:/var/www/html/sensors"
+  }
+
   stages {
     stage('Install') {
       steps {
@@ -24,12 +28,12 @@ pipeline {
       steps {
         sshagent(credentials: ['global-key']) {
           sh '''
-            scp index.html root@mterczynski.pl:/var/www/html/sensors
-            scp bundle.js root@mterczynski.pl:/var/www/html/sensors
-            scp main.css root@mterczynski.pl:/var/www/html/sensors
-            scp package.json root@mterczynski.pl:/var/www/html/sensors
-            scp README.md root@mterczynski.pl:/var/www/html/sensors
-            scp -r js_modules root@mterczynski.pl:/var/www/html/sensors
+            scp index.html ${DESTINATION}
+            scp bundle.js ${DESTINATION}
+            scp main.css ${DESTINATION}
+            scp package.json ${DESTINATION}
+            scp README.md ${DESTINATION}
+            scp -r js_modules ${DESTINATION}
             exit
           '''
         }

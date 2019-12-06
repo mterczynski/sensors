@@ -111,7 +111,7 @@ export class App {
         this.ctx.arc(closestIntersection.x, closestIntersection.y, 5, 0, 2 * Math.PI, false);
         this.ctx.fill();
       } else {
-        throw new Error('Sensor line is too short');
+        throw new Error('Sensor line is not finite');
         // if you want to work with limited-range sensors:
 
         // this.ctx.beginPath();

@@ -87,7 +87,7 @@ export class Bot {
       if (isFinite(closestIntersection.x)) {
         sensorValues.push(closestIntersection.distanceTo(playerPos));
       } else {
-        throw new Error('Sensor line is too short');
+        throw new Error('Sensor line is not finite');
       }
     });
 

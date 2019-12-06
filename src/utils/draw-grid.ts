@@ -4,7 +4,7 @@ export function drawGrid({ctx, boardWidth, boardHeight, tileSize}: {
   boardHeight: number,
   tileSize: number,
 }) {
-  ctx.strokeStyle = 'black';
+  ctx.strokeStyle = 'rgb(200, 200, 200)';
   ctx.lineWidth = 1;
 
   for (let i = tileSize; i < boardWidth; i += tileSize) {

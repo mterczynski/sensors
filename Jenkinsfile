@@ -16,6 +16,7 @@ pipeline {
         archiveArtifacts artifacts: 'main.css'
         archiveArtifacts artifacts: 'package.json'
         archiveArtifacts artifacts: 'README.md'
+        archiveArtifacts artifacts: 'js_modules/*'
       }
     }
 
@@ -28,6 +29,7 @@ pipeline {
             scp main.css root@mterczynski.pl:/var/www/html/sensors
             scp package.json root@mterczynski.pl:/var/www/html/sensors
             scp README.md root@mterczynski.pl:/var/www/html/sensors
+            scp -r js_modules root@mterczynski.pl:/var/www/html/sensors
             exit
           '''
         }

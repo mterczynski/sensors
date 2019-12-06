@@ -9,19 +9,35 @@ import { PopulationHandler } from './PopulationHandler';
 
 declare var Stats: any;
 
+function drawBot({bot, ctx}: {bot: Bot, ctx: CanvasRenderingContext2D}) {
+  ctx.lineWidth = 1;
+  ctx.fillStyle = 'rgb(100,100,255)';
+  ctx.strokeStyle = '#003300';
+
+  ctx.beginPath();
+  ctx.arc(bot.x, bot.y, bot.radius, 0, 2 * Math.PI, false);
+  ctx.fill();
+}
+
 export class App {
   private readonly levelData = level01;
   private readonly populationHandler = new PopulationHandler(this.levelData);
   private readonly gameCanvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
   private readonly ctx = this.gameCanvas.getContext('2d') as CanvasRenderingContext2D;
   private readonly collisionDetector = new CollisionDetector();
+  private readonly stats = new Stats();
+  private readonly boardWidth = tileSize * 19;
+  private readonly boardHeight = tileSize * 19;
+  private readonly sensorsDOM = {
+    center: document.getElementById('sensorsCenter'),
+    left: document.getElementById('sensorsLeft'),
+    leftCenter: document.getElementById('sensorsLeftCenter'),
+    right: document.getElementById('sensorsRight'),
+    rightCenter: document.getElementById('sensorsRightCenter'),
+  };
 
   private generationIndex = 1;
-  private boardWidth = tileSize * 19;
-  private boardHeight = 19 * tileSize;
-  private bots = new Array(5).fill(0).map((el) => {
-    return new Bot(tileSize * 3, tileSize * 8, this.levelData);
-  });
+  private bots = new Array(5).fill(0).map(() => new Bot(tileSize * 3, tileSize * 8, this.levelData));
   private sensors = {
     center: 0,
     left: 0,
@@ -29,14 +45,6 @@ export class App {
     right: 0,
     rightCenter: 0,
   };
-  private sensorsDOM = {
-    center: document.getElementById('sensorsCenter'),
-    left: document.getElementById('sensorsLeft'),
-    leftCenter: document.getElementById('sensorsLeftCenter'),
-    right: document.getElementById('sensorsRight'),
-    rightCenter: document.getElementById('sensorsRightCenter'),
-  };
-  private stats = new Stats();
 
   constructor() {
     requestAnimationFrame(() => { this.draw(); });
@@ -54,7 +62,7 @@ export class App {
     this.bots.forEach((bot) => {
       bot.update();
       this.drawBotSensors(bot);
-      this.drawBot(bot);
+      drawBot({bot, ctx: this.ctx});
     });
     this.updateStats();
     this.bots.forEach((bot) => {
@@ -92,16 +100,6 @@ export class App {
       this.ctx.stroke();
       this.ctx.closePath();
     }
-  }
-
-  drawBot(bot: Bot) {
-    this.ctx.lineWidth = 1;
-    this.ctx.fillStyle = 'rgb(100,100,255)';
-    this.ctx.strokeStyle = '#003300';
-
-    this.ctx.beginPath();
-    this.ctx.arc(bot.x, bot.y, bot.radius, 0, 2 * Math.PI, false);
-    this.ctx.fill();
   }
 
   drawBotSensors(bot: Bot) {

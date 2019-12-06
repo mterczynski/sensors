@@ -18,5 +18,13 @@ pipeline {
         archiveArtifacts artifacts: 'README.md'
       }
     }
+
+    stage('Deploy') {
+      steps {
+        sh '''
+          ssh root@mteczynski.pl
+        '''
+      }
+    }
   }
 }

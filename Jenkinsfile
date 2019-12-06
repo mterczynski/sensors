@@ -11,7 +11,11 @@ pipeline {
     stage('Build') {
       steps {
         bat "yarn build"
-        archiveArtifacts artifacts: 'index.html', 'bundle.js', 'main.css', 'package.json', 'README.md'
+        archiveArtifacts artifacts: 'index.html'
+        archiveArtifacts artifacts: 'bundle.js'
+        archiveArtifacts artifacts: 'main.css'
+        archiveArtifacts artifacts: 'package.json'
+        archiveArtifacts artifacts: 'README.md'
       }
     }
   }

@@ -1,12 +1,17 @@
 const inputSize = 5;
+const maxWeightOffset  = 100;
+
+function getRandomWeight() {
+  return maxWeightOffset * (Math.random() * 2 - 1);
+}
 
 export class NeuralNetwork {
   private weights = [
-    Math.random() * 200 - 100,
-    Math.random() * 200 - 100,
+    getRandomWeight(),
+    getRandomWeight(),
     0,
-    Math.random() * 200 - 100,
-    Math.random() * 200 - 100,
+    getRandomWeight(),
+    getRandomWeight(),
   ];
 
   getWeights() {

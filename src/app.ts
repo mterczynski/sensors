@@ -58,23 +58,9 @@ export class App {
   private readonly stats = new Stats();
   private readonly boardWidth = tileSize * 19;
   private readonly boardHeight = tileSize * 19;
-  private readonly sensorsDOM = {
-    center: document.getElementById('sensorsCenter'),
-    left: document.getElementById('sensorsLeft'),
-    leftCenter: document.getElementById('sensorsLeftCenter'),
-    right: document.getElementById('sensorsRight'),
-    rightCenter: document.getElementById('sensorsRightCenter'),
-  };
 
   private generationIndex = 1;
   private bots = new Array(5).fill(0).map(() => new Bot(tileSize * 3, tileSize * 8, this.levelData));
-  private sensors = {
-    center: 0,
-    left: 0,
-    leftCenter: 0,
-    right: 0,
-    rightCenter: 0,
-  };
 
   constructor() {
     requestAnimationFrame(() => this.draw());
@@ -98,7 +84,6 @@ export class App {
       this.drawBotSensors(bot);
       drawBot({bot, ctx: this.ctx});
     });
-    this.updateStats();
     this.bots.forEach((bot) => {
       if (this.botWallCollisions(bot)) {
         bot.isDead = true;
@@ -117,8 +102,6 @@ export class App {
 
   drawBotSensors(bot: Bot) {
     this.ctx.strokeStyle = 'rgb(200,0,0)';
-
-    const sensorValues: number[] = [];
 
     bot.getSensorLines().forEach((line: Line) => {
       let closestIntersection = new Point(Infinity, Infinity);
@@ -145,7 +128,6 @@ export class App {
         this.ctx.lineTo(closestIntersection.x, closestIntersection.y);
         this.ctx.stroke();
         this.ctx.closePath();
-        sensorValues.push(closestIntersection.distanceTo(playerPos));
         // draw arc where sensor detected wall:
         this.ctx.fillStyle = '#ff0000';
 
@@ -163,14 +145,6 @@ export class App {
         // this.ctx.closePath();
       }
     });
-
-    this.sensors.left = sensorValues[0];
-    this.sensors.leftCenter = sensorValues[1];
-    this.sensors.center = sensorValues[2];
-    this.sensors.rightCenter = sensorValues[3];
-    this.sensors.right = sensorValues[4];
-
-    return sensorValues;
   }
 
   drawObstacles() {
@@ -201,14 +175,5 @@ export class App {
 
   updateGenerationIndex() {
     document.getElementById('generationIndex')!.innerHTML = 'Generation: ' + (++this.generationIndex);
-  }
-
-  // Own stats like sensor distances, neuron weights
-  updateStats() {
-    this.sensorsDOM.left!.innerHTML = this.sensors.left.toFixed(2) + '';
-    this.sensorsDOM.leftCenter!.innerHTML = this.sensors.leftCenter.toFixed(2) + '';
-    this.sensorsDOM.center!.innerHTML = this.sensors.center.toFixed(2) + '';
-    this.sensorsDOM.rightCenter!.innerHTML = this.sensors.rightCenter.toFixed(2) + '';
-    this.sensorsDOM.right!.innerHTML = this.sensors.right.toFixed(2) + '';
   }
 }

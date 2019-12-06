@@ -66,10 +66,10 @@ export class Bot {
   getSensorLengths() {
     const sensorValues: number[] = [];
 
-    this.getSensorLines().forEach((line) => {
+    this.getSensorLines().forEach(line => {
       let closestIntersection = new Point(Infinity, Infinity);
       const playerPos = new Point(this.x, this.y);
-      this.levelData.forEach((tile) => {
+      this.levelData.forEach(tile => {
         const collisionResult = this.collisionDetector.lineRect(line, {
           height: tileSize,
           width: tileSize,

@@ -22,7 +22,7 @@ pipeline {
     stage('Deploy') {
       steps {
         sh '''
-          ssh root@mteczynski.pl
+          ssh root@mterczynski.pl
         '''
       }
     }

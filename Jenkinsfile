@@ -23,7 +23,11 @@ pipeline {
       steps {
         sshagent(credentials: ['global-key']) {
           sh '''
-            ssh -tt root@mterczynski.pl
+            scp index.html root@mterczynski.pl:/var/www/html/sensors
+            scp bundle.js root@mterczynski.pl:/var/www/html/sensors
+            scp main.css root@mterczynski.pl:/var/www/html/sensors
+            scp package.json root@mterczynski.pl:/var/www/html/sensors
+            scp README.md root@mterczynski.pl:/var/www/html/sensors
             exit
           '''
         }

@@ -125,7 +125,7 @@ export class App {
 
   drawObstacles() {
     this.levelData.forEach(tile => {
-      this.ctx.fillStyle = 'rgb(0, 200, 0)';
+      this.ctx.fillStyle = 'rgb(200, 100, 100)';
       this.ctx.fillRect(tile.x * tileSize, tile.z * tileSize, tileSize, tileSize);
     });
   }

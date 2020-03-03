@@ -32,17 +32,15 @@ pipeline {
 
     stage('Deploy') {
       steps {
-        sshagent(credentials: ['global-key']) {
-          sh '''
-            scp index.html ${DESTINATION}
-            scp bundle.js ${DESTINATION}
-            scp main.css ${DESTINATION}
-            scp package.json ${DESTINATION}
-            scp README.md ${DESTINATION}
-            scp -r js_modules ${DESTINATION}
-            exit
-          '''
-        }
+        sh '''
+          scp index.html ${DESTINATION}
+          scp bundle.js ${DESTINATION}
+          scp main.css ${DESTINATION}
+          scp package.json ${DESTINATION}
+          scp README.md ${DESTINATION}
+          scp -r js_modules ${DESTINATION}
+          exit
+        '''
       }
     }
   }

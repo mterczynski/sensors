@@ -1,8 +1,10 @@
-const inputSize = 5;
-const maxWeightOffset  = 100;
+import { sensorsPerBotCount } from './constants';
+
+const inputSize = sensorsPerBotCount;
 
 function getRandomWeight() {
-  return maxWeightOffset * (Math.random() * 2 - 1);
+  // same chances for negative or positive number
+  return Math.random() - 0.5;
 }
 
 export class NeuralNetwork {

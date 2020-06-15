@@ -5,6 +5,9 @@ export class Point {
   ) { }
 
   distanceTo(point: Point) {
-    return Math.sqrt(Math.pow(point.x - this.x, 2) + Math.pow(point.y - this.y, 2));
+    const deltaX = point.x - this.x;
+    const deltaY = point.x - this.x;
+
+    return Math.sqrt(deltaX ** 2 + deltaY ** 2);
   }
 }

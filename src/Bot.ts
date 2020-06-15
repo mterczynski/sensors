@@ -1,5 +1,5 @@
 import { CollisionDetector } from './collision-detector';
-import { tileSize } from './constants';
+import { sensorsPerBotCount, tileSize } from './constants';
 import { Line } from './geometry-classes/Line';
 import { Point } from './geometry-classes/Point';
 import { NeuralNetwork } from './neural-network';
@@ -37,10 +37,9 @@ export class Bot {
 
   getSensorLines() {
     const maxLineLength = 1000;
-    const sensorsCount = 5;
     const deg45 = Math.PI / 4;
 
-    const sensorLines = [...new Array(sensorsCount)].map((e, sensorIndex) => {
+    const sensorLines = [...new Array(sensorsPerBotCount)].map((e, sensorIndex) => {
       const lineEnd = new Point(
         this.x + maxLineLength * Math.cos(sensorIndex * deg45 + this.rotation + Math.PI),
         this.y + (maxLineLength * Math.sin(sensorIndex * deg45 + this.rotation + Math.PI)),

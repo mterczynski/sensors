@@ -4,6 +4,7 @@ import {
   canvasBackgroundColor,
   pointOfCollisionColor,
   pointOfCollisionRadius,
+  populationSize,
   sensorLineColor,
   startingBotPosition,
   tileSize,
@@ -16,6 +17,7 @@ import { level01 } from './level-data';
 import { PopulationHandler } from './population-handler';
 import { drawBot, drawGrid } from './utils';
 
+// FPS stats visible in top left corner
 declare var Stats: new() => {
   begin: () => void,
   end: () => void,
@@ -23,7 +25,10 @@ declare var Stats: new() => {
   showPanel: (panelIndex: number) => void,
 };
 
-const populationSize = 5;
+const levelSize = {
+  height: 19,
+  width: 19,
+};
 
 export class App {
   private readonly levelData = level01;
@@ -32,13 +37,17 @@ export class App {
   private readonly ctx = this.gameCanvas.getContext('2d') as CanvasRenderingContext2D;
   private readonly collisionDetector = new CollisionDetector();
   private readonly stats = new Stats();
-  private readonly boardWidth = tileSize * 19;
-  private readonly boardHeight = tileSize * 19;
+  private readonly boardWidth = tileSize * levelSize.width;
+  private readonly boardHeight = tileSize * levelSize.height;
 
   private generationIndex = 1;
   private bots = new Array(populationSize)
     .fill(null)
-    .map(() => new Bot(startingBotPosition.x, startingBotPosition.y, this.levelData));
+    .map(() => new Bot(
+      startingBotPosition.x * tileSize,
+      startingBotPosition.y * tileSize,
+      this.levelData,
+    ));
 
   private drawCanvasBackground() {
     this.ctx.fillStyle = canvasBackgroundColor;
@@ -161,7 +170,6 @@ export class App {
   }
 
   drawWalls() {
-
     this.levelData.forEach(wall => {
       this.ctx.fillStyle = wallColor;
       this.ctx.fillRect(wall.x * tileSize, wall.z * tileSize, tileSize, tileSize);

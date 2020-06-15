@@ -1,7 +1,12 @@
 
-export const tileSize = 40;
+export const startingBotPosition = {x: 3, y: 8};
+export const sensorsPerBotCount = 5;
+export const populationSize = 5;
+
+// display settings:
+
 export const pointOfCollisionRadius = 5;
-export const startingBotPosition = {x: tileSize * 3, y: tileSize * 8};
+export const tileSize = 40;
 
 export const wallColor = 'rgb(0, 160, 120)';
 export const sensorLineColor = 'rgb(200, 0, 0)';

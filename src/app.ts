@@ -30,52 +30,80 @@ export class App {
 
   private generationIndex = 1;
   private bots = new Array(populationSize)
-    .fill(0)
+    .fill(null)
     .map(() => new Bot(startingBotPosition.x, startingBotPosition.y, this.levelData));
 
+  private drawCanvasBackground() {
+    this.ctx.fillStyle = 'rgb(240,240,240)';
+    this.ctx.fillRect(0, 0, this.boardWidth, this.boardHeight);
+  }
+
+  private checkForBotDeaths() {
+    this.bots.forEach(bot => {
+      if (this.isBotCollidingWithWalls(bot)) {
+        bot.isDead = true;
+      }
+    });
+  }
+
+  private drawBots() {
+    this.bots.forEach(bot => {
+      this.drawBotSensors(bot);
+      drawBot({ bot, ctx: this.ctx });
+    });
+  }
+
+  private tickBots() {
+    this.bots.forEach(bot => bot.tick());
+  }
+
+  private checkForPopulationDeath() {
+    if (this.bots.every(bot => bot.isDead)) {
+      this.bots = this.populationHandler.getNewGeneration(this.bots);
+      this.updateGenerationIndex();
+    }
+  }
+
+  // draws circle in place which sensor detected wall:
+  private drawPointOfCollision(circleCenter: Point) {
+    this.ctx.fillStyle = '#ff0000';
+
+    this.ctx.beginPath();
+    this.ctx.arc(circleCenter.x, circleCenter.y, 5, 0, 2 * Math.PI, false);
+    this.ctx.fill();
+  }
+
   constructor() {
-    requestAnimationFrame(() => this.draw());
+    requestAnimationFrame(() => this.onNextAnimationFrame());
     this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
     document.body.appendChild(this.stats.dom);
     keyHandler.addKeyListeners();
   }
 
-  draw() {
+  onNextAnimationFrame() {
     this.stats.begin();
-    this.ctx.fillStyle = 'rgb(240,240,240)';
-    this.ctx.fillRect(0, 0, this.boardWidth, this.boardHeight);
+    this.drawCanvasBackground();
     drawGrid({
       boardHeight: this.boardHeight,
       boardWidth: this.boardWidth,
       ctx: this.ctx,
       tileSize,
     });
-    this.drawObstacles();
-    this.bots.forEach(bot => {
-      bot.tick();
-      this.drawBotSensors(bot);
-      drawBot({bot, ctx: this.ctx});
-    });
-    this.bots.forEach(bot => {
-      if (this.botWallCollisions(bot)) {
-        bot.isDead = true;
-      }
-    });
-
-    if (this.bots.every(bot => bot.isDead)) {
-      this.bots = this.populationHandler.getNewGeneration(this.bots);
-      this.updateGenerationIndex();
-    }
+    this.drawWalls();
+    this.tickBots();
+    this.drawBots();
+    this.checkForBotDeaths();
+    this.checkForPopulationDeath();
 
     this.stats.end();
 
-    requestAnimationFrame(() => this.draw());
+    requestAnimationFrame(() => this.onNextAnimationFrame());
   }
 
   getClosestIntersection({bot, line}: {bot: Bot, line: Line}) {
     let closestIntersection: Point = new Point(Infinity, Infinity);
 
-    const playerPos = new Point(bot.x, bot.y);
+    const botPosition = new Point(bot.x, bot.y);
     this.levelData.forEach(tile => {
       const pointOfCollision = this.collisionDetector.lineRect(line, {
         height: tileSize,
@@ -84,7 +112,7 @@ export class App {
         y: tile.z * tileSize,
       });
 
-      if (pointOfCollision && pointOfCollision.distanceTo(playerPos) < closestIntersection.distanceTo(playerPos)) {
+      if (pointOfCollision && pointOfCollision.distanceTo(botPosition) < closestIntersection.distanceTo(botPosition)) {
         closestIntersection = pointOfCollision;
       }
     });
@@ -104,12 +132,7 @@ export class App {
         this.ctx.lineTo(closestIntersection.x, closestIntersection.y);
         this.ctx.stroke();
         this.ctx.closePath();
-        // draw arc where sensor detected wall:
-        this.ctx.fillStyle = '#ff0000';
-
-        this.ctx.beginPath();
-        this.ctx.arc(closestIntersection.x, closestIntersection.y, 5, 0, 2 * Math.PI, false);
-        this.ctx.fill();
+        this.drawPointOfCollision(closestIntersection);
       } else {
         throw new Error('Sensor line is not finite');
         // if you want to work with limited-range sensors:
@@ -123,15 +146,15 @@ export class App {
     });
   }
 
-  drawObstacles() {
-    this.levelData.forEach(tile => {
+  drawWalls() {
+    this.levelData.forEach(wall => {
       this.ctx.fillStyle = 'rgb(200, 100, 100)';
-      this.ctx.fillRect(tile.x * tileSize, tile.z * tileSize, tileSize, tileSize);
+      this.ctx.fillRect(wall.x * tileSize, wall.z * tileSize, tileSize, tileSize);
     });
   }
 
-  botWallCollisions(bot: Bot) {
-    const playerCircle = {
+  isBotCollidingWithWalls(bot: Bot) {
+    const botCircle = {
       radius: bot.radius,
       x: bot.x,
       y: bot.y,
@@ -145,7 +168,7 @@ export class App {
         y: tile.z * tileSize,
       };
 
-      return this.collisionDetector.rectCircle(squareRect, playerCircle).isCollision;
+      return this.collisionDetector.rectCircle(squareRect, botCircle).isCollision;
     });
   }
 

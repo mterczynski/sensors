@@ -1,6 +1,14 @@
 import { Bot } from './bot';
 import { CollisionDetector } from './collision-detector';
-import { pointOfCollisionColor, pointOfCollisionRadius, sensorLineColor, tileSize, wallColor } from './constants';
+import {
+  canvasBackgroundColor,
+  pointOfCollisionColor,
+  pointOfCollisionRadius,
+  sensorLineColor,
+  startingBotPosition,
+  tileSize,
+  wallColor,
+} from './constants';
 import { Line } from './geometry-classes/Line';
 import { Point } from './geometry-classes/Point';
 import { keyHandler } from './key-handler';
@@ -15,7 +23,6 @@ declare var Stats: new() => {
   showPanel: (panelIndex: number) => void,
 };
 
-const startingBotPosition = {x: tileSize * 3, y: tileSize * 8};
 const populationSize = 5;
 
 export class App {
@@ -34,7 +41,7 @@ export class App {
     .map(() => new Bot(startingBotPosition.x, startingBotPosition.y, this.levelData));
 
   private drawCanvasBackground() {
-    this.ctx.fillStyle = 'rgb(240,240,240)';
+    this.ctx.fillStyle = canvasBackgroundColor;
     this.ctx.fillRect(0, 0, this.boardWidth, this.boardHeight);
   }
 

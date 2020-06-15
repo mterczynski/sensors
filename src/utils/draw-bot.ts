@@ -1,14 +1,10 @@
 import { Bot } from '../bot';
+import { aliveBotColor, deadBotColor } from '../constants';
 
 export function drawBot({bot, ctx}: {bot: Bot, ctx: CanvasRenderingContext2D}) {
-  ctx.lineWidth = 1;
-  ctx.fillStyle = 'rgb(100,100,255)';
-
-  if (bot.isDead) {
-    ctx.fillStyle = 'rgb(100, 100, 100)';
-  }
-
-  ctx.strokeStyle = '#003300';
+  ctx.fillStyle = bot.isDead ?
+    deadBotColor :
+    aliveBotColor;
 
   ctx.beginPath();
   ctx.arc(bot.x, bot.y, bot.radius, 0, 2 * Math.PI, false);

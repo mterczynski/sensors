@@ -15,43 +15,43 @@ enum Direction {
 export class Bot {
   private direction: Direction = Direction.left;
   private collisionDetector = new CollisionDetector();
-  private levelData: LevelData;
   private startDate: Date = new Date();
   private whenDied?: Date;
 
   readonly radius = 10;
-  readonly neuralNet = new NeuralNetwork();
+  readonly neuralNetwork: NeuralNetwork;
 
   calculatedFitness?: number;
-  x: number;
-  y: number;
   rotation = 0;
   velocity = 3 * 1.2;
   isDead = false;
 
-  constructor(posX: number, posY: number, levelData: LevelData, neuralNet?: NeuralNetwork) {
-    this.x = posX;
-    this.y = posY;
-    this.levelData = levelData;
-    if (neuralNet) {
-      this.neuralNet = neuralNet;
-    }
+  constructor(
+    public x: number,
+    public y: number,
+    private levelData: LevelData,
+    neuralNetwork?: NeuralNetwork,
+  ) {
+    this.neuralNetwork = neuralNetwork || new NeuralNetwork();
   }
 
   getSensorLines() {
-    const lines = [];
+    const maxLineLength = 1000;
+    const sensorsCount = 5;
+    const deg45 = Math.PI / 4;
 
-    for (let i = 0; i < 5; i++) {
-      const lineEndpoint = new Point(
-        this.x + 1000 * Math.cos(i * Math.PI / 4 + this.rotation + Math.PI),
-        this.y + (1000 * Math.sin(i * Math.PI / 4 + this.rotation + Math.PI)),
+    const sensorLines = [...new Array(sensorsCount)].map((e, sensorIndex) => {
+      const lineEnd = new Point(
+        this.x + maxLineLength * Math.cos(sensorIndex * deg45 + this.rotation + Math.PI),
+        this.y + (maxLineLength * Math.sin(sensorIndex * deg45 + this.rotation + Math.PI)),
       );
 
-      const line = new Line(new Point(this.x, this.y), lineEndpoint);
-      lines.push(line);
-    }
+      const lineStart = new Point(this.x, this.y);
 
-    return lines;
+      return new Line(lineStart, lineEnd);
+    });
+
+    return sensorLines;
   }
 
   getFitness() {
@@ -103,11 +103,11 @@ export class Bot {
       return;
     }
 
-    if (this.neuralNet.evaluate(this.getSensorLengths()) < 0) {
-      this.direction = Direction.left;
-    } else {
-      this.direction = Direction.right;
-    }
+    const isNeuralNetEvaluationNegative = this.neuralNetwork.evaluate(this.getSensorLengths()) < 0;
+
+    this.direction = isNeuralNetEvaluationNegative ?
+      Direction.left :
+      Direction.right;
 
     this.rotation += this.direction;
     this.x += this.velocity * Math.cos(this.rotation - Math.PI / 2);

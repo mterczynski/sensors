@@ -1,16 +1,16 @@
 import { Bot } from './bot';
 import { populationSize, startingBotPosition, tileSize } from './settings';
-import { LevelData } from './types';
+import { Tile } from './types';
 
 export class PopulationHandler {
-  constructor(private levelData: LevelData) { }
+  constructor(private levelTiles: Tile[]) { }
 
   getNewGeneration(bots: Bot[]) {
     // todo - calculate bots fitnesses, generate new bots from their parents genes
     return [...Array(populationSize)].map(() => new Bot(
       startingBotPosition.x * tileSize,
       startingBotPosition.y * tileSize,
-      this.levelData,
+      this.levelTiles,
     ));
 
     // bots.sort((prev, next) => prev.getFitness() - next.getFitness()).reverse();

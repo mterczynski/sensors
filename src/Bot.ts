@@ -3,7 +3,7 @@ import { Line } from './geometry-classes/Line';
 import { Point } from './geometry-classes/Point';
 import { NeuralNetwork } from './neural-network';
 import { sensorsPerBotCount, tileSize } from './settings';
-import { LevelData } from './types';
+import { Tile } from './types';
 
 const turningSpeed = 0.06;
 
@@ -29,7 +29,7 @@ export class Bot {
   constructor(
     public x: number,
     public y: number,
-    private levelData: LevelData,
+    private levelTiles: Tile[],
     neuralNetwork?: NeuralNetwork,
   ) {
     this.neuralNetwork = neuralNetwork || new NeuralNetwork();
@@ -68,7 +68,7 @@ export class Bot {
       const playerPos = new Point(this.x, this.y);
       let closestIntersection = new Point(Infinity, Infinity);
 
-      this.levelData.forEach(tile => {
+      this.levelTiles.forEach(tile => {
         const pointOfCollision = this.collisionDetector.lineRect(line, {
           height: tileSize,
           width: tileSize,

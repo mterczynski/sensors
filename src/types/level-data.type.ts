@@ -1,7 +1,10 @@
-interface Tile {
+export interface Tile {
   x: number;
   y: number;
   type: string;
 }
 
-export type LevelData = Tile[];
+export interface LevelData {
+  size: number;
+  tiles: Tile[];
+}

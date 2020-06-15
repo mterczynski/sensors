@@ -1,7 +1,9 @@
+import { level01 } from './level-data';
 
 export const startingBotPosition = {x: 3, y: 8};
 export const sensorsPerBotCount = 5;
 export const populationSize = 5;
+export const activeLevel = level01;
 
 // display settings:
 

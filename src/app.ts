@@ -1,5 +1,10 @@
 import { Bot } from './bot';
 import { CollisionDetector } from './collision-detector';
+import { Line } from './geometry-classes/Line';
+import { Point } from './geometry-classes/Point';
+import { keyHandler } from './key-handler';
+import { level01 } from './level-data';
+import { PopulationHandler } from './population-handler';
 import {
   canvasBackgroundColor,
   pointOfCollisionColor,
@@ -10,11 +15,6 @@ import {
   tileSize,
   wallColor,
 } from './settings';
-import { Line } from './geometry-classes/Line';
-import { Point } from './geometry-classes/Point';
-import { keyHandler } from './key-handler';
-import { level01 } from './level-data';
-import { PopulationHandler } from './population-handler';
 import { drawBot, drawGrid } from './utils';
 
 // FPS stats visible in top left corner

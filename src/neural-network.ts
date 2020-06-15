@@ -1,4 +1,4 @@
-import { sensorsPerBotCount } from './constants';
+import { sensorsPerBotCount } from './settings';
 
 const inputSize = sensorsPerBotCount;
 

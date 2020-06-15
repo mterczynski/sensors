@@ -9,7 +9,7 @@ import {
   startingBotPosition,
   tileSize,
   wallColor,
-} from './constants';
+} from './settings';
 import { Line } from './geometry-classes/Line';
 import { Point } from './geometry-classes/Point';
 import { keyHandler } from './key-handler';

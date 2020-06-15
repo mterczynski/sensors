@@ -1,5 +1,5 @@
 import { Bot } from '../bot';
-import { aliveBotColor, deadBotColor } from '../constants';
+import { aliveBotColor, deadBotColor } from '../settings';
 
 export function drawBot({bot, ctx}: {bot: Bot, ctx: CanvasRenderingContext2D}) {
   ctx.fillStyle = bot.isDead ?

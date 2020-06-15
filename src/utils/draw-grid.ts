@@ -1,4 +1,4 @@
-import { gridLineColor } from '../constants';
+import { gridLineColor } from '../settings';
 
 export function drawGrid({ctx, boardWidth, boardHeight, tileSize}: {
   ctx: CanvasRenderingContext2D,

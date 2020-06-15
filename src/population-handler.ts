@@ -1,5 +1,5 @@
 import { Bot } from './bot';
-import { populationSize, startingBotPosition, tileSize } from './constants';
+import { populationSize, startingBotPosition, tileSize } from './settings';
 import { LevelData } from './types';
 
 export class PopulationHandler {

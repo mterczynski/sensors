@@ -25,20 +25,15 @@ declare var Stats: new() => {
   showPanel: (panelIndex: number) => void,
 };
 
-const levelSize = {
-  height: 19,
-  width: 19,
-};
-
 export class App {
   private readonly levelData = level01;
-  private readonly populationHandler = new PopulationHandler(this.levelData);
+  private readonly populationHandler = new PopulationHandler(this.levelData.tiles);
   private readonly gameCanvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
   private readonly ctx = this.gameCanvas.getContext('2d') as CanvasRenderingContext2D;
   private readonly collisionDetector = new CollisionDetector();
   private readonly stats = new Stats();
-  private readonly boardWidth = tileSize * levelSize.width;
-  private readonly boardHeight = tileSize * levelSize.height;
+  private readonly boardWidth = tileSize * this.levelData.size;
+  private readonly boardHeight = tileSize * this.levelData.size;
 
   private generationIndex = 1;
   private bots = new Array(populationSize)
@@ -46,7 +41,7 @@ export class App {
     .map(() => new Bot(
       startingBotPosition.x * tileSize,
       startingBotPosition.y * tileSize,
-      this.levelData,
+      this.levelData.tiles,
     ));
 
   private drawCanvasBackground() {
@@ -127,12 +122,12 @@ export class App {
     let closestIntersection: Point = new Point(Infinity, Infinity);
 
     const botPosition = new Point(bot.x, bot.y);
-    this.levelData.forEach(tile => {
+    this.levelData.tiles.forEach(tile => {
       const pointOfCollision = this.collisionDetector.lineRect(line, {
         height: tileSize,
         width: tileSize,
         x: tile.x * tileSize,
-        y: tile.z * tileSize,
+        y: tile.y * tileSize,
       });
 
       if (pointOfCollision && pointOfCollision.distanceTo(botPosition) < closestIntersection.distanceTo(botPosition)) {
@@ -170,9 +165,9 @@ export class App {
   }
 
   drawWalls() {
-    this.levelData.forEach(wall => {
+    this.levelData.tiles.forEach(wall => {
       this.ctx.fillStyle = wallColor;
-      this.ctx.fillRect(wall.x * tileSize, wall.z * tileSize, tileSize, tileSize);
+      this.ctx.fillRect(wall.x * tileSize, wall.y * tileSize, tileSize, tileSize);
     });
   }
 
@@ -183,12 +178,12 @@ export class App {
       y: bot.y,
     };
 
-    return this.levelData.some(tile => {
+    return this.levelData.tiles.some(tile => {
       const squareRect = {
         height: tileSize,
         width: tileSize,
         x: tile.x * tileSize,
-        y: tile.z * tileSize,
+        y: tile.y * tileSize,
       };
 
       return this.collisionDetector.rectCircle(squareRect, botCircle).isCollision;

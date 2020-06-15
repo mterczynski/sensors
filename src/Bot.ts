@@ -73,7 +73,7 @@ export class Bot {
           height: tileSize,
           width: tileSize,
           x: tile.x * tileSize,
-          y: tile.z * tileSize,
+          y: tile.y * tileSize,
         });
 
         if (pointOfCollision) {

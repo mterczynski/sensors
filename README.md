@@ -1,7 +1,9 @@
 # Sensors
 Machine learning project with neural networks
 
-<img src="https://github.com/mterczynski/sensors/blob/master/assets/projectPreview.gif" width="300" height="300">
+<img src="assets/projectPreview.gif" width="300" height="300">
+
+Levels are generated using http://www.mterczynski.pl/levelEditor/
 
 ## Install dependencies
 

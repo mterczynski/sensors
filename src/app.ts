@@ -1,6 +1,6 @@
 import { Bot } from './bot';
 import { CollisionDetector } from './collision-detector';
-import { tileSize } from './constants';
+import { pointOfCollisionColor, pointOfCollisionRadius, sensorLineColor, tileSize, wallColor } from './constants';
 import { Line } from './geometry-classes/Line';
 import { Point } from './geometry-classes/Point';
 import { keyHandler } from './key-handler';
@@ -66,10 +66,17 @@ export class App {
 
   // draws circle in place which sensor detected wall:
   private drawPointOfCollision(circleCenter: Point) {
-    this.ctx.fillStyle = '#ff0000';
+    this.ctx.fillStyle = pointOfCollisionColor;
 
     this.ctx.beginPath();
-    this.ctx.arc(circleCenter.x, circleCenter.y, 5, 0, 2 * Math.PI, false);
+    this.ctx.arc(
+      circleCenter.x,
+      circleCenter.y,
+      pointOfCollisionRadius,
+      0,
+      2 * Math.PI,
+      false,
+    );
     this.ctx.fill();
   }
 
@@ -121,7 +128,7 @@ export class App {
   }
 
   drawBotSensors(bot: Bot) {
-    this.ctx.strokeStyle = 'rgb(200,0,0)';
+    this.ctx.strokeStyle = sensorLineColor;
 
     bot.getSensorLines().forEach(line => {
       const closestIntersection: Point = this.getClosestIntersection({bot, line});
@@ -147,8 +154,9 @@ export class App {
   }
 
   drawWalls() {
+
     this.levelData.forEach(wall => {
-      this.ctx.fillStyle = 'rgb(200, 100, 100)';
+      this.ctx.fillStyle = wallColor;
       this.ctx.fillRect(wall.x * tileSize, wall.z * tileSize, tileSize, tileSize);
     });
   }

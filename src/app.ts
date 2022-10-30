@@ -16,14 +16,7 @@ import {
   wallColor,
 } from "./settings";
 import { drawBot, drawGrid } from "./drawing";
-
-// FPS stats visible in top left corner
-declare var Stats: new () => {
-  begin: () => void;
-  end: () => void;
-  dom: any;
-  showPanel: (panelIndex: number) => void;
-};
+import * as Stats from "stats.js";
 
 export class App {
   private readonly levelData = level01;

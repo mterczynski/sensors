@@ -11,12 +11,14 @@
   "author": "https://github.com/mterczynski",
   "dependencies": {
     "source-map-loader": "^0.2.4",
+    "stats.js": "^0.17.0",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.3",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.10"
   },
   "devDependencies": {
+    "@types/stats.js": "^0.17.0",
     "mterczynski-tslint": "~1.8.0",
     "tslint": "^5.20.1",
     "webpack-dev-server": "^3.9.0"

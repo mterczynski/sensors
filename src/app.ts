@@ -1,10 +1,10 @@
-import { Bot } from './bot';
-import { CollisionDetector } from './collision-detector';
-import { Line } from './geometry-classes/Line';
-import { Point } from './geometry-classes/Point';
-import { keyHandler } from './key-handler';
-import { level01 } from './level-data';
-import { PopulationHandler } from './population-handler';
+import { Bot } from "./bot";
+import { CollisionDetector } from "./collision-detector";
+import { Line } from "./geometry/Line";
+import { Point } from "./geometry/Point";
+import { keyHandler } from "./key-handler";
+import { level01 } from "./level-data";
+import { PopulationHandler } from "./population-handler";
 import {
   canvasBackgroundColor,
   pointOfCollisionColor,
@@ -14,22 +14,28 @@ import {
   startingBotPosition,
   tileSize,
   wallColor,
-} from './settings';
-import { drawBot, drawGrid } from './utils';
+} from "./settings";
+import { drawBot, drawGrid } from "./drawing";
 
 // FPS stats visible in top left corner
-declare var Stats: new() => {
-  begin: () => void,
-  end: () => void,
-  dom: any,
-  showPanel: (panelIndex: number) => void,
+declare var Stats: new () => {
+  begin: () => void;
+  end: () => void;
+  dom: any;
+  showPanel: (panelIndex: number) => void;
 };
 
 export class App {
   private readonly levelData = level01;
-  private readonly populationHandler = new PopulationHandler(this.levelData.tiles);
-  private readonly gameCanvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
-  private readonly ctx = this.gameCanvas.getContext('2d') as CanvasRenderingContext2D;
+  private readonly populationHandler = new PopulationHandler(
+    this.levelData.tiles
+  );
+  private readonly gameCanvas = document.getElementById(
+    "gameCanvas"
+  ) as HTMLCanvasElement;
+  private readonly ctx = this.gameCanvas.getContext(
+    "2d"
+  ) as CanvasRenderingContext2D;
   private readonly collisionDetector = new CollisionDetector();
   private readonly stats = new Stats();
   private readonly boardWidth = tileSize * this.levelData.size;
@@ -38,11 +44,14 @@ export class App {
   private generationIndex = 1;
   private bots = new Array(populationSize)
     .fill(null)
-    .map(() => new Bot(
-      startingBotPosition.x * tileSize,
-      startingBotPosition.y * tileSize,
-      this.levelData.tiles,
-    ));
+    .map(
+      () =>
+        new Bot(
+          startingBotPosition.x * tileSize,
+          startingBotPosition.y * tileSize,
+          this.levelData.tiles
+        )
+    );
 
   private drawCanvasBackground() {
     this.ctx.fillStyle = canvasBackgroundColor;
@@ -50,7 +59,7 @@ export class App {
   }
 
   private checkForBotDeaths() {
-    this.bots.forEach(bot => {
+    this.bots.forEach((bot) => {
       if (this.isBotCollidingWithWalls(bot)) {
         bot.isDead = true;
       }
@@ -58,18 +67,18 @@ export class App {
   }
 
   private drawBots() {
-    this.bots.forEach(bot => {
+    this.bots.forEach((bot) => {
       this.drawBotSensors(bot);
       drawBot({ bot, ctx: this.ctx });
     });
   }
 
   private tickBots() {
-    this.bots.forEach(bot => bot.tick());
+    this.bots.forEach((bot) => bot.tick());
   }
 
   private checkForPopulationDeath() {
-    if (this.bots.every(bot => bot.isDead)) {
+    if (this.bots.every((bot) => bot.isDead)) {
       this.bots = this.populationHandler.getNewGeneration(this.bots);
       this.updateGenerationIndex();
     }
@@ -86,7 +95,7 @@ export class App {
       pointOfCollisionRadius,
       0,
       2 * Math.PI,
-      false,
+      false
     );
     this.ctx.fill();
   }
@@ -118,11 +127,11 @@ export class App {
     requestAnimationFrame(() => this.onNextAnimationFrame());
   }
 
-  getClosestIntersection({bot, line}: {bot: Bot, line: Line}) {
+  getClosestIntersection({ bot, line }: { bot: Bot; line: Line }) {
     let closestIntersection: Point = new Point(Infinity, Infinity);
 
     const botPosition = new Point(bot.x, bot.y);
-    this.levelData.tiles.forEach(tile => {
+    this.levelData.tiles.forEach((tile) => {
       const pointOfCollision = this.collisionDetector.lineRect(line, {
         height: tileSize,
         width: tileSize,
@@ -130,7 +139,11 @@ export class App {
         y: tile.y * tileSize,
       });
 
-      if (pointOfCollision && pointOfCollision.distanceTo(botPosition) < closestIntersection.distanceTo(botPosition)) {
+      if (
+        pointOfCollision &&
+        pointOfCollision.distanceTo(botPosition) <
+          closestIntersection.distanceTo(botPosition)
+      ) {
         closestIntersection = pointOfCollision;
       }
     });
@@ -141,8 +154,11 @@ export class App {
   drawBotSensors(bot: Bot) {
     this.ctx.strokeStyle = sensorLineColor;
 
-    bot.getSensorLines().forEach(line => {
-      const closestIntersection: Point = this.getClosestIntersection({bot, line});
+    bot.getSensorLines().forEach((line) => {
+      const closestIntersection: Point = this.getClosestIntersection({
+        bot,
+        line,
+      });
 
       if (isFinite(closestIntersection.x)) {
         this.ctx.beginPath();
@@ -152,7 +168,7 @@ export class App {
         this.ctx.closePath();
         this.drawPointOfCollision(closestIntersection);
       } else {
-        throw new Error('Sensor line is not finite');
+        throw new Error("Sensor line is not finite");
         // if you want to work with limited-range sensors:
 
         // this.ctx.beginPath();
@@ -165,9 +181,14 @@ export class App {
   }
 
   drawWalls() {
-    this.levelData.tiles.forEach(wall => {
+    this.levelData.tiles.forEach((wall) => {
       this.ctx.fillStyle = wallColor;
-      this.ctx.fillRect(wall.x * tileSize, wall.y * tileSize, tileSize, tileSize);
+      this.ctx.fillRect(
+        wall.x * tileSize,
+        wall.y * tileSize,
+        tileSize,
+        tileSize
+      );
     });
   }
 
@@ -178,7 +199,7 @@ export class App {
       y: bot.y,
     };
 
-    return this.levelData.tiles.some(tile => {
+    return this.levelData.tiles.some((tile) => {
       const squareRect = {
         height: tileSize,
         width: tileSize,
@@ -186,11 +207,13 @@ export class App {
         y: tile.y * tileSize,
       };
 
-      return this.collisionDetector.rectCircle(squareRect, botCircle).isCollision;
+      return this.collisionDetector.rectCircle(squareRect, botCircle)
+        .isCollision;
     });
   }
 
   updateGenerationIndex() {
-    document.getElementById('generationIndex')!.innerHTML = 'Generation: ' + (++this.generationIndex);
+    document.getElementById("generationIndex")!.innerHTML =
+      "Generation: " + ++this.generationIndex;
   }
 }

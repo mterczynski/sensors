@@ -1,9 +1,9 @@
-import { CollisionDetector } from './collision-detector';
-import { Line } from './geometry-classes/Line';
-import { Point } from './geometry-classes/Point';
-import { NeuralNetwork } from './neural-network';
-import { sensorsPerBotCount, tileSize } from './settings';
-import { Tile } from './types';
+import { CollisionDetector } from "./collision-detector";
+import { Line } from "./geometry/Line";
+import { Point } from "./geometry/Point";
+import { NeuralNetwork } from "./neural-network";
+import { sensorsPerBotCount, tileSize } from "./settings";
+import { Tile } from "./types";
 
 const turningSpeed = 0.06;
 
@@ -30,7 +30,7 @@ export class Bot {
     public x: number,
     public y: number,
     private levelTiles: Tile[],
-    neuralNetwork?: NeuralNetwork,
+    neuralNetwork?: NeuralNetwork
   ) {
     this.neuralNetwork = neuralNetwork || new NeuralNetwork();
   }
@@ -39,16 +39,22 @@ export class Bot {
     const maxLineLength = 1000;
     const deg45 = Math.PI / 4;
 
-    const sensorLines = [...new Array(sensorsPerBotCount)].map((e, sensorIndex) => {
-      const lineEnd = new Point(
-        this.x + maxLineLength * Math.cos(sensorIndex * deg45 + this.rotation + Math.PI),
-        this.y + (maxLineLength * Math.sin(sensorIndex * deg45 + this.rotation + Math.PI)),
-      );
+    const sensorLines = [...new Array(sensorsPerBotCount)].map(
+      (e, sensorIndex) => {
+        const lineEnd = new Point(
+          this.x +
+            maxLineLength *
+              Math.cos(sensorIndex * deg45 + this.rotation + Math.PI),
+          this.y +
+            maxLineLength *
+              Math.sin(sensorIndex * deg45 + this.rotation + Math.PI)
+        );
 
-      const lineStart = new Point(this.x, this.y);
+        const lineStart = new Point(this.x, this.y);
 
-      return new Line(lineStart, lineEnd);
-    });
+        return new Line(lineStart, lineEnd);
+      }
+    );
 
     return sensorLines;
   }
@@ -64,11 +70,11 @@ export class Bot {
   getSensorLengths() {
     const sensorValues: number[] = [];
 
-    this.getSensorLines().forEach(line => {
+    this.getSensorLines().forEach((line) => {
       const playerPos = new Point(this.x, this.y);
       let closestIntersection = new Point(Infinity, Infinity);
 
-      this.levelTiles.forEach(tile => {
+      this.levelTiles.forEach((tile) => {
         const pointOfCollision = this.collisionDetector.lineRect(line, {
           height: tileSize,
           width: tileSize,
@@ -77,7 +83,10 @@ export class Bot {
         });
 
         if (pointOfCollision) {
-          if (pointOfCollision.distanceTo(playerPos) < closestIntersection.distanceTo(playerPos)) {
+          if (
+            pointOfCollision.distanceTo(playerPos) <
+            closestIntersection.distanceTo(playerPos)
+          ) {
             closestIntersection = pointOfCollision;
           }
         }
@@ -86,7 +95,7 @@ export class Bot {
       if (isFinite(closestIntersection.x)) {
         sensorValues.push(closestIntersection.distanceTo(playerPos));
       } else {
-        throw new Error('Sensor line is not finite');
+        throw new Error("Sensor line is not finite");
       }
     });
 
@@ -102,11 +111,12 @@ export class Bot {
       return;
     }
 
-    const isNeuralNetEvaluationNegative = this.neuralNetwork.evaluate(this.getSensorLengths()) < 0;
+    const isNeuralNetEvaluationNegative =
+      this.neuralNetwork.evaluate(this.getSensorLengths()) < 0;
 
-    this.direction = isNeuralNetEvaluationNegative ?
-      Direction.left :
-      Direction.right;
+    this.direction = isNeuralNetEvaluationNegative
+      ? Direction.left
+      : Direction.right;
 
     this.rotation += this.direction;
     this.x += this.velocity * Math.cos(this.rotation - Math.PI / 2);

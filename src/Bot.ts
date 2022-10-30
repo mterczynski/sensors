@@ -82,13 +82,12 @@ export class Bot {
           y: tile.y * tileSize,
         });
 
-        if (pointOfCollision) {
-          if (
-            pointOfCollision.distanceTo(playerPos) <
+        if (
+          pointOfCollision &&
+          pointOfCollision.distanceTo(playerPos) <
             closestIntersection.distanceTo(playerPos)
-          ) {
-            closestIntersection = pointOfCollision;
-          }
+        ) {
+          closestIntersection = pointOfCollision;
         }
       });
 

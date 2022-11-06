@@ -5,7 +5,7 @@ import { Tile } from "./level-data/level-data.types";
 import { NeuralNetwork } from "./neural-network";
 import { sensorsPerBotCount, tileSize } from "./settings";
 
-const turningSpeed = 0.06;
+const turningSpeed = 0.004;
 
 enum Direction {
   left = -turningSpeed,
@@ -22,7 +22,7 @@ export class Bot {
   readonly neuralNetwork: NeuralNetwork;
 
   rotation = 0;
-  velocity = 3 * 1.2;
+  velocity = 0.24;
   isDead = false;
 
   constructor(
@@ -42,11 +42,11 @@ export class Bot {
       (e, sensorIndex) => {
         const lineEnd = new Point(
           this.x +
-            maxLineLength *
-              Math.cos(sensorIndex * deg45 + this.rotation + Math.PI),
+          maxLineLength *
+          Math.cos(sensorIndex * deg45 + this.rotation + Math.PI),
           this.y +
-            maxLineLength *
-              Math.sin(sensorIndex * deg45 + this.rotation + Math.PI)
+          maxLineLength *
+          Math.sin(sensorIndex * deg45 + this.rotation + Math.PI)
         );
 
         const lineStart = new Point(this.x, this.y);
@@ -84,7 +84,7 @@ export class Bot {
         if (
           pointOfCollision &&
           pointOfCollision.distanceTo(playerPos) <
-            closestIntersection.distanceTo(playerPos)
+          closestIntersection.distanceTo(playerPos)
         ) {
           closestIntersection = pointOfCollision;
         }
@@ -100,7 +100,7 @@ export class Bot {
     return sensorValues;
   }
 
-  tick() {
+  tick(delta: number) {
     if (this.isDead) {
       if (!this.whenDied) {
         this.whenDied = new Date();
@@ -116,8 +116,9 @@ export class Bot {
       ? Direction.left
       : Direction.right;
 
-    this.rotation += this.direction;
-    this.x += this.velocity * Math.cos(this.rotation - Math.PI / 2);
-    this.y += this.velocity * Math.sin(this.rotation - Math.PI / 2);
+    this.rotation += this.direction * delta;
+
+    this.x += this.velocity * Math.cos(this.rotation - Math.PI / 2) * delta;
+    this.y += this.velocity * Math.sin(this.rotation - Math.PI / 2) * delta;
   }
 }

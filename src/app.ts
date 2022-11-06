@@ -34,6 +34,7 @@ export class App {
   private readonly boardWidth = tileSize * this.levelData.size;
   private readonly boardHeight = tileSize * this.levelData.size;
 
+  private previousFrameTime: number = Date.now();
   private generationIndex = 1;
   private bots = new Array(populationSize)
     .fill(null)
@@ -66,8 +67,8 @@ export class App {
     });
   }
 
-  private tickBots() {
-    this.bots.forEach((bot) => bot.tick());
+  private tickBots(delta: number) {
+    this.bots.forEach((bot) => bot.tick(delta));
   }
 
   private checkForPopulationDeath() {
@@ -101,6 +102,9 @@ export class App {
   }
 
   onNextAnimationFrame() {
+    const now = Date.now();
+    const delta = now - this.previousFrameTime;
+    this.previousFrameTime = now;
     this.stats.begin();
     this.drawCanvasBackground();
     drawGrid({
@@ -110,7 +114,8 @@ export class App {
       tileSize,
     });
     this.drawWalls();
-    this.tickBots();
+    this.previousFrameTime = Date.now();
+    this.tickBots(delta);
     this.drawBots();
     this.checkForBotDeaths();
     this.checkForPopulationDeath();

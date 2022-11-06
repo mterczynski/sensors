@@ -3,9 +3,9 @@ import { CollisionDetector } from "./collision-detector";
 import { Line } from "./geometry/Line";
 import { Point } from "./geometry/Point";
 import { keyHandler } from "./key-handler";
-import { level01 } from "./level-data";
 import { PopulationHandler } from "./population-handler";
 import {
+  activeLevel,
   canvasBackgroundColor,
   pointOfCollisionColor,
   pointOfCollisionRadius,
@@ -19,7 +19,7 @@ import { drawBot, drawGrid } from "./drawing";
 import * as Stats from "stats.js";
 
 export class App {
-  private readonly levelData = level01;
+  private readonly levelData = activeLevel;
   private readonly populationHandler = new PopulationHandler(
     this.levelData.tiles
   );
@@ -135,7 +135,7 @@ export class App {
       if (
         pointOfCollision &&
         pointOfCollision.distanceTo(botPosition) <
-          closestIntersection.distanceTo(botPosition)
+        closestIntersection.distanceTo(botPosition)
       ) {
         closestIntersection = pointOfCollision;
       }

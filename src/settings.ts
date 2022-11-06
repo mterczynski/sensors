@@ -1,9 +1,12 @@
 import { level01 } from "./level-data";
+import { level02 } from "./level-data/level-2";
 
 export const startingBotPosition = { x: 3, y: 8 }; // this one should be moved to level data
 export const sensorsPerBotCount = 5;
-export const populationSize = 5;
-export const activeLevel = level01;
+export const populationSize = 50;
+export const mutationChance = 0.3;
+export const maxMutationChange = 0.2;
+export const activeLevel = level02;
 
 // display settings:
 

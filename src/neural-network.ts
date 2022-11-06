@@ -8,13 +8,20 @@ function getRandomWeight() {
 }
 
 export class NeuralNetwork {
-  private weights = [
+  weights = [
     getRandomWeight(),
     getRandomWeight(),
     0,
     getRandomWeight(),
     getRandomWeight(),
   ];
+
+  clone(): NeuralNetwork {
+    const network = new NeuralNetwork();
+    network.weights = [...this.weights]
+
+    return network;
+  }
 
   evaluate(inputs: number[]) {
     if (inputs.length !== inputSize) {

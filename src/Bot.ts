@@ -21,7 +21,6 @@ export class Bot {
   readonly radius = 10;
   readonly neuralNetwork: NeuralNetwork;
 
-  calculatedFitness?: number;
   rotation = 0;
   velocity = 3 * 1.2;
   isDead = false;

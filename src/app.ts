@@ -11,6 +11,7 @@ import {
   pointOfCollisionRadius,
   populationSize,
   sensorLineColor,
+  speed,
   startingBotPosition,
   tileSize,
   wallColor,
@@ -103,7 +104,7 @@ export class App {
 
   onNextAnimationFrame() {
     const now = Date.now();
-    const delta = now - this.previousFrameTime;
+    const delta = (now - this.previousFrameTime) * speed;
     this.previousFrameTime = now;
     this.stats.begin();
     this.drawCanvasBackground();

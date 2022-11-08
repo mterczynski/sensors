@@ -1,7 +1,7 @@
 import { Bot } from "./bot";
-import { distributeResources } from "./distribute-resources";
+import { randomlyDistributeResources } from "./distribute-resources";
 import { Tile } from "./level-data/level-data.types";
-import { maxMutationChange, mutationChance, populationSize, startingBotPosition, tileSize } from "./settings";
+import { distributionFunction, maxMutationChange, mutationChance, populationSize, startingBotPosition, tileSize } from "./settings";
 
 function formatWeights(weights: number[]) {
   return weights.map((weight: number) => Math.round(weight * 100) / 100)
@@ -16,7 +16,7 @@ export class PopulationHandler {
     var weightsAll: any[] = []
 
     const botsOrderedByFitness = [...bots].sort((prev, next) => next.getFitness() - prev.getFitness());
-    const offspringPerBot = distributeResources(bots.length);
+    const offspringPerBot = randomlyDistributeResources(bots.length, distributionFunction);
     const newGenUnflatted = Array(bots.length).fill(0).map((_, botIndex) => {
       const parent: Bot = botsOrderedByFitness[botIndex];
       return Array(offspringPerBot[botIndex]).fill(null).map(() => {

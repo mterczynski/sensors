@@ -1,6 +1,6 @@
 import { sensorsPerBotCount } from './settings';
 
-const inputSize = sensorsPerBotCount;
+sensorsPerBotCount;
 
 function getRandomWeight() {
   // same chances for negative or positive number
@@ -8,13 +8,7 @@ function getRandomWeight() {
 }
 
 export class NeuralNetwork {
-  weights = [
-    getRandomWeight(),
-    getRandomWeight(),
-    0,
-    getRandomWeight(),
-    getRandomWeight(),
-  ];
+  weights = Array(sensorsPerBotCount).fill(0).map(() => getRandomWeight())
 
   clone(): NeuralNetwork {
     const network = new NeuralNetwork();
@@ -24,8 +18,8 @@ export class NeuralNetwork {
   }
 
   evaluate(inputs: number[]) {
-    if (inputs.length !== inputSize) {
-      throw new Error(`Expected ${inputSize} numerical inputs`);
+    if (inputs.length !== sensorsPerBotCount) {
+      throw new Error(`Expected ${sensorsPerBotCount} numerical inputs`);
     }
 
     const sum = inputs.reduce((total, nextInput, index) => total + nextInput * this.weights[index], 0);

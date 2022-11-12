@@ -1,7 +1,8 @@
 import { Bot } from "./bot";
-import { randomlyDistributeResources } from "./distribute-resources";
+import { randomlyDistributeResources } from "./randomly-distribute-resources";
 import { Tile } from "./level-data/level-data.types";
-import { distributionFunction, maxMutationChange, mutationChance, populationSize, startingBotPosition, tileSize } from "./settings";
+import { anomaliesChance, distributionFunction, maxMutationChange, mutationChance, populationSize, sensorsPerBotCount, startingBotPosition, tileSize } from "./settings";
+import { NeuralNetwork } from "./neural-network";
 
 function formatWeights(weights: number[]) {
   return weights.map((weight: number) => Math.round(weight * 100) / 100)
@@ -11,21 +12,22 @@ export class PopulationHandler {
   constructor(private levelTiles: Tile[]) { }
 
   getNewGeneration(bots: Bot[]): Bot[] {
-    // todo - calculate bots fitnesses, generate new bots from their parents genes
-
-    var weightsAll: any[] = []
+    const weightsAll: any[] = []
 
     const botsOrderedByFitness = [...bots].sort((prev, next) => next.getFitness() - prev.getFitness());
     const offspringPerBot = randomlyDistributeResources(bots.length, distributionFunction);
-    const newGenUnflatted = Array(bots.length).fill(0).map((_, botIndex) => {
+    const newGeneration = Array(bots.length).fill(0).map((_, botIndex) => {
       const parent: Bot = botsOrderedByFitness[botIndex];
       return Array(offspringPerBot[botIndex]).fill(null).map(() => {
-        const neuralNetwork = parent.neuralNetwork.clone()
+        let neuralNetwork = parent.neuralNetwork.clone()
 
-        neuralNetwork.weights[0] += mutationChance > Math.random() ? maxMutationChange * (Math.random() - 0.5) : 0
-        neuralNetwork.weights[1] += mutationChance > Math.random() ? maxMutationChange * (Math.random() - 0.5) : 0
-        neuralNetwork.weights[3] += mutationChance > Math.random() ? maxMutationChange * (Math.random() - 0.5) : 0
-        neuralNetwork.weights[4] += mutationChance > Math.random() ? maxMutationChange * (Math.random() - 0.5) : 0
+        if (Math.random() > anomaliesChance) {
+          for (let i = 0; i < sensorsPerBotCount; i++) {
+            neuralNetwork.weights[i] += mutationChance > Math.random() ? maxMutationChange * (Math.random() - 0.5) : 0
+          }
+        } else {
+          neuralNetwork = new NeuralNetwork()
+        }
 
         const child = new Bot(
           startingBotPosition.x * tileSize,
@@ -38,32 +40,20 @@ export class PopulationHandler {
 
         return child;
       })
-    })
+    }).flat()
 
-    console.log(JSON.stringify(
-      weightsAll
-        .slice(0, 5)
-        .map(weights => formatWeights(weights))
-    ))
-
-    var weightsSum = weightsAll.slice(1).reduce((acc, nextBotWeights) => {
-      return [
-        acc[0] + nextBotWeights[0],
-        acc[1] + nextBotWeights[1],
-        acc[2] + nextBotWeights[2],
-        acc[3] + nextBotWeights[3],
-        acc[4] + nextBotWeights[4],
-      ]
+    const weightsSum = weightsAll.slice(1).reduce((acc, nextBotWeights) => {
+      return Array(sensorsPerBotCount).fill(0).map((_, index) => {
+        return acc[index] + nextBotWeights[index]
+      })
     }, weightsAll[0]
     );
 
-    var weightsAvg = weightsSum.map((weightSum: number) => weightSum / bots.length)
+    const weightsAvg = weightsSum.map((weightSum: number) => weightSum / bots.length)
 
     console.log('avg', formatWeights(weightsAvg))
 
-    var newGen = newGenUnflatted.flat()
-
-    return newGen
+    return newGeneration
     // const fitnesses = bots.map((bot) => bot.getFitness());
     // const maxFitness = Math.max(...fitnesses);
     // const normalizedFitnesses = fitnesses.map(

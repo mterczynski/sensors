@@ -7,7 +7,8 @@ export const speed = 1;
 export const distributionFunction = (participantPlace: number, numberOfParticipants: number) => (numberOfParticipants - participantPlace) ** 2
 export const populationSize = 50;
 export const mutationChance = 0.3;
-export const maxMutationChange = 0.2;
+export const maxMutationChange = 0.5;
+export const anomaliesChance = 0.02; // anomaly = bot with totally random neural network
 export const activeLevel = level02;
 
 // display settings:
@@ -16,10 +17,11 @@ export const pointOfCollisionRadius = 5;
 export const tileSize = 40;
 
 export const wallColor = "rgb(0, 160, 120)";
-export const sensorLineColor = "rgb(200, 0, 0)";
-export const pointOfCollisionColor = "rgb(255, 0, 0)";
+export const sensorLineColor = "rgba(200, 0, 0, 0.3)";
+export const pointOfCollisionColor = "rgba(255, 0, 0, 0.2)";
 export const canvasBackgroundColor = "rgb(240, 240, 240)";
 export const gridLineColor = "rgb(200, 200, 200)";
 
 export const aliveBotColor = "rgb(100, 100, 255)";
 export const deadBotColor = "rgb(100, 100, 100)";
+

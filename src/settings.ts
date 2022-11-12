@@ -8,7 +8,7 @@ export const distributionFunction = (participantPlace: number, numberOfParticipa
 export const populationSize = 50;
 export const mutationChance = 0.3;
 export const maxMutationChange = 0.5;
-export const anomaliesChance = 0.02; // anomaly = bot with totally random neural network
+export const anomaliesChance = 0.01; // anomaly = bot with totally random neural network
 export const activeLevel = level02;
 
 // display settings:
@@ -22,8 +22,17 @@ export const colors = {
   pointOfCollision: "rgba(255, 0, 0, 0.2)",
   canvasBackground: "rgb(240, 240, 240)",
   gridLine: "rgb(200, 200, 200)",
-  aliveBot: "rgb(100, 100, 255)",
-  deadBot: "rgb(100, 100, 100)",
+
+  bots: {
+    normal: {
+      aliveBot: "rgb(100, 100, 255)",
+      deadBot: "rgb(100, 100, 100)",
+    },
+    anomaly: {
+      aliveBot: "rgb(100, 190, 100)",
+      deadBot: "rgb(50, 80, 50)",
+    }
+  }
 }
 
 

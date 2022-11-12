@@ -29,6 +29,7 @@ export class Bot {
     public x: number,
     public y: number,
     private levelTiles: Tile[],
+    public readonly isAnomaly = false,
     neuralNetwork?: NeuralNetwork
   ) {
     this.neuralNetwork = neuralNetwork || new NeuralNetwork();

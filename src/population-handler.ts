@@ -21,22 +21,27 @@ export class PopulationHandler {
       return Array(offspringPerBot[botIndex]).fill(null).map(() => {
         let neuralNetwork = parent.neuralNetwork.clone()
 
-        if (Math.random() > anomaliesChance) {
+        const isAnomaly = Math.random() < anomaliesChance
+
+        if (isAnomaly) {
+          neuralNetwork = new NeuralNetwork()
+        } else {
           for (let i = 0; i < sensorsPerBotCount; i++) {
             neuralNetwork.weights[i] += mutationChance > Math.random() ? maxMutationChange * (Math.random() - 0.5) : 0
           }
-        } else {
-          neuralNetwork = new NeuralNetwork()
         }
 
         const child = new Bot(
           startingBotPosition.x * tileSize,
           startingBotPosition.y * tileSize,
           this.levelTiles,
+          isAnomaly,
           neuralNetwork
         )
 
         weightsAll.push(neuralNetwork.weights)
+
+        console.log('Boolean(child.neuralNetwork)', Boolean(child.neuralNetwork))
 
         return child;
       })

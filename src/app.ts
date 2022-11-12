@@ -7,6 +7,7 @@ import { PopulationHandler } from "./population-handler";
 import {
   activeLevel,
   colors,
+  drawSensors,
   pointOfCollisionRadius,
   populationSize,
   speed,
@@ -14,7 +15,7 @@ import {
   tileSize,
 } from "./settings";
 import { drawBot, drawGrid } from "./drawing";
-import * as Stats from "stats.js";
+import Stats from "stats.js";
 
 export class App {
   private readonly levelData = activeLevel;
@@ -60,7 +61,9 @@ export class App {
 
   private drawBots() {
     this.bots.forEach((bot) => {
-      this.drawBotSensors(bot);
+      if (drawSensors) {
+        this.drawBotSensors(bot);
+      }
       drawBot({ bot, ctx: this.ctx });
     });
   }

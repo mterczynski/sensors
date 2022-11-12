@@ -5,7 +5,7 @@ export const startingBotPosition = { x: 3, y: 8 }; // this one should be moved t
 export const sensorsPerBotCount = 5;
 export const speed = 1;
 export const distributionFunction = (participantPlace: number, numberOfParticipants: number) => (numberOfParticipants - participantPlace) ** 2
-export const populationSize = 50;
+export const populationSize = 200;
 export const mutationChance = 0.3;
 export const maxMutationChange = 0.5;
 export const anomaliesChance = 0.01; // anomaly = bot with totally random neural network
@@ -15,6 +15,8 @@ export const activeLevel = level02;
 
 export const pointOfCollisionRadius = 5;
 export const tileSize = 40;
+
+export const drawSensors = false;
 
 export const colors = {
   wall: "rgb(0, 160, 120)",

@@ -1,7 +1,7 @@
 import { Bot } from "./bot";
 import { randomlyDistributeResources } from "./randomly-distribute-resources";
 import { Tile } from "./level-data/level-data.types";
-import { anomaliesChance, distributionFunction, maxMutationChange, mutationChance, populationSize, sensorsPerBotCount, startingBotPosition, tileSize } from "./settings";
+import { anomaliesChance, distributionFunction, maxMutationChange, mutationChance, sensorsPerBotCount, startingBotPosition, tileSize } from "./settings";
 import { NeuralNetwork } from "./neural-network";
 
 function formatWeights(weights: number[]) {
@@ -40,8 +40,6 @@ export class PopulationHandler {
         )
 
         weightsAll.push(neuralNetwork.weights)
-
-        console.log('Boolean(child.neuralNetwork)', Boolean(child.neuralNetwork))
 
         return child;
       })

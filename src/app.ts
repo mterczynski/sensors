@@ -6,15 +6,12 @@ import { keyHandler } from "./key-handler";
 import { PopulationHandler } from "./population-handler";
 import {
   activeLevel,
-  canvasBackgroundColor,
-  pointOfCollisionColor,
+  colors,
   pointOfCollisionRadius,
   populationSize,
-  sensorLineColor,
   speed,
   startingBotPosition,
   tileSize,
-  wallColor,
 } from "./settings";
 import { drawBot, drawGrid } from "./drawing";
 import * as Stats from "stats.js";
@@ -49,7 +46,7 @@ export class App {
     );
 
   private drawCanvasBackground() {
-    this.ctx.fillStyle = canvasBackgroundColor;
+    this.ctx.fillStyle = colors.canvasBackground;
     this.ctx.fillRect(0, 0, this.boardWidth, this.boardHeight);
   }
 
@@ -81,7 +78,7 @@ export class App {
 
   // draws circle in place which sensor detected wall:
   private drawPointOfCollision(circleCenter: Point) {
-    this.ctx.fillStyle = pointOfCollisionColor;
+    this.ctx.fillStyle = colors.pointOfCollision;
 
     this.ctx.beginPath();
     this.ctx.arc(
@@ -151,7 +148,7 @@ export class App {
   }
 
   drawBotSensors(bot: Bot) {
-    this.ctx.strokeStyle = sensorLineColor;
+    this.ctx.strokeStyle = colors.sensorLine;
 
     bot.getSensorLines().forEach((line) => {
       const closestIntersection: Point = this.getClosestIntersection({
@@ -181,7 +178,7 @@ export class App {
 
   drawWalls() {
     this.levelData.tiles.forEach((wall) => {
-      this.ctx.fillStyle = wallColor;
+      this.ctx.fillStyle = colors.wall;
       this.ctx.fillRect(
         wall.x * tileSize,
         wall.y * tileSize,

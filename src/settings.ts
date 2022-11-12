@@ -16,12 +16,14 @@ export const activeLevel = level02;
 export const pointOfCollisionRadius = 5;
 export const tileSize = 40;
 
-export const wallColor = "rgb(0, 160, 120)";
-export const sensorLineColor = "rgba(200, 0, 0, 0.3)";
-export const pointOfCollisionColor = "rgba(255, 0, 0, 0.2)";
-export const canvasBackgroundColor = "rgb(240, 240, 240)";
-export const gridLineColor = "rgb(200, 200, 200)";
+export const colors = {
+  wall: "rgb(0, 160, 120)",
+  sensorLine: "rgba(200, 0, 0, 0.3)",
+  pointOfCollision: "rgba(255, 0, 0, 0.2)",
+  canvasBackground: "rgb(240, 240, 240)",
+  gridLine: "rgb(200, 200, 200)",
+  aliveBot: "rgb(100, 100, 255)",
+  deadBot: "rgb(100, 100, 100)",
+}
 
-export const aliveBotColor = "rgb(100, 100, 255)";
-export const deadBotColor = "rgb(100, 100, 100)";
 

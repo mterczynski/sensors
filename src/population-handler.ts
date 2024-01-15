@@ -31,6 +31,8 @@ export class PopulationHandler {
           }
         }
 
+        neuralNetwork.normalizeWeights()
+
         const child = new Bot(
           startingBotPosition.x * tileSize,
           startingBotPosition.y * tileSize,
@@ -38,6 +40,8 @@ export class PopulationHandler {
           isAnomaly,
           neuralNetwork
         )
+
+        // neuralNetwork.weights[2] = 0
 
         weightsAll.push(neuralNetwork.weights)
 

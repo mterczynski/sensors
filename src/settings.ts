@@ -1,5 +1,7 @@
 import { level01 } from "./level-data";
 import { level02 } from "./level-data/level-2";
+import { level03 } from "./level-data/level-3";
+import { level04 } from "./level-data/level-4";
 
 export const startingBotPosition = { x: 3, y: 8 }; // this one should be moved to level data
 export const sensorsPerBotCount = 5;
@@ -9,14 +11,14 @@ export const populationSize = 200;
 export const mutationChance = 0.3;
 export const maxMutationChange = 0.5;
 export const anomaliesChance = 0.01; // anomaly = bot with totally random neural network
-export const activeLevel = level02;
+export const activeLevel = level04;
 
 // display settings:
 
 export const pointOfCollisionRadius = 5;
 export const tileSize = 40;
 
-export const drawSensors = false;
+export const drawSensors = true;
 
 export const colors = {
   wall: "rgb(0, 160, 120)",

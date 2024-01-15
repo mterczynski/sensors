@@ -33,6 +33,7 @@ export class App {
   private readonly boardWidth = tileSize * this.levelData.size;
   private readonly boardHeight = tileSize * this.levelData.size;
 
+  private isPaused = false
   private previousFrameTime: number = Date.now();
   private generationIndex = 1;
   private bots = new Array(populationSize)
@@ -100,9 +101,22 @@ export class App {
     this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
     document.body.appendChild(this.stats.dom);
     keyHandler.addKeyListeners();
+
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        // Tab is not active, pause the game loop
+        this.isPaused = true;
+      } else {
+        // Tab is active, resume the game loop
+        this.isPaused = false;
+        this.previousFrameTime = Date.now()
+      }
+    });
   }
 
   onNextAnimationFrame() {
+    if (this.isPaused) return;
     const now = Date.now();
     const delta = (now - this.previousFrameTime) * speed;
     this.previousFrameTime = now;

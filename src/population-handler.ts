@@ -58,7 +58,7 @@ export class PopulationHandler {
 
     const weightsAvg = weightsSum.map((weightSum: number) => weightSum / bots.length)
 
-    console.log('avg', formatWeights(weightsAvg))
+    console.log('avg', formatWeights(weightsAvg), '\ntop 1', formatWeights(botsOrderedByFitness[0].neuralNetwork.weights))
 
     return newGeneration
     // const fitnesses = bots.map((bot) => bot.getFitness());

@@ -3,7 +3,7 @@ import { Line } from "./geometry/Line";
 import { Point } from "./geometry/Point";
 import { Tile } from "./level-data/level-data.types";
 import { NeuralNetwork } from "./neural-network";
-import { sensorsPerBotCount, tileSize } from "./settings";
+import { sensorAngle, sensorsPerBotCount, tileSize } from "./settings";
 
 const turningSpeed = 0.004;
 
@@ -37,17 +37,17 @@ export class Bot {
 
   getSensorLines() {
     const maxLineLength = 1000;
-    const deg45 = Math.PI / 4;
+    const degree = Math.PI / 180 * sensorAngle;
 
     const sensorLines = [...new Array(sensorsPerBotCount)].map(
       (e, sensorIndex) => {
         const lineEnd = new Point(
           this.x +
           maxLineLength *
-          Math.cos(sensorIndex * deg45 + this.rotation + Math.PI),
+          Math.cos(sensorIndex * degree + this.rotation + Math.PI),
           this.y +
           maxLineLength *
-          Math.sin(sensorIndex * deg45 + this.rotation + Math.PI)
+          Math.sin(sensorIndex * degree + this.rotation + Math.PI)
         );
 
         const lineStart = new Point(this.x, this.y);

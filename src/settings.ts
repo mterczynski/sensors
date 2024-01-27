@@ -5,6 +5,7 @@ import { level04 } from "./level-data/level-4";
 
 export const startingBotPosition = { x: 3, y: 8 }; // this one should be moved to level data
 export const sensorsPerBotCount = 5;
+export const sensorAngle = 45;
 export const speed = 1;
 export const distributionFunction = (participantPlace: number, numberOfParticipants: number) => (numberOfParticipants - participantPlace) ** 2
 export const populationSize = 100;

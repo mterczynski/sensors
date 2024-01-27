@@ -1,24 +1,15 @@
-import { Bot } from "./bot";
 import { CollisionDetector } from "./collision-detector";
 import { Line } from "./geometry/Line";
 import { Point } from "./geometry/Point";
 import { keyHandler } from "./key-handler";
 import { PopulationHandler } from "./population-handler";
-import {
-  activeLevel,
-  colors,
-  drawSensors,
-  pointOfCollisionRadius,
-  populationSize,
-  speed,
-  startingBotPosition,
-  tileSize,
-} from "./settings";
 import { drawBot, drawGrid } from "./drawing";
 import Stats from "stats.js";
+import { settings } from "./settings";
+import { Bot } from "./Bot";
 
 export class App {
-  private readonly levelData = activeLevel;
+  private readonly levelData = settings.simulation.activeLevel;
   private readonly populationHandler = new PopulationHandler(
     this.levelData.tiles
   );
@@ -30,25 +21,25 @@ export class App {
   ) as CanvasRenderingContext2D;
   private readonly collisionDetector = new CollisionDetector();
   private readonly stats = new Stats();
-  private readonly boardWidth = tileSize * this.levelData.size;
-  private readonly boardHeight = tileSize * this.levelData.size;
+  private readonly boardWidth = settings.display.tileSize * this.levelData.size;
+  private readonly boardHeight = settings.display.tileSize * this.levelData.size;
 
   private isPaused = false
   private previousFrameTime: number = Date.now();
   private generationIndex = 1;
-  private bots = new Array(populationSize)
+  private bots = new Array(settings.simulation.populationSize)
     .fill(null)
     .map(
       () =>
         new Bot(
-          startingBotPosition.x * tileSize,
-          startingBotPosition.y * tileSize,
+          settings.simulation.startingBotPosition.x * settings.display.tileSize,
+          settings.simulation.startingBotPosition.y * settings.display.tileSize,
           this.levelData.tiles
         )
     );
 
   private drawCanvasBackground() {
-    this.ctx.fillStyle = colors.canvasBackground;
+    this.ctx.fillStyle = settings.display.colors.canvasBackground;
     this.ctx.fillRect(0, 0, this.boardWidth, this.boardHeight);
   }
 
@@ -62,7 +53,7 @@ export class App {
 
   private drawBots() {
     this.bots.forEach((bot) => {
-      if (drawSensors) {
+      if (settings.display.drawSensors) {
         this.drawBotSensors(bot);
       }
       drawBot({ bot, ctx: this.ctx });
@@ -82,13 +73,13 @@ export class App {
 
   // draws circle in place which sensor detected wall:
   private drawPointOfCollision(circleCenter: Point) {
-    this.ctx.fillStyle = colors.pointOfCollision;
+    this.ctx.fillStyle = settings.display.colors.pointOfCollision;
 
     this.ctx.beginPath();
     this.ctx.arc(
       circleCenter.x,
       circleCenter.y,
-      pointOfCollisionRadius,
+      settings.display.pointOfCollisionRadius,
       0,
       2 * Math.PI,
       false
@@ -118,7 +109,7 @@ export class App {
   onNextAnimationFrame() {
     if (this.isPaused) return;
     const now = Date.now();
-    const delta = (now - this.previousFrameTime) * speed;
+    const delta = (now - this.previousFrameTime) * settings.simulation.speed;
     this.previousFrameTime = now;
     this.stats.begin();
     this.drawCanvasBackground();
@@ -126,7 +117,7 @@ export class App {
       boardHeight: this.boardHeight,
       boardWidth: this.boardWidth,
       ctx: this.ctx,
-      tileSize,
+      tileSize: settings.display.tileSize,
     });
     this.drawWalls();
     this.previousFrameTime = Date.now();
@@ -146,10 +137,10 @@ export class App {
     const botPosition = new Point(bot.x, bot.y);
     this.levelData.tiles.forEach((tile) => {
       const pointOfCollision = this.collisionDetector.lineRect(line, {
-        height: tileSize,
-        width: tileSize,
-        x: tile.x * tileSize,
-        y: tile.y * tileSize,
+        height: settings.display.tileSize,
+        width: settings.display.tileSize,
+        x: tile.x * settings.display.tileSize,
+        y: tile.y * settings.display.tileSize,
       });
 
       if (
@@ -165,7 +156,7 @@ export class App {
   }
 
   drawBotSensors(bot: Bot) {
-    this.ctx.strokeStyle = colors.sensorLine;
+    this.ctx.strokeStyle = settings.display.colors.sensorLine;
 
     bot.getSensorLines().forEach((line) => {
       const closestIntersection: Point = this.getClosestIntersection({
@@ -195,12 +186,12 @@ export class App {
 
   drawWalls() {
     this.levelData.tiles.forEach((wall) => {
-      this.ctx.fillStyle = colors.wall;
+      this.ctx.fillStyle = settings.display.colors.wall;
       this.ctx.fillRect(
-        wall.x * tileSize,
-        wall.y * tileSize,
-        tileSize,
-        tileSize
+        wall.x * settings.display.tileSize,
+        wall.y * settings.display.tileSize,
+        settings.display.tileSize,
+        settings.display.tileSize
       );
     });
   }
@@ -214,10 +205,10 @@ export class App {
 
     return this.levelData.tiles.some((tile) => {
       const squareRect = {
-        height: tileSize,
-        width: tileSize,
-        x: tile.x * tileSize,
-        y: tile.y * tileSize,
+        height: settings.display.tileSize,
+        width: settings.display.tileSize,
+        x: tile.x * settings.display.tileSize,
+        y: tile.y * settings.display.tileSize,
       };
 
       return this.collisionDetector.rectCircle(squareRect, botCircle)

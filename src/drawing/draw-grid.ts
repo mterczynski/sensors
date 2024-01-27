@@ -1,4 +1,4 @@
-import { colors } from '../settings';
+import { settings } from "../settings";
 
 export function drawGrid({ ctx, boardWidth, boardHeight, tileSize }: {
   ctx: CanvasRenderingContext2D,
@@ -8,7 +8,7 @@ export function drawGrid({ ctx, boardWidth, boardHeight, tileSize }: {
 }) {
   const h = 0.5; // by adding half of pixel we make lines less blurry
 
-  ctx.strokeStyle = colors.gridLine;
+  ctx.strokeStyle = settings.display.colors.gridLine;
   ctx.lineWidth = 1;
 
   drawVerticalLines();

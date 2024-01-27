@@ -1,4 +1,4 @@
-import { Circle } from "./geometry/circle";
+import { Circle } from "./geometry/Circle";
 import { Line } from "./geometry/Line";
 import { Point } from "./geometry/Point";
 

@@ -3,7 +3,7 @@ import { Line } from "./geometry/Line";
 import { Point } from "./geometry/Point";
 import { Tile } from "./level-data/level-data.types";
 import { NeuralNetwork } from "./neural-network";
-import { sensorAngle, sensorsPerBotCount, tileSize } from "./settings";
+import { settings } from "./settings";
 
 const turningSpeed = 0.004;
 
@@ -37,9 +37,9 @@ export class Bot {
 
   getSensorLines() {
     const maxLineLength = 1000;
-    const degree = Math.PI / 180 * sensorAngle;
+    const degree = Math.PI / 180 * settings.simulation.sensorAngle;
 
-    const sensorLines = [...new Array(sensorsPerBotCount)].map(
+    const sensorLines = [...new Array(settings.simulation.sensorsPerBotCount)].map(
       (e, sensorIndex) => {
         const lineEnd = new Point(
           this.x +
@@ -76,10 +76,10 @@ export class Bot {
 
       this.levelTiles.forEach((tile) => {
         const pointOfCollision = this.collisionDetector.lineRect(line, {
-          height: tileSize,
-          width: tileSize,
-          x: tile.x * tileSize,
-          y: tile.y * tileSize,
+          height: settings.display.tileSize,
+          width: settings.display.tileSize,
+          x: tile.x * settings.display.tileSize,
+          y: tile.y * settings.display.tileSize,
         });
 
         if (

@@ -1,26 +1,18 @@
 import { sensorsPerBotCount } from './settings';
 
-type Weights = [number, number, number, number, number]
-
 function getRandomWeight() {
   // same chances for negative or positive number
   return Math.random() - 0.5;
 }
 
-function normalizeWeights(weights: Weights): Weights {
+function normalizeWeights(weights: number[]): number[] {
   const maxAbs = Math.max(...(weights).map(w => Math.abs(w))) || 1
 
-  return weights.map(weight => weight / maxAbs) as Weights
+  return weights.map(weight => weight / maxAbs)
 }
 
 export class NeuralNetwork {
-  weights = normalizeWeights([
-    getRandomWeight(),
-    getRandomWeight(),
-    getRandomWeight(),
-    getRandomWeight(),
-    getRandomWeight()
-  ])
+  weights = normalizeWeights([...Array(sensorsPerBotCount)].map(e => getRandomWeight()))
 
   clone(): NeuralNetwork {
     const network = new NeuralNetwork();

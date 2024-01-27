@@ -6,8 +6,8 @@ import { level04 } from "./level-data/level-4";
 export const settings = {
   simulation: {
     startingBotPosition: { x: 3, y: 8 },
-    sensorsPerBotCount: 5,
-    sensorAngle: 45,
+    sensorsPerBotCount: 15,
+    sensorAngle: 24,
     speed: 1,
     distributionFunction: (participantPlace: number, numberOfParticipants: number) => (numberOfParticipants - participantPlace) ** 2,
     populationSize: 100,
@@ -19,7 +19,8 @@ export const settings = {
   display: {
     pointOfCollisionRadius: 5,
     tileSize: 40,
-    drawSensors: true,
+    drawAliveBotSensors: false,
+    drawDeadBotSensors: false,
     colors: {
       wall: "rgb(0, 160, 120)",
       sensorLine: "rgba(200, 0, 0, 0.3)",

@@ -53,9 +53,12 @@ export class App {
 
   private drawBots() {
     this.bots.forEach((bot) => {
-      if (settings.display.drawSensors) {
+      const deadDraw = bot.isDead && settings.display.drawDeadBotSensors
+      const aliveDraw = !bot.isDead && settings.display.drawAliveBotSensors
+      if (deadDraw || aliveDraw) {
         this.drawBotSensors(bot);
       }
+
       drawBot({ bot, ctx: this.ctx });
     });
   }

@@ -40,3 +40,5 @@ export const settings = {
   },
 };
 
+// export the object to console, so it's tweakable during runtime
+(window as any)._sensors.settings = settings

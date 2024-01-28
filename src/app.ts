@@ -32,8 +32,8 @@ export class App {
     .map(
       () =>
         new Bot(
-          settings.simulation.startingBotPosition.x * settings.display.tileSize,
-          settings.simulation.startingBotPosition.y * settings.display.tileSize,
+          settings.simulation.activeLevel.startingBotPosition.x * settings.display.tileSize,
+          settings.simulation.activeLevel.startingBotPosition.y * settings.display.tileSize,
           this.levelData.tiles
         )
     );

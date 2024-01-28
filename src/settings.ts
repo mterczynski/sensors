@@ -5,7 +5,6 @@ import { level04 } from "./level-data/level-4";
 
 export const settings = {
   simulation: {
-    startingBotPosition: { x: 3, y: 8 },
     sensorsPerBotCount: 15,
     sensorAngle: 24,
     speed: 1,

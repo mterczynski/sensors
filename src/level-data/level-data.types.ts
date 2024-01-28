@@ -6,5 +6,6 @@ export interface Tile {
 
 export interface LevelData {
   size: number;
+  startingBotPosition: { x: number, y: number },
   tiles: Tile[];
 }

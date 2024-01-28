@@ -3,6 +3,7 @@
 // a bit easier than level02
 export const level03 = {
   size: 19,
+  startingBotPosition: { x: 3, y: 8 },
   tiles: [
     {
       x: 0,

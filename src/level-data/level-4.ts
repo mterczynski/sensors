@@ -3,7 +3,11 @@
 // a bit easier than level03
 export const level04 = {
   size: 19,
-  startingBotPositions: [{ x: 2.5, y: 8, direction: 0 }, { x: 16.5, y: 2, direction: 180 }],
+  startingBotPositions: [
+    { x: 2.5, y: 8, direction: 0 },
+    { x: 16.5, y: 2, direction: 180 },
+    { x: 12, y: 15, direction: 270 },
+  ],
   tiles: [
     {
       x: 0,

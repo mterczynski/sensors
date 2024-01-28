@@ -18,8 +18,10 @@ export const settings = {
   display: {
     pointOfCollisionRadius: 5,
     tileSize: 40,
-    drawAliveBotSensors: false,
+    drawAliveBotSensors: true,
     drawDeadBotSensors: false,
+    // maximum number of bots with drawn sensors:
+    maxBotsWithDrawnSensors: 1,
     colors: {
       wall: "rgb(0, 160, 120)",
       sensorLine: "rgba(200, 0, 0, 0.3)",

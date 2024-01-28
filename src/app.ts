@@ -60,11 +60,16 @@ export class App {
   }
 
   private drawBots() {
+    let drawnSensors = 0
     this.bots.forEach((bot) => {
-      const deadDraw = bot.isDead && settings.display.drawDeadBotSensors
-      const aliveDraw = !bot.isDead && settings.display.drawAliveBotSensors
-      if (deadDraw || aliveDraw) {
+      const canDrawDead = bot.isDead && settings.display.drawDeadBotSensors
+      const canDrawAlive = !bot.isDead && settings.display.drawAliveBotSensors
+      const isDrawLimitKept = settings.display.maxBotsWithDrawnSensors > drawnSensors
+      const canDraw = (canDrawDead || canDrawAlive) && isDrawLimitKept
+
+      if (canDraw) {
         this.drawBotSensors(bot);
+        drawnSensors++
       }
 
       drawBot({ bot, ctx: this.ctx });

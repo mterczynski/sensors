@@ -4,8 +4,14 @@ export interface Tile {
   type: string;
 }
 
+interface SpawnPosition {
+  x: number,
+  y: number,
+  direction: number; // 0 = up, 90 = right, 180 = down, 270 = left
+}
+
 export interface LevelData {
   size: number;
-  startingBotPosition: { x: number, y: number },
+  startingBotPositions: SpawnPosition[], // bots will be randomly distributed among these positions
   tiles: Tile[];
 }

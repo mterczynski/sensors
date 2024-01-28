@@ -7,6 +7,7 @@ import { drawBot, drawGrid } from "./drawing";
 import Stats from "stats.js";
 import { settings } from "./settings";
 import { Bot } from "./Bot";
+import _ from 'lodash';
 
 export class App {
   private readonly levelData = settings.simulation.activeLevel;
@@ -30,12 +31,19 @@ export class App {
   private bots = new Array(settings.simulation.populationSize)
     .fill(null)
     .map(
-      () =>
-        new Bot(
-          settings.simulation.activeLevel.startingBotPosition.x * settings.display.tileSize,
-          settings.simulation.activeLevel.startingBotPosition.y * settings.display.tileSize,
+      () => {
+        const startingBotPosition = _.sample(settings.simulation.activeLevel.startingBotPositions)!
+
+        const bot = new Bot(
+          startingBotPosition.x * settings.display.tileSize,
+          startingBotPosition.y * settings.display.tileSize,
           this.levelData.tiles
         )
+
+        bot.setRotation(startingBotPosition.direction)
+
+        return bot
+      }
     );
 
   private drawCanvasBackground() {

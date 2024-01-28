@@ -3,7 +3,7 @@
 // a bit easier than level01 - bots won't be running in circles as often on level02
 export const level02 = {
   size: 19,
-  startingBotPosition: { x: 3, y: 8 },
+  startingBotPositions: [{ x: 3, y: 8, direction: 0 }],
   tiles: [
     {
       x: 0,

@@ -35,6 +35,10 @@ export class Bot {
     this.neuralNetwork = neuralNetwork || new NeuralNetwork();
   }
 
+  setRotation(valueInAngles: number) {
+    this.rotation = valueInAngles * Math.PI / 180;
+  }
+
   getSensorLines() {
     const maxLineLength = 1000;
     const degree = Math.PI / 180 * settings.simulation.sensorAngle;

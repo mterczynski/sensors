@@ -3,6 +3,7 @@ import { Tile } from "./level-data/level-data.types";
 import { NeuralNetwork } from "./neural-network";
 import { Bot } from "./Bot";
 import { settings } from "./settings";
+import _ from 'lodash';
 
 function formatWeights(weights: number[]) {
   return weights.map((weight: number) => Math.round(weight * 100) / 100)
@@ -16,7 +17,7 @@ export class PopulationHandler {
 
     const botsOrderedByFitness = [...bots].sort((prev, next) => next.getFitness() - prev.getFitness());
     const offspringPerBot = randomlyDistributeResources(bots.length, settings.simulation.distributionFunction);
-    const newGeneration = Array(bots.length).fill(0).map((_, botIndex) => {
+    const newGeneration = Array(bots.length).fill(0).map((bot, botIndex) => {
       const parent: Bot = botsOrderedByFitness[botIndex];
       return Array(offspringPerBot[botIndex]).fill(null).map(() => {
         let neuralNetwork = parent.neuralNetwork.clone()
@@ -34,13 +35,17 @@ export class PopulationHandler {
 
         neuralNetwork.normalizeWeights()
 
+        const startingBotPosition = _.sample(settings.simulation.activeLevel.startingBotPositions)!
+
         const child = new Bot(
-          settings.simulation.activeLevel.startingBotPosition.x * settings.display.tileSize,
-          settings.simulation.activeLevel.startingBotPosition.y * settings.display.tileSize,
+          startingBotPosition.x * settings.display.tileSize,
+          startingBotPosition.y * settings.display.tileSize,
           this.levelTiles,
           isAnomaly,
           neuralNetwork
         )
+
+        child.setRotation(startingBotPosition.direction)
 
         // neuralNetwork.weights[2] = 0
 

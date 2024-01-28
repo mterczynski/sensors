@@ -173,13 +173,18 @@ export class App {
   }
 
   drawBotSensors(bot: Bot) {
-    this.ctx.strokeStyle = settings.display.colors.sensorLine;
 
-    bot.getSensorLines().forEach((line) => {
+    bot.getSensorLines().forEach(({ line, sensorWeight }) => {
       const closestIntersection: Point = this.getClosestIntersection({
         bot,
         line,
       });
+
+      const { alphaAffectedByWeight } = settings.display.colors.sensorLine
+
+      this.ctx.strokeStyle = sensorWeight > 0 ?
+        `rgba(${settings.display.colors.sensorLine.positive}, ${alphaAffectedByWeight ? sensorWeight : 0.3})` :
+        `rgba(${settings.display.colors.sensorLine.negative}, ${alphaAffectedByWeight ? Math.abs(sensorWeight) : 0.3})`
 
       if (isFinite(closestIntersection.x)) {
         this.ctx.beginPath();

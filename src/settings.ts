@@ -24,7 +24,11 @@ export const settings = {
     maxBotsWithDrawnSensors: 1,
     colors: {
       wall: "rgb(0, 160, 120)",
-      sensorLine: "rgba(200, 0, 0, 0.3)",
+      sensorLine: {
+        positive: "200, 0, 0",
+        negative: "0, 0, 200",
+        alphaAffectedByWeight: true
+      },
       pointOfCollision: "rgba(255, 0, 0, 0.2)",
       canvasBackground: "rgb(240, 240, 240)",
       gridLine: "rgb(200, 200, 200)",

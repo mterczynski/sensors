@@ -45,6 +45,8 @@ export class Bot {
 
     const sensorLines = [...new Array(settings.simulation.sensorsPerBotCount)].map(
       (e, sensorIndex) => {
+        const sensorWeight = this.neuralNetwork.weights[sensorIndex];
+
         const lineEnd = new Point(
           this.x +
           maxLineLength *
@@ -56,7 +58,7 @@ export class Bot {
 
         const lineStart = new Point(this.x, this.y);
 
-        return new Line(lineStart, lineEnd);
+        return { line: new Line(lineStart, lineEnd), sensorWeight: sensorWeight };
       }
     );
 
@@ -74,7 +76,7 @@ export class Bot {
   getSensorLengths() {
     const sensorValues: number[] = [];
 
-    this.getSensorLines().forEach((line) => {
+    this.getSensorLines().forEach(({ line }) => {
       const playerPos = new Point(this.x, this.y);
       let closestIntersection = new Point(Infinity, Infinity);
 

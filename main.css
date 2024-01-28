@@ -1,54 +1,60 @@
-*{
+* {
   padding: 0;
   margin: 0;
   font-family: Calibri;
 }
 
-.gameCanvas{
+.gameCanvas {
   position: absolute;
-  left:50%;
-  top:50%;
+  left: 50%;
+  top: 50%;
   transform: translate(-50%, -50%);
   border: 1px solid black;
 }
 
-.generationIndex{
+.generationIndex {
   position: absolute;
   font-size: 32px;
   bottom: 0;
-  left:0;
-  /* transform: translate(-50%, -50%); */
+  left: 0;
 }
 
-.stats{
+.aliveCounter {
+  position: absolute;
+  font-size: 32px;
+  bottom: 30px;
+  left: 0;
+}
+
+.stats {
   position: absolute;
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0,0,0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   padding: 10px;
 }
 
-.stats__row{
+.stats__row {
   padding-top: 5px;
   width: 180px;
 }
 
-.stats__row__label{
+.stats__row__label {
   color: blue;
 }
 
-.stats__row__value{
+.stats__row__value {
   color: cyan;
   /* position: absolute; */
   /* right: 10px; */
 }
 
-.stats__row__weight{
+.stats__row__weight {
   color: green;
 }
 
-.neuralNetCanvas{
+.neuralNetCanvas {
   position: absolute;
   border: 1px solid black;
   left: 0;

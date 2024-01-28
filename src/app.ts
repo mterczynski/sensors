@@ -128,6 +128,7 @@ export class App {
     this.drawBots();
     this.checkForBotDeaths();
     this.checkForPopulationDeath();
+    this.updateAliveCounter(this.bots.filter(b => !b.isDead).length)
 
     this.stats.end();
 
@@ -222,5 +223,10 @@ export class App {
   updateGenerationIndex() {
     document.getElementById("generationIndex")!.innerHTML =
       "Generation: " + ++this.generationIndex;
+  }
+
+  updateAliveCounter(aliveBotCount: number) {
+    document.getElementById("aliveCounter")!.innerHTML =
+      `Alive: ${aliveBotCount}/${settings.simulation.populationSize}`;
   }
 }

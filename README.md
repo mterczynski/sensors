@@ -3,7 +3,7 @@ Machine learning project with neural networks
 
 <img src="assets/projectPreview.gif" width="300" height="300">
 
-Levels are generated using http://www.mterczynski.pl/levelEditor/
+Levels are generated using https://www.mter.pl/level-editor/
 
 ## Install dependencies
 

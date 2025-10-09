@@ -102,12 +102,8 @@ export class App {
     keyHandler.addKeyListeners();
 
     document.addEventListener("visibilitychange", () => {
-      if (document.hidden) {
-        // Tab is not active, pause the game loop
-        this.isPaused = true;
-      } else {
-        // Tab is active, resume the game loop
-        this.isPaused = false;
+      this.isPaused = document.hidden;
+      if (!document.hidden) {
         this.previousFrameTime = Date.now();
       }
     });

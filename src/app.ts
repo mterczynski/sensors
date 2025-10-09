@@ -3,15 +3,10 @@ import { Line } from "./geometry/Line";
 import { Point } from "./geometry/Point";
 import { keyHandler } from "./key-handler";
 import { PopulationHandler } from "./population-handler";
-import {
-  drawBot,
-  drawGrid,
-  drawBotSensors,
-  drawWalls,
-  drawCanvasBackground,
-} from "./drawing";
+import { drawGrid, drawWalls, drawBots, drawCanvasBackground } from "./drawing";
 import { settings } from "./settings";
 import { Bot } from "./Bot";
+import Stats from "stats.js";
 import _ from "lodash";
 
 export class App {
@@ -66,24 +61,6 @@ export class App {
     });
   }
 
-  private drawBots() {
-    let drawnSensors = 0;
-    this.bots.forEach((bot) => {
-      const canDrawDead = bot.isDead && settings.display.drawDeadBotSensors;
-      const canDrawAlive = !bot.isDead && settings.display.drawAliveBotSensors;
-      const isDrawLimitKept =
-        settings.display.maxBotsWithDrawnSensors > drawnSensors;
-      const canDraw = (canDrawDead || canDrawAlive) && isDrawLimitKept;
-
-      if (canDraw) {
-        drawBotSensors(this.ctx, bot, this.getClosestIntersection.bind(this));
-        drawnSensors++;
-      }
-
-      drawBot({ bot, ctx: this.ctx });
-    });
-  }
-
   private tickBots(delta: number) {
     this.bots.forEach((bot) => bot.tick(delta));
   }
@@ -125,7 +102,11 @@ export class App {
     drawWalls(this.ctx, this.levelData.tiles);
     this.previousFrameTime = Date.now();
     this.tickBots(delta);
-    this.drawBots();
+    drawBots({
+      bots: this.bots,
+      ctx: this.ctx,
+      getClosestIntersection: this.getClosestIntersection.bind(this),
+    });
     this.checkForBotDeaths();
     this.checkForPopulationDeath();
     this.updateAliveCounter(this.bots.filter((b) => !b.isDead).length);

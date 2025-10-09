@@ -1,6 +1,7 @@
 import { Circle } from "./geometry/Circle";
 import { Line } from "./geometry/Line";
 import { Point } from "./geometry/Point";
+import { Bot } from "./Bot";
 
 // based on http://www.jeffreythompson.org/collision-detection/line-rect.php
 
@@ -140,5 +141,28 @@ export class CollisionDetector {
       isCollision:
         deltaX * deltaX + deltaY * deltaY < circle.radius * circle.radius,
     };
+  }
+
+  isBotCollidingWithWalls(
+    bot: Bot,
+    tiles: Array<{ x: number; y: number }>,
+    tileSize: number,
+  ) {
+    const botCircle = {
+      radius: bot.radius,
+      x: bot.x,
+      y: bot.y,
+    };
+
+    return tiles.some((tile) => {
+      const squareRect = {
+        height: tileSize,
+        width: tileSize,
+        x: tile.x * tileSize,
+        y: tile.y * tileSize,
+      };
+
+      return this.rectCircle(squareRect, botCircle).isCollision;
+    });
   }
 }

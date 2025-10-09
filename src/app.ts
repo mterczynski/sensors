@@ -54,7 +54,13 @@ export class App {
 
   private checkForBotDeaths() {
     this.bots.forEach((bot) => {
-      if (this.isBotCollidingWithWalls(bot)) {
+      if (
+        this.collisionDetector.isBotCollidingWithWalls(
+          bot,
+          this.levelData.tiles,
+          settings.display.tileSize,
+        )
+      ) {
         bot.isDead = true;
       }
     });
@@ -171,26 +177,6 @@ export class App {
     });
 
     return closestIntersection;
-  }
-
-  isBotCollidingWithWalls(bot: Bot) {
-    const botCircle = {
-      radius: bot.radius,
-      x: bot.x,
-      y: bot.y,
-    };
-
-    return this.levelData.tiles.some((tile) => {
-      const squareRect = {
-        height: settings.display.tileSize,
-        width: settings.display.tileSize,
-        x: tile.x * settings.display.tileSize,
-        y: tile.y * settings.display.tileSize,
-      };
-
-      return this.collisionDetector.rectCircle(squareRect, botCircle)
-        .isCollision;
-    });
   }
 
   updateGenerationIndex() {

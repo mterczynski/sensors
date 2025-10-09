@@ -5,17 +5,26 @@ import { level04 } from "./level-data/level-4";
 
 export const settings = {
   simulation: {
+    /** Number of sensors per bot */
     sensorsPerBotCount: 15,
+    /** Angle between each sensor (degrees) */
     sensorAngle: 24,
+    /** Simulation speed multiplier - higher = faster */
     speed: 1,
+    /** Function to distribute fitness among bots */
     distributionFunction: (
       participantPlace: number,
       numberOfParticipants: number,
     ) => (numberOfParticipants - participantPlace) ** 2,
+    /** Number of bots in the population */
     populationSize: 100,
+    /** Probability of mutation per bot */
     mutationChance: 0.3,
+    /** Maximum change allowed per mutation */
     maxMutationChange: 0.5,
+    /** Chance for a bot to be an anomaly (anomalies use different colors and have fresh new, untrained neural networks) */
     anomaliesChance: 0.01,
+    /** Currently active level data */
     activeLevel: level04,
   },
   display: {

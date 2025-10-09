@@ -3,7 +3,7 @@ import { Line } from "./geometry/Line";
 import { Point } from "./geometry/Point";
 import { keyHandler } from "./key-handler";
 import { PopulationHandler } from "./population-handler";
-import { drawBot, drawGrid } from "./drawing";
+import { drawBot, drawGrid, drawBotSensors, drawWalls } from "./drawing";
 import Stats from "stats.js";
 import { settings } from "./settings";
 import { Bot } from "./Bot";
@@ -70,7 +70,7 @@ export class App {
       const canDraw = (canDrawDead || canDrawAlive) && isDrawLimitKept;
 
       if (canDraw) {
-        this.drawBotSensors(bot);
+        drawBotSensors(this.ctx, bot, this.getClosestIntersection.bind(this));
         drawnSensors++;
       }
 
@@ -136,7 +136,7 @@ export class App {
       ctx: this.ctx,
       tileSize: settings.display.tileSize,
     });
-    this.drawWalls();
+    drawWalls(this.ctx, this.levelData.tiles);
     this.previousFrameTime = Date.now();
     this.tickBots(delta);
     this.drawBots();

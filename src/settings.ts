@@ -8,7 +8,10 @@ export const settings = {
     sensorsPerBotCount: 15,
     sensorAngle: 24,
     speed: 1,
-    distributionFunction: (participantPlace: number, numberOfParticipants: number) => (numberOfParticipants - participantPlace) ** 2,
+    distributionFunction: (
+      participantPlace: number,
+      numberOfParticipants: number,
+    ) => (numberOfParticipants - participantPlace) ** 2,
     populationSize: 100,
     mutationChance: 0.3,
     maxMutationChange: 0.5,
@@ -27,7 +30,7 @@ export const settings = {
       sensorLine: {
         positive: "200, 0, 0",
         negative: "0, 0, 200",
-        alphaAffectedByWeight: true
+        alphaAffectedByWeight: true,
       },
       pointOfCollision: "rgba(255, 0, 0, 0.2)",
       canvasBackground: "rgb(240, 240, 240)",
@@ -47,4 +50,4 @@ export const settings = {
 };
 
 // export the object to console, so it's tweakable during runtime
-(window as any)._sensors = { settings }
+(window as any)._sensors = { settings };

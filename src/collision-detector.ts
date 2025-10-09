@@ -33,7 +33,7 @@ export class CollisionDetector {
       rx,
       ry,
       rx,
-      ry + rh
+      ry + rh,
     );
     const right = this.lineLine(
       line.a.x,
@@ -43,7 +43,7 @@ export class CollisionDetector {
       rx + rw,
       ry,
       rx + rw,
-      ry + rh
+      ry + rh,
     );
     const top = this.lineLine(
       line.a.x,
@@ -53,7 +53,7 @@ export class CollisionDetector {
       rx,
       ry,
       rx + rw,
-      ry
+      ry,
     );
     const bottom = this.lineLine(
       line.a.x,
@@ -63,7 +63,7 @@ export class CollisionDetector {
       rx,
       ry + rh,
       rx + rw,
-      ry + rh
+      ry + rh,
     );
 
     let closestIntersection = new Point(Infinity, Infinity);
@@ -105,7 +105,7 @@ export class CollisionDetector {
     x3: number,
     y3: number,
     x4: number,
-    y4: number
+    y4: number,
   ): CollisionCheckResult {
     // calculate the direction of the lines
     const uA =

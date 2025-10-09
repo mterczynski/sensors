@@ -7,44 +7,45 @@ import { drawBot, drawGrid } from "./drawing";
 import Stats from "stats.js";
 import { settings } from "./settings";
 import { Bot } from "./Bot";
-import _ from 'lodash';
+import _ from "lodash";
 
 export class App {
   private readonly levelData = settings.simulation.activeLevel;
   private readonly populationHandler = new PopulationHandler(
-    this.levelData.tiles
+    this.levelData.tiles,
   );
   private readonly gameCanvas = document.getElementById(
-    "gameCanvas"
+    "gameCanvas",
   ) as HTMLCanvasElement;
   private readonly ctx = this.gameCanvas.getContext(
-    "2d"
+    "2d",
   ) as CanvasRenderingContext2D;
   private readonly collisionDetector = new CollisionDetector();
   private readonly stats = new Stats();
   private readonly boardWidth = settings.display.tileSize * this.levelData.size;
-  private readonly boardHeight = settings.display.tileSize * this.levelData.size;
+  private readonly boardHeight =
+    settings.display.tileSize * this.levelData.size;
 
-  private isPaused = false
+  private isPaused = false;
   private previousFrameTime: number = Date.now();
   private generationIndex = 1;
   private bots = new Array(settings.simulation.populationSize)
     .fill(null)
-    .map(
-      () => {
-        const startingBotPosition = _.sample(settings.simulation.activeLevel.startingBotPositions)!
+    .map(() => {
+      const startingBotPosition = _.sample(
+        settings.simulation.activeLevel.startingBotPositions,
+      )!;
 
-        const bot = new Bot(
-          startingBotPosition.x * settings.display.tileSize,
-          startingBotPosition.y * settings.display.tileSize,
-          this.levelData.tiles
-        )
+      const bot = new Bot(
+        startingBotPosition.x * settings.display.tileSize,
+        startingBotPosition.y * settings.display.tileSize,
+        this.levelData.tiles,
+      );
 
-        bot.setRotation(startingBotPosition.direction)
+      bot.setRotation(startingBotPosition.direction);
 
-        return bot
-      }
-    );
+      return bot;
+    });
 
   private drawCanvasBackground() {
     this.ctx.fillStyle = settings.display.colors.canvasBackground;
@@ -60,16 +61,17 @@ export class App {
   }
 
   private drawBots() {
-    let drawnSensors = 0
+    let drawnSensors = 0;
     this.bots.forEach((bot) => {
-      const canDrawDead = bot.isDead && settings.display.drawDeadBotSensors
-      const canDrawAlive = !bot.isDead && settings.display.drawAliveBotSensors
-      const isDrawLimitKept = settings.display.maxBotsWithDrawnSensors > drawnSensors
-      const canDraw = (canDrawDead || canDrawAlive) && isDrawLimitKept
+      const canDrawDead = bot.isDead && settings.display.drawDeadBotSensors;
+      const canDrawAlive = !bot.isDead && settings.display.drawAliveBotSensors;
+      const isDrawLimitKept =
+        settings.display.maxBotsWithDrawnSensors > drawnSensors;
+      const canDraw = (canDrawDead || canDrawAlive) && isDrawLimitKept;
 
       if (canDraw) {
         this.drawBotSensors(bot);
-        drawnSensors++
+        drawnSensors++;
       }
 
       drawBot({ bot, ctx: this.ctx });
@@ -98,7 +100,7 @@ export class App {
       settings.display.pointOfCollisionRadius,
       0,
       2 * Math.PI,
-      false
+      false,
     );
     this.ctx.fill();
   }
@@ -109,7 +111,6 @@ export class App {
     document.body.appendChild(this.stats.dom);
     keyHandler.addKeyListeners();
 
-
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) {
         // Tab is not active, pause the game loop
@@ -117,7 +118,7 @@ export class App {
       } else {
         // Tab is active, resume the game loop
         this.isPaused = false;
-        this.previousFrameTime = Date.now()
+        this.previousFrameTime = Date.now();
       }
     });
   }
@@ -141,7 +142,7 @@ export class App {
     this.drawBots();
     this.checkForBotDeaths();
     this.checkForPopulationDeath();
-    this.updateAliveCounter(this.bots.filter(b => !b.isDead).length)
+    this.updateAliveCounter(this.bots.filter((b) => !b.isDead).length);
 
     this.stats.end();
 
@@ -163,7 +164,7 @@ export class App {
       if (
         pointOfCollision &&
         pointOfCollision.distanceTo(botPosition) <
-        closestIntersection.distanceTo(botPosition)
+          closestIntersection.distanceTo(botPosition)
       ) {
         closestIntersection = pointOfCollision;
       }
@@ -173,18 +174,18 @@ export class App {
   }
 
   drawBotSensors(bot: Bot) {
-
     bot.getSensorLines().forEach(({ line, sensorWeight }) => {
       const closestIntersection: Point = this.getClosestIntersection({
         bot,
         line,
       });
 
-      const { alphaAffectedByWeight } = settings.display.colors.sensorLine
+      const { alphaAffectedByWeight } = settings.display.colors.sensorLine;
 
-      this.ctx.strokeStyle = sensorWeight > 0 ?
-        `rgba(${settings.display.colors.sensorLine.positive}, ${alphaAffectedByWeight ? sensorWeight : 0.3})` :
-        `rgba(${settings.display.colors.sensorLine.negative}, ${alphaAffectedByWeight ? Math.abs(sensorWeight) : 0.3})`
+      this.ctx.strokeStyle =
+        sensorWeight > 0
+          ? `rgba(${settings.display.colors.sensorLine.positive}, ${alphaAffectedByWeight ? sensorWeight : 0.3})`
+          : `rgba(${settings.display.colors.sensorLine.negative}, ${alphaAffectedByWeight ? Math.abs(sensorWeight) : 0.3})`;
 
       if (isFinite(closestIntersection.x)) {
         this.ctx.beginPath();
@@ -213,7 +214,7 @@ export class App {
         wall.x * settings.display.tileSize,
         wall.y * settings.display.tileSize,
         settings.display.tileSize,
-        settings.display.tileSize
+        settings.display.tileSize,
       );
     });
   }

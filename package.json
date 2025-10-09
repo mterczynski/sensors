@@ -6,12 +6,13 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
-    "lint:jenkins": "tslint --project . -c tslint.jenkins.json",
+    "format": "prettier --write \"**/*.{js,ts,json,css}\"",
     "test": "jest"
   },
   "author": "https://github.com/mterczynski",
   "dependencies": {
     "@types/lodash": "^4.14.202",
+    "prettier": "^3.6.2",
     "source-map-loader": "^0.2.4",
     "stats.js": "^0.17.0",
     "ts-loader": "^9.4.1",

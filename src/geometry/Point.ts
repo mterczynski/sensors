@@ -2,7 +2,7 @@ export class Point {
   constructor(
     public x: number,
     public y: number,
-  ) { }
+  ) {}
 
   distanceTo(point: Point) {
     const deltaX = point.x - this.x;

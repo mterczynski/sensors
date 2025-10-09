@@ -6,31 +6,40 @@ function getRandomWeight() {
 }
 
 function normalizeWeights(weights: number[]): number[] {
-  const maxAbs = Math.max(...(weights).map(w => Math.abs(w))) || 1
+  const maxAbs = Math.max(...weights.map((w) => Math.abs(w))) || 1;
 
-  return weights.map(weight => weight / maxAbs)
+  return weights.map((weight) => weight / maxAbs);
 }
 
 export class NeuralNetwork {
-  weights = normalizeWeights([...Array(settings.simulation.sensorsPerBotCount)].map(e => getRandomWeight()))
+  weights = normalizeWeights(
+    [...Array(settings.simulation.sensorsPerBotCount)].map((e) =>
+      getRandomWeight(),
+    ),
+  );
 
   clone(): NeuralNetwork {
     const network = new NeuralNetwork();
-    network.weights = [...this.weights]
+    network.weights = [...this.weights];
 
     return network;
   }
 
   normalizeWeights() {
-    this.weights = normalizeWeights(this.weights)
+    this.weights = normalizeWeights(this.weights);
   }
 
   evaluate(inputs: number[]) {
     if (inputs.length !== settings.simulation.sensorsPerBotCount) {
-      throw new Error(`Expected ${settings.simulation.sensorsPerBotCount} numerical inputs`);
+      throw new Error(
+        `Expected ${settings.simulation.sensorsPerBotCount} numerical inputs`,
+      );
     }
 
-    const sum = inputs.reduce((total, nextInput, index) => total + nextInput * this.weights[index], 0);
+    const sum = inputs.reduce(
+      (total, nextInput, index) => total + nextInput * this.weights[index],
+      0,
+    );
 
     return sum;
   }

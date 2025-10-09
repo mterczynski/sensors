@@ -30,37 +30,37 @@ export class Bot {
     public y: number,
     private levelTiles: Tile[],
     public readonly isAnomaly = false,
-    neuralNetwork?: NeuralNetwork
+    neuralNetwork?: NeuralNetwork,
   ) {
     this.neuralNetwork = neuralNetwork || new NeuralNetwork();
   }
 
   setRotation(valueInAngles: number) {
-    this.rotation = valueInAngles * Math.PI / 180;
+    this.rotation = (valueInAngles * Math.PI) / 180;
   }
 
   getSensorLines() {
     const maxLineLength = 1000;
-    const degree = Math.PI / 180 * settings.simulation.sensorAngle;
+    const degree = (Math.PI / 180) * settings.simulation.sensorAngle;
 
-    const sensorLines = [...new Array(settings.simulation.sensorsPerBotCount)].map(
-      (e, sensorIndex) => {
-        const sensorWeight = this.neuralNetwork.weights[sensorIndex];
+    const sensorLines = [
+      ...new Array(settings.simulation.sensorsPerBotCount),
+    ].map((e, sensorIndex) => {
+      const sensorWeight = this.neuralNetwork.weights[sensorIndex];
 
-        const lineEnd = new Point(
-          this.x +
+      const lineEnd = new Point(
+        this.x +
           maxLineLength *
-          Math.cos(sensorIndex * degree + this.rotation + Math.PI),
-          this.y +
+            Math.cos(sensorIndex * degree + this.rotation + Math.PI),
+        this.y +
           maxLineLength *
-          Math.sin(sensorIndex * degree + this.rotation + Math.PI)
-        );
+            Math.sin(sensorIndex * degree + this.rotation + Math.PI),
+      );
 
-        const lineStart = new Point(this.x, this.y);
+      const lineStart = new Point(this.x, this.y);
 
-        return { line: new Line(lineStart, lineEnd), sensorWeight: sensorWeight };
-      }
-    );
+      return { line: new Line(lineStart, lineEnd), sensorWeight: sensorWeight };
+    });
 
     return sensorLines;
   }
@@ -91,7 +91,7 @@ export class Bot {
         if (
           pointOfCollision &&
           pointOfCollision.distanceTo(playerPos) <
-          closestIntersection.distanceTo(playerPos)
+            closestIntersection.distanceTo(playerPos)
         ) {
           closestIntersection = pointOfCollision;
         }

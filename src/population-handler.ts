@@ -1,4 +1,4 @@
-import { randomlyDistributeResources } from "./randomly-distribute-resources";
+import { randomlyDistributeSelectionSlots } from "./randomly-distribute-resources";
 import { Tile } from "./level-data/level-data.types";
 import { NeuralNetwork } from "./neural-network";
 import { Bot } from "./Bot";
@@ -9,6 +9,10 @@ function formatWeights(weights: number[]) {
   return weights.map((weight: number) => Math.round(weight * 100) / 100);
 }
 
+/**
+ * Handles population management for evolutionary algorithms.
+ * Generates a new generation of agents (bots) using fitness proportionate selection and mutation.
+ */
 export class PopulationHandler {
   constructor(private levelTiles: Tile[]) {}
 
@@ -18,7 +22,7 @@ export class PopulationHandler {
     const botsOrderedByFitness = [...bots].sort(
       (prev, next) => next.getFitness() - prev.getFitness(),
     );
-    const offspringPerBot = randomlyDistributeResources(
+    const offspringPerAgent = randomlyDistributeSelectionSlots(
       bots.length,
       settings.simulation.distributionFunction,
     );
@@ -26,7 +30,7 @@ export class PopulationHandler {
       .fill(0)
       .map((bot, botIndex) => {
         const parent: Bot = botsOrderedByFitness[botIndex];
-        return Array(offspringPerBot[botIndex])
+        return Array(offspringPerAgent[botIndex])
           .fill(null)
           .map(() => {
             let neuralNetwork = parent.neuralNetwork.clone();
@@ -38,6 +42,7 @@ export class PopulationHandler {
               neuralNetwork = new NeuralNetwork();
             } else {
               for (let i = 0; i < settings.simulation.sensorsPerBotCount; i++) {
+                // Apply mutation to weights
                 neuralNetwork.weights[i] +=
                   settings.simulation.mutationChance > Math.random()
                     ? settings.simulation.maxMutationChange *
@@ -61,8 +66,6 @@ export class PopulationHandler {
             );
 
             child.setRotation(startingBotPosition.direction);
-
-            // neuralNetwork.weights[2] = 0
 
             weightsAll.push(neuralNetwork.weights);
 
@@ -91,27 +94,5 @@ export class PopulationHandler {
     );
 
     return newGeneration;
-    // const fitnesses = bots.map((bot) => bot.getFitness());
-    // const maxFitness = Math.max(...fitnesses);
-    // const normalizedFitnesses = fitnesses.map(
-    //   (fitness) => fitness / maxFitness
-    // );
-
-    // return [...Array(populationSize)].map(
-    //   () =>
-    //     new Bot(
-    //       startingBotPosition.x * tileSize,
-    //       startingBotPosition.y * tileSize,
-    //       this.levelTiles
-    //     )
-    // );
-
-    // bots.sort((prev, next) => prev.getFitness() - next.getFitness()).reverse();
-
-    // const maxFit = bots[0].getFitness();
-
-    // bots.forEach((bot) => {
-    //   bot.calculatedFitness = Math.round(bot.getFitness() / maxFit * 100);
-    // });
   }
 }

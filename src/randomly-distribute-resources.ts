@@ -1,62 +1,56 @@
-// both ints inclusive
+// Roulette wheel selection: both ints inclusive
 function randomIntegerInRange(minInt: number, maxInt: number) {
   return minInt + Math.round(Math.random() * (maxInt - minInt));
 }
 
-function getTicketOwnerIndex(
-  startingTicketRangesPerOwner: number[],
+function getAgentIndexByTicket(
+  startingTicketRangesPerAgent: number[],
   ticketNumber: number,
 ): number {
   for (
-    let ownerIndex = startingTicketRangesPerOwner.length - 1;
-    ownerIndex >= 0;
-    ownerIndex--
+    let agentIndex = startingTicketRangesPerAgent.length - 1;
+    agentIndex >= 0;
+    agentIndex--
   ) {
-    if (ticketNumber > startingTicketRangesPerOwner[ownerIndex]) {
-      return ownerIndex;
+    if (ticketNumber > startingTicketRangesPerAgent[agentIndex]) {
+      return agentIndex;
     }
   }
-
   return 0;
 }
 
-/** @description Function that randomly distributes `n` resources to `n` participants where first participants
-  have more chance to get more resources than last participants
-  @example output: distributeResources(20)) ->  [1, 2, 2, 1, 2, 3, 1, 3, 1, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0]
-  @example output: distributeResources(20, (p, n) => (n - p) ** 2)) ->  [4, 3, 3, 3, 1, 0, 2, 0, 2, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-*/
-export function randomlyDistributeResources(
-  numberOfParticipants: number,
-  /** A function for generating tickets depending on number participant - this function dictates equality/inequality of distribution */
-  ticketGenerator = (participantPlace: number, numberOfParticipants: number) =>
-    numberOfParticipants - participantPlace,
+/**
+ * Fitness proportionate selection (roulette wheel selection) for evolutionary algorithms.
+ * Randomly distributes selection slots (offspring) among agents based on their fitness.
+ * @param numberOfAgents - Number of agents in the population.
+ * @param fitnessFunction - Function to generate fitness (tickets) for each agent.
+ * @returns Array of offspring counts per agent.
+ * @example randomlyDistributeSelectionSlots(20) -> [1, 2, 2, 1, ...]
+ * @example randomlyDistributeSelectionSlots(20, (i, n) => (n - i) ** 2) -> [4, 3, 3, ...]
+ */
+export function randomlyDistributeSelectionSlots(
+  numberOfAgents: number,
+  fitnessFunction = (agentIndex: number, numberOfAgents: number) =>
+    numberOfAgents - agentIndex,
 ) {
-  const ticketsPerParticipant = Array(numberOfParticipants)
+  const ticketsPerAgent = Array(numberOfAgents)
     .fill(0)
-    .map((_, participantPlace) =>
-      ticketGenerator(participantPlace, numberOfParticipants),
-    );
-  const sumOfTickets = ticketsPerParticipant.reduce(
-    (sum, nextParticipantTickets) => sum + nextParticipantTickets,
-    0,
-  );
+    .map((_, agentIndex) => fitnessFunction(agentIndex, numberOfAgents));
+  const sumOfTickets = ticketsPerAgent.reduce((sum, next) => sum + next, 0);
 
-  const startingTicketRangesPerOwner = ticketsPerParticipant
+  const startingTicketRangesPerAgent = ticketsPerAgent
     .slice(0, -1)
-    .reduce<
-      number[]
-    >((acc, next) => [...acc, next + (acc.slice(-1)[0] || 0)], [0]);
-  const resourcesPerParticipant: number[] = Array(numberOfParticipants).fill(0); // index -> place of participant, value -> resources of that participant
+    .reduce<number[]>((acc, next) => [...acc, next + (acc.slice(-1)[0] || 0)], [0]);
+  const offspringPerAgent: number[] = Array(numberOfAgents).fill(0);
 
-  for (let i = 0; i < numberOfParticipants; i++) {
+  for (let i = 0; i < numberOfAgents; i++) {
     const randomTicketNumber = randomIntegerInRange(1, sumOfTickets);
-    const indexOfTicketOwner = getTicketOwnerIndex(
-      startingTicketRangesPerOwner,
+    const agentIndex = getAgentIndexByTicket(
+      startingTicketRangesPerAgent,
       randomTicketNumber,
     );
-
-    resourcesPerParticipant[indexOfTicketOwner]++;
+    offspringPerAgent[agentIndex]++;
   }
 
-  return resourcesPerParticipant;
+  return offspringPerAgent;
 }

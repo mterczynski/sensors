@@ -3,8 +3,13 @@ import { Line } from "./geometry/Line";
 import { Point } from "./geometry/Point";
 import { keyHandler } from "./key-handler";
 import { PopulationHandler } from "./population-handler";
-import { drawBot, drawGrid, drawBotSensors, drawWalls } from "./drawing";
-import Stats from "stats.js";
+import {
+  drawBot,
+  drawGrid,
+  drawBotSensors,
+  drawWalls,
+  drawCanvasBackground,
+} from "./drawing";
 import { settings } from "./settings";
 import { Bot } from "./Bot";
 import _ from "lodash";
@@ -46,11 +51,6 @@ export class App {
 
       return bot;
     });
-
-  private drawCanvasBackground() {
-    this.ctx.fillStyle = settings.display.colors.canvasBackground;
-    this.ctx.fillRect(0, 0, this.boardWidth, this.boardHeight);
-  }
 
   private checkForBotDeaths() {
     this.bots.forEach((bot) => {
@@ -95,22 +95,6 @@ export class App {
     }
   }
 
-  // draws circle in place which sensor detected wall:
-  private drawPointOfCollision(circleCenter: Point) {
-    this.ctx.fillStyle = settings.display.colors.pointOfCollision;
-
-    this.ctx.beginPath();
-    this.ctx.arc(
-      circleCenter.x,
-      circleCenter.y,
-      settings.display.pointOfCollisionRadius,
-      0,
-      2 * Math.PI,
-      false,
-    );
-    this.ctx.fill();
-  }
-
   constructor() {
     requestAnimationFrame(() => this.onNextAnimationFrame());
     this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
@@ -135,7 +119,7 @@ export class App {
     const delta = (now - this.previousFrameTime) * settings.simulation.speed;
     this.previousFrameTime = now;
     this.stats.begin();
-    this.drawCanvasBackground();
+    drawCanvasBackground(this.ctx, this.boardWidth, this.boardHeight);
     drawGrid({
       boardHeight: this.boardHeight,
       boardWidth: this.boardWidth,

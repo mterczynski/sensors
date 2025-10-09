@@ -1,4 +1,5 @@
 # Sensors
+
 Machine learning project that utilizes neural networks and evolutionary algorithm
 
 <img src="assets/projectPreview.gif" width="300" height="300">
@@ -9,18 +10,18 @@ Levels were generated using https://www.mter.pl/level-editor
 
 ### Install dependencies
 
-```
-yarn
+```bash
+npm i
 ```
 
 ### Start application in watch mode
 
-```
-yarn start
+```bash
+npm start
 ```
 
 ### Build application
 
-```
-yarn build
+```bash
+npm run build
 ```

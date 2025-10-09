@@ -173,52 +173,6 @@ export class App {
     return closestIntersection;
   }
 
-  drawBotSensors(bot: Bot) {
-    bot.getSensorLines().forEach(({ line, sensorWeight }) => {
-      const closestIntersection: Point = this.getClosestIntersection({
-        bot,
-        line,
-      });
-
-      const { alphaAffectedByWeight } = settings.display.colors.sensorLine;
-
-      this.ctx.strokeStyle =
-        sensorWeight > 0
-          ? `rgba(${settings.display.colors.sensorLine.positive}, ${alphaAffectedByWeight ? sensorWeight : 0.3})`
-          : `rgba(${settings.display.colors.sensorLine.negative}, ${alphaAffectedByWeight ? Math.abs(sensorWeight) : 0.3})`;
-
-      if (isFinite(closestIntersection.x)) {
-        this.ctx.beginPath();
-        this.ctx.moveTo(bot.x, bot.y);
-        this.ctx.lineTo(closestIntersection.x, closestIntersection.y);
-        this.ctx.stroke();
-        this.ctx.closePath();
-        this.drawPointOfCollision(closestIntersection);
-      } else {
-        throw new Error("Sensor line is not finite");
-        // if you want to work with limited-range sensors:
-
-        // this.ctx.beginPath();
-        // this.ctx.moveTo(this.bot.x, this.bot.y);
-        // this.ctx.lineTo(line.b.x, line.b.y);
-        // this.ctx.stroke();
-        // this.ctx.closePath();
-      }
-    });
-  }
-
-  drawWalls() {
-    this.levelData.tiles.forEach((wall) => {
-      this.ctx.fillStyle = settings.display.colors.wall;
-      this.ctx.fillRect(
-        wall.x * settings.display.tileSize,
-        wall.y * settings.display.tileSize,
-        settings.display.tileSize,
-        settings.display.tileSize,
-      );
-    });
-  }
-
   isBotCollidingWithWalls(bot: Bot) {
     const botCircle = {
       radius: bot.radius,

@@ -1,6 +1,6 @@
 import { CollisionDetector } from "./collision-detector";
-import { Line } from "./geometry/Line";
-import { Point } from "./geometry/Point";
+import { Line } from "../geometry/Line";
+import { Point } from "../geometry/Point";
 
 describe("CollisionDetector.lineRect", () => {
   const detector = new CollisionDetector();

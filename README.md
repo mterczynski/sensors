@@ -1,6 +1,7 @@
 # Sensors
 
 [![CI](https://github.com/mterczynski/sensors/actions/workflows/ci.yml/badge.svg)](https://github.com/mterczynski/sensors/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/mterczynski/sensors/branch/master/graph/badge.svg)](https://codecov.io/gh/mterczynski/sensors)
 
 Machine learning project that utilizes neural networks and evolutionary algorithm
 

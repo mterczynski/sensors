@@ -48,7 +48,7 @@ export class SettingsGUI {
   private setupGUI() {
     // Simulation folder
     const simulationFolder = this.gui.addFolder("Simulation");
-    
+
     simulationFolder
       .add(settings.simulation, "sensorsPerBotCount", 3, 50, 1)
       .name("Sensors per Bot")
@@ -135,7 +135,10 @@ export class SettingsGUI {
       .add(settings.display.colors.sensorLine, "alphaAffectedByWeight")
       .name("Alpha by Weight")
       .onChange((value) => {
-        this.saveToLocalStorage("display.colors.sensorLine.alphaAffectedByWeight", value);
+        this.saveToLocalStorage(
+          "display.colors.sensorLine.alphaAffectedByWeight",
+          value,
+        );
       });
 
     // Reset button
@@ -146,7 +149,7 @@ export class SettingsGUI {
             this.resetSettings();
           },
         },
-        "resetSettings"
+        "resetSettings",
       )
       .name("Reset All Settings");
   }

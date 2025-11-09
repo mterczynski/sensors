@@ -2,7 +2,7 @@ import { CollisionDetector } from "./collision-detector";
 import { Line } from "./geometry/Line";
 import { Point } from "./geometry/Point";
 import { Tile } from "./level-data/level-data.types";
-import { NeuralNetwork } from "./neural-network";
+import { NeuralNetwork } from "./machine-learning/neural-network";
 import { settings } from "./settings";
 
 const turningSpeed = 0.004;

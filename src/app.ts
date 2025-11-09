@@ -2,7 +2,7 @@ import { CollisionDetector } from "./collision-detector";
 import { Line } from "./geometry/Line";
 import { Point } from "./geometry/Point";
 import { keyHandler } from "./key-handler";
-import { PopulationHandler } from "./population-handler";
+import { PopulationHandler } from "./machine-learning/population-handler";
 import { drawGrid, drawWalls, drawBots, drawCanvasBackground } from "./drawing";
 import { settings } from "./settings";
 import { Bot } from "./Bot";

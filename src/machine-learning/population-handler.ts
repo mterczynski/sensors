@@ -1,8 +1,8 @@
 import { randomlyDistributeResources } from "./randomly-distribute-resources";
-import { Tile } from "./level-data/level-data.types";
+import { Tile } from "../level-data/level-data.types";
 import { NeuralNetwork } from "./neural-network";
-import { Bot } from "./Bot";
-import { settings } from "./settings";
+import { Bot } from "../Bot";
+import { settings } from "../settings";
 import _ from "lodash";
 
 function formatWeights(weights: number[]) {

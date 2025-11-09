@@ -1,4 +1,4 @@
-import { settings } from "./settings";
+import { settings } from "../settings";
 
 function getRandomWeight() {
   // same chances for negative or positive number

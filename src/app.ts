@@ -1,4 +1,4 @@
-import { CollisionDetector } from "./collision-detector";
+import { CollisionDetector } from "./physics/collision-detector";
 import { Line } from "./geometry/Line";
 import { Point } from "./geometry/Point";
 import { keyHandler } from "./key-handler";

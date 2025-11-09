@@ -86,7 +86,7 @@ export class SettingsGUI {
       .name("Mutation Chance")
       .onChange((value) => {
         this.saveToLocalStorage("simulation.mutationChance", value);
-        this.onSettingsChange();
+        // Don't reset simulation - affects future generations only
       });
 
     simulationFolder
@@ -94,7 +94,7 @@ export class SettingsGUI {
       .name("Max Mutation Change")
       .onChange((value) => {
         this.saveToLocalStorage("simulation.maxMutationChange", value);
-        this.onSettingsChange();
+        // Don't reset simulation - affects future generations only
       });
 
     simulationFolder
@@ -102,7 +102,7 @@ export class SettingsGUI {
       .name("Anomalies Chance")
       .onChange((value) => {
         this.saveToLocalStorage("simulation.anomaliesChance", value);
-        this.onSettingsChange();
+        // Don't reset simulation - affects future generations only
       });
 
     simulationFolder.open();

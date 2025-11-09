@@ -2,7 +2,7 @@ const pressedKeys: { [key: string]: boolean } = {};
 
 let isListening = false;
 
-export const keyHandler = {
+export const keyboardInputHandler = {
   getPressedKeys() {
     return { ...pressedKeys };
   },

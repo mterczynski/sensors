@@ -1,7 +1,7 @@
 import { CollisionDetector } from "./physics/collision-detector";
 import { Line } from "./geometry/Line";
 import { Point } from "./geometry/Point";
-import { keyHandler } from "./keyboard-input-handler";
+import { keyboardInputHandler } from "./keyboard-input-handler";
 import { PopulationHandler } from "./machine-learning/population-handler";
 import { drawGrid, drawWalls, drawBots, drawCanvasBackground } from "./drawing";
 import { settings } from "./settings";
@@ -76,7 +76,7 @@ export class App {
     requestAnimationFrame(() => this.onNextAnimationFrame());
     this.stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
     document.body.appendChild(this.stats.dom);
-    keyHandler.addKeyListeners();
+    keyboardInputHandler.addKeyListeners();
 
     document.addEventListener("visibilitychange", () => {
       this.isPaused = document.hidden;

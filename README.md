@@ -1,5 +1,7 @@
 # Sensors
 
+[![CI](https://github.com/mterczynski/sensors/actions/workflows/ci.yml/badge.svg)](https://github.com/mterczynski/sensors/actions/workflows/ci.yml)
+
 Machine learning project that utilizes neural networks and evolutionary algorithm
 
 <img src="assets/projectPreview.gif" width="300" height="300">

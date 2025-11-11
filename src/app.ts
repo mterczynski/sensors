@@ -151,4 +151,35 @@ export class App {
     document.getElementById("aliveCounter")!.innerHTML =
       `Alive: ${aliveBotCount}/${settings.simulation.populationSize}`;
   }
+
+  resetSimulation() {
+    // Reset generation counter
+    this.generationIndex = 1;
+    document.getElementById("generationIndex")!.innerHTML = "Generation: 1";
+
+    // Create new bots with fresh neural networks
+    this.bots = new Array(settings.simulation.populationSize)
+      .fill(null)
+      .map(() => {
+        const startingBotPosition = _.sample(
+          settings.simulation.activeLevel.startingBotPositions,
+        )!;
+
+        const bot = new Bot(
+          startingBotPosition.x * settings.display.tileSize,
+          startingBotPosition.y * settings.display.tileSize,
+          this.levelData.tiles,
+        );
+
+        bot.setRotation(startingBotPosition.direction);
+
+        return bot;
+      });
+
+    // Update alive counter
+    this.updateAliveCounter(this.bots.length);
+
+    // Reset frame time to avoid time jump
+    this.previousFrameTime = Date.now();
+  }
 }

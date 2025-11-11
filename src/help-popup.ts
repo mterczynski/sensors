@@ -41,7 +41,7 @@ export class HelpPopup {
         <section>
           <h3>Description</h3>
           <p>
-            This project demonstrates <strong>evolutionary learning</strong> where AI agents (bots) 
+            This project demonstrates <strong>evolutionary learning</strong> where AI agents (bots)
             learn to navigate through maze-like environments without hitting walls.
           </p>
         </section>
@@ -49,7 +49,7 @@ export class HelpPopup {
         <section>
           <h3>The Problem</h3>
           <p>
-            Bots are placed in a level with walls and must survive as long as possible by avoiding collisions. 
+            Bots are placed in a level with walls and must survive as long as possible by avoiding collisions.
             Each bot has:
           </p>
           <ul>
@@ -60,7 +60,7 @@ export class HelpPopup {
 
         <section>
           <h3>Learning Methods</h3>
-          
+
           <h4>1. Neural Networks</h4>
           <ul>
             <li>Each bot has a neural network with weights that determine how sensor inputs affect movement</li>
@@ -85,6 +85,7 @@ export class HelpPopup {
           </ul>
         </section>
 
+        <!-- Uncomment after adding dat.gui settings panel
         <section>
           <h3>Controls</h3>
           <p>Use the settings panel on the right to adjust:</p>
@@ -94,6 +95,7 @@ export class HelpPopup {
           </ul>
           <p>Settings are automatically saved to your browser's local storage.</p>
         </section>
+        -->
       </div>
     `;
 
@@ -106,7 +108,9 @@ export class HelpPopup {
     this.button.addEventListener("click", () => this.open());
 
     // Close popup - close button
-    const closeBtn = this.popup.querySelector("#help-close") as HTMLButtonElement;
+    const closeBtn = this.popup.querySelector(
+      "#help-close",
+    ) as HTMLButtonElement;
     closeBtn.addEventListener("click", () => this.close());
 
     // Close popup - clicking overlay
